@@ -53,6 +53,7 @@ services:
             # database configuration
             # privileged user password
             - BOCA_DB_SUPER_PASSWORD=superpass
+            - BOCA_TRUSTED_PROXIES=${BOCA_TRUSTED_PROXIES}
             # - BOCA_TRUSTED_PROXIES=192.168.0.100
         volumes:
             - ./src/globals.php:/var/www/boca/src/globals.php
