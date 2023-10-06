@@ -1,0 +1,103 @@
+---
+#========================================================================
+# Copyright Universidade Federal do Espirito Santo (Ufes)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# 
+# This program is released under license GNU GPL v3+ license.
+#
+#========================================================================
+
+version: '3.8'
+
+services:
+
+    # reverse proxy
+    traefik:
+        image: "traefik:v2.10"
+        container_name: "traefik"
+        command:
+            #- "--log.level=DEBUG"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+        networks:
+            bocanet:
+                ipv4_address: 192.168.0.100
+            frontend: null
+        ports:
+            - "80:80"
+            - "8080:8080"
+
+    # web app
+    boca-web:
+        image: ghcr.io/joaofazolo/boca-docker/boca-web:1.2
+        depends_on:
+            boca-db:
+                condition: service_healthy
+        environment:
+            # database configuration
+            # privileged user password
+            - BOCA_DB_SUPER_PASSWORD=superpass
+            # - BOCA_TRUSTED_PROXIES=192.168.0.100
+        volumes:
+            - ./src/globals.php:/var/www/boca/src/globals.php
+        networks:
+            - bocanet
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.boca.rule=Host(`localhost`) && PathPrefix(`/boca`)"
+            - "traefik.http.routers.boca.entrypoints=web"
+            - "traefik.http.services.boca.loadbalancer.server.port=80"
+
+    # # online judge
+    # boca-jail:
+    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:1.2
+    #     privileged: true
+    #     depends_on:
+    #         boca-db:
+    #             condition: service_healthy
+
+    # database
+    boca-db:
+        image: postgres:14-alpine
+        environment:
+            # database configuration
+            # privileged user password
+            - POSTGRES_PASSWORD=superpass
+        networks:
+            - bocanet
+        healthcheck:
+            # determine whether or not it is healthy
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+            interval: 10s       # interval between health checks
+            timeout: 5s         # timeout for each health checking
+            retries: 20         # how many times retries
+            start_period: 10s   # estimated time to boot
+
+networks:
+
+    # visible to the internet
+    frontend:
+
+    # hidden from the outside world
+    bocanet:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.0.0/24
