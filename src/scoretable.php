@@ -344,14 +344,37 @@ if($redo) {
 			$_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]=0;
 			if( $score[$e]["userflag"] != '')
 			  $strtmp .= "  <td nowrap><img alt=\"" .  $score[$e]["userflag"]. "\" width=\"18\" src=\"" . $loc. '/images/flags/' . 
-			    $score[$e]["userflag"] . ".png\"> " . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			    // $score[$e]["userflag"] . ".png\"> " . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+				$score[$e]["userflag"] . ".png\"> " . 
+				(
+				  $_SESSION["usertable"]["usertype"] == "admin" || 
+				  $score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
+				  getenv('BOCA_ANONYMIZED_SCORE') == 'false' ? 
+					$score[$e]["username"] : "####"
+				) . 
+				"/".$score[$e]["usersitename"] . " </td>";
 			else
-			  $strtmp .= "  <td nowrap>" . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			  // $strtmp .= "  <td nowrap>" . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			  $strtmp .= "  <td nowrap>" . 
+			  (
+				$_SESSION["usertable"]["usertype"] == "admin" || 
+				$score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
+				getenv('BOCA_ANONYMIZED_SCORE') == 'false' ? 
+				  $score[$e]["username"] : "####"
+			  ) . 
+			  "/".$score[$e]["usersitename"] . " </td>";
 
 	//		if($score[$e]['usershortinstitution'] != '') 
 	//		  $strtmp .= "<td>[" . $score[$e]['usershortinstitution'] . '] ' . $score[$e]["userfullname"];
 	//		else
-			  $strtmp .= "<td>" . $score[$e]["userfullname"];
+			  // $strtmp .= "<td>" . $score[$e]["userfullname"];
+			  $strtmp .= "<td>" . 
+			  	(
+				  $_SESSION["usertable"]["usertype"] == "admin" || 
+				  $score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
+				  getenv('BOCA_ANONYMIZED_SCORE') == 'false' ? 
+				    $score[$e]["userfullname"] : "####"
+				);
 //		}
 		$_SESSION["scorepos"][$score[$e]["username"]."-".$score[$e]["site"]] = $cg2;
 
