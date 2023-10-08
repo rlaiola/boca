@@ -349,7 +349,7 @@ if($redo) {
 				(
 				  $_SESSION["usertable"]["usertype"] == "admin" || 
 				  $score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
-				  getenv('BOCA_ANONYMIZED_SCORE') == 'false' ? 
+				  getenv('BOCA_ANONYMIZED_SCORE') != 'true' ? 
 					$score[$e]["username"] : "####"
 				) . 
 				"/".$score[$e]["usersitename"] . " </td>";
@@ -359,7 +359,7 @@ if($redo) {
 			  (
 				$_SESSION["usertable"]["usertype"] == "admin" || 
 				$score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
-				getenv('BOCA_ANONYMIZED_SCORE') == 'false' ? 
+				getenv('BOCA_ANONYMIZED_SCORE') != 'true' ? 
 				  $score[$e]["username"] : "####"
 			  ) . 
 			  "/".$score[$e]["usersitename"] . " </td>";
@@ -372,7 +372,7 @@ if($redo) {
 			  	(
 				  $_SESSION["usertable"]["usertype"] == "admin" || 
 				  $score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
-				  getenv('BOCA_ANONYMIZED_SCORE') == 'false' ? 
+				  getenv('BOCA_ANONYMIZED_SCORE') != 'true' ? 
 				    $score[$e]["userfullname"] : "####"
 				);
 //		}
