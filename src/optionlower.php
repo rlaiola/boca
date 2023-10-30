@@ -121,6 +121,7 @@ function computeHASH()
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
+      <input type="reset" name="Clear" value="Clear">
   </center>
 </form>
 
