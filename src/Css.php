@@ -21,6 +21,7 @@ $corfrente = "#000000";
 $corfundo2 = "#dfdfdf";
 $cormenu = "#dfdfdf";
 ?>
+A.current-page { background-color: #ffcc00; color: #000; }
 div#popupnew {
 position:absolute;
 left:50%;
