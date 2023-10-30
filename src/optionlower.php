@@ -77,6 +77,21 @@ function computeHASH()
 }
 </script>
 
+<script language="JavaScript">
+function togglePasswordVisibility(fieldId, buttonId) {
+    var passwordField = document.getElementById(fieldId);
+    var toggleButton = document.getElementById(buttonId);
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleButton.textContent = "Hide Password";
+    } else {
+        passwordField.type = "password";
+        toggleButton.textContent = "Show Password";
+    }
+}
+</script>
+
 <br><br>
 <form name="form1" action="javascript:computeHASH()">
   <center>
@@ -102,19 +117,22 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordo" size="20" maxlength="200" />
+        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" />
+        <button type="button" onclick="togglePasswordVisibility('passwordo', 'togglePasswordO')">Show Password</button>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn1" size="20" maxlength="200" />
+        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" />
+        <button type="button" onclick="togglePasswordVisibility('passwordn1', 'togglePasswordN1')">Show Password</button>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn2" size="20" maxlength="200" />
+        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" />
+        <button type="button" onclick="togglePasswordVisibility('passwordn2', 'togglePasswordN2')">Show Password</button>
         </td>
       </tr>
     </table>
