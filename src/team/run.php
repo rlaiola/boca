@@ -16,6 +16,61 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////
 require('header.php');
+
+echo '<script>
+  function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.querySelector(\'table\');
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = \'asc\';
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName(\'td\')[columnIndex];
+        y = rows[i + 1].getElementsByTagName(\'td\')[columnIndex];
+
+        if (dir === \'asc\') {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir === \'desc\') {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount++;
+      } else {
+        if (switchcount === 0 && dir === \'asc\') {
+          dir = \'desc\';
+          switching = true;
+        }
+      }
+    }
+
+    // Remove sorting classes from all columns
+    for (var j = 0; j < rows[0].cells.length; j++) {
+      rows[0].cells[j].classList.remove(\'asc\', \'desc\');
+    }
+
+    // Add the sorting class to the current column
+    rows[0].cells[columnIndex].classList.toggle(dir);
+  }
+</script>';
+
+
+
 $ds = DIRECTORY_SEPARATOR;
 if($ds=="") $ds = "/";
 
@@ -318,8 +373,14 @@ if($redo) {
   $_SESSION['forceredo']=false;
   if(($st = DBSiteInfo($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usersitenumber"])) == null)
     ForceLoad("../index.php");
-  $strtmp="<br>\n<table width=\"100%\" border=1>\n <tr>\n  <td><b>Run #</b></td>\n<td><b>Time</b></td>\n".
-    "  <td><b>Problem</b></td>\n  <td><b>Language</b></td>\n  <td><b>Answer</b></td>\n  <td><b>File</b></td>\n </tr>\n";
+  $strtmp="<br>\n<table width=\"100%\" border=1>\n <tr>\n   
+  <th class=\"sortable-header\" onclick=\"sortTable(0)\">Run #</th>
+  <th class=\"sortable-header\" onclick=\"sortTable(1)\">Time</th>
+  <th class=\"sortable-header\" onclick=\"sortTable(2)\">Problem</th>
+  <th class=\"sortable-header\" onclick=\"sortTable(3)\">Language</th>
+  <th class=\"sortable-header\" onclick=\"sortTable(4)\">Answer</th>
+  <th class=\"sortable-header\" onclick=\"sortTable(5)\">File</th> </tr>\n";
+
   $strcolors = "0";
   $run = DBUserRuns($_SESSION["usertable"]["contestnumber"],
 		    $_SESSION["usertable"]["usersitenumber"],

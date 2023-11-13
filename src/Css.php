@@ -86,3 +86,17 @@ p.link a:hover span {
   text-align:left;
   display: block;
 }
+
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ascending::after {
+    content: ' ▲';
+  }
+
+  .descending::after {
+    content: ' ▼';
+  }
+
