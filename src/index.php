@@ -31,12 +31,14 @@ if($_SESSION["locr"]=="/") $_SESSION["locr"] = "";
 
 require_once("globals.php");
 require_once("db.php");
+require_once("ldap.php");
+require_once("googleclient.php");
 
 if (!isset($_GET["name"])) {
 	if (ValidSession())
 	  DBLogOut($_SESSION["usertable"]["contestnumber"], 
 		   $_SESSION["usertable"]["usersitenumber"], $_SESSION["usertable"]["usernumber"],
-		   $_SESSION["usertable"]["username"]=='admin');
+		   $_SESSION["usertable"]["usertype"]=='admin');
 	session_unset();
 	session_destroy();
 	session_start();
@@ -66,6 +68,8 @@ ob_end_flush();
 
 require_once('version.php');
 
+$authMode = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+
 ?>
 <title>BOCA Online Contest Administrator <?php echo $BOCAVERSION; ?> - Login</title>
 <head>
@@ -73,6 +77,19 @@ require_once('version.php');
 <link rel=stylesheet href="Css.php" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
 <script language="JavaScript">
+
+function submitForm() {
+    const authMode = "<?php echo $authMode; ?>";
+
+    if (authMode === 'password') {
+      computeHASH();
+    } else {
+      document.form1.method = 'post';
+      document.form1.action = 'index.php';
+
+      document.form1.submit();
+    }
+}
 function computeHASH()
 {
 	var userHASH, passHASH;
@@ -84,33 +101,73 @@ function computeHASH()
 }
 </script>
 <?php
+if ($authMode == 'google') {
+  $googleClient = new GoogleClient();
+}
+$_SESSION["google_authorized"] = isset($googleClient) && $googleClient->authorized();
+
 if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
-  if(isset($_GET["name"]) && $_GET["name"] != "" ) {
-	$name = $_GET["name"];
-	$password = $_GET["password"];
-	$usertable = DBLogIn($name, $password);
-	if(!$usertable) {
-		ForceLoad("index.php");
-	}
-	else {
-		if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
-			ForceLoad("index.php");
-		if($ct["contestlocalsite"]==$ct["contestmainsite"]) $main=true; else $main=false;
-		if(isset($_GET['action']) && $_GET['action'] == 'transfer') {
-			echo "TRANSFER OK";
-		} else {
-			if($main && $_SESSION["usertable"]["usertype"] == 'site') {
-				MSGError('Direct login of this user is not allowed');
-				unset($_SESSION["usertable"]);
-				ForceLoad("index.php");
-				exit;
-			}
-			echo "<script language=\"JavaScript\">\n";
-			echo "document.location='" . $_SESSION["usertable"]["usertype"] . "/index.php';\n";
-			echo "</script>\n";
-		}
-		exit;
-	}
+  if((isset($_GET["name"]) && $_GET["name"] != "") || (isset($_POST["name"]) && $_POST["name"] != "") || $_SESSION["google_authorized"]) {
+    
+    if ($_SESSION["google_authorized"]) {
+      $_SESSION["google_token"] = $googleClient->client->getAccessToken();
+
+      $userData = $googleClient->data;
+      $username = substr($userData->email, 0, strpos($userData->email, '@'));
+      $userdomain = $userData->hd ? $userData->hd : substr($userData->email, strpos($userData->email, '@')+1, strlen($userData->email));
+
+      $allowedDomains = getenv("BOCA_AUTH_ALLOWED_DOMAINS") ? getenv("BOCA_AUTH_ALLOWED_DOMAINS") : "gmail.com";
+
+      // echo $userData->email . "<br>";
+      // echo $username . "<br>";
+      // echo $userdomain . "<br>";
+      // echo $allowedDomains . "<br>";
+      // exit;
+
+      // if ($allowedDomains) {
+        if (in_array($userdomain, explode(",", $allowedDomains))) {
+          $usertable = DBLogIn($username, null);
+        } else {
+          $usertable = false;
+          MSGError('User is not authorized.');
+        }
+      // } else {
+      //   $usertable = DBLogIn($username, null);
+      // }
+    } 
+    else {
+      $name = isset($_GET["name"]) ? $_GET["name"] : $_POST["name"];
+      $password = isset($_GET["password"]) ? $_GET["password"] : $_POST["password"];
+      
+      $usertable = DBLogIn($name, $password);
+    }
+    
+    if(!$usertable) {
+      if ($_SESSION["google_authorized"]) $googleClient->logout();
+      ForceLoad("index.php");
+    }
+    else {
+      if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null) {
+        if ($_SESSION["google_authorized"]) $googleClient->logout();
+        ForceLoad("index.php");
+      }
+      if($ct["contestlocalsite"]==$ct["contestmainsite"]) $main=true; else $main=false;
+      if(isset($_GET['action']) && $_GET['action'] == 'transfer') {
+        echo "TRANSFER OK";
+      } else {
+        if($main && $_SESSION["usertable"]["usertype"] == 'site') {
+          MSGError('Direct login of this user is not allowed');
+          unset($_SESSION["usertable"]);
+          if ($_SESSION["google_authorized"]) $googleClient->logout();
+          ForceLoad("index.php");
+          exit;
+        }
+        echo "<script language=\"JavaScript\">\n";
+        echo "document.location='" . $_SESSION["usertable"]["usertype"] . "/index.php';\n";
+        echo "</script>\n";
+      }
+      exit;
+    }
   }
 } else {
   echo "<script language=\"JavaScript\">\n";
@@ -123,7 +180,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
 <table width="100%" height="100%" border="0">
   <tr align="center" valign="middle"> 
     <td> 
-      <form name="form1" action="javascript:computeHASH()">
+      <form name="form1" action="javascript:submitForm()">
         <div align="center"> 
           <table border="0" align="center">
             <tr> 
@@ -133,7 +190,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
               </td>
             </tr>
             <tr>
-              <td valign="top"> 
+              <td valign="top" id="localLogin" <?php if ($authMode == 'google') { ?> style="display: none;" <?php } ?>> 
                 <table border="0" align="left">
                   <tr> 
                     <td><font face="Verdana, Arial, Helvetica, sans-serif" > 
@@ -156,6 +213,53 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
           </table>
         </div>
       </form>
+
+      <?php if ($authMode == 'google') { ?>
+
+      <form>
+        <input id="googleLogin" 
+               type="button" 
+               value="Login with Google" 
+               style="
+                    background-image: url(https://accounts.scdn.co/sso/images/new-google-icon.72fd940a229bc94cf9484a3320b3dccb.svg);
+                    padding-left: 25px;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    padding-left: 25px;"
+               onclick="window.location.href='<?php echo $googleClient->generateAuthUrl(); ?>'">
+      </form>
+      <a id="localLoginLink" style="color: initial;" href="javascript:toggleLoginMethod();">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+        Login with local user
+        </font>
+      </a>
+      <a id="googleLoginLink" style="color: initial; display: none;" href="javascript:toggleLoginMethod();">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+        Login with Google
+        </font>
+      </a>
+      <script>
+      function toggleLoginMethod() {
+        const localLogin = document.getElementById("localLogin");
+        const usernameField = document.getElementsByTagName("input")[0];
+        const googleLoginLink = document.getElementById("googleLoginLink");
+        const googleLogin = document.getElementById("googleLogin");
+        const localLoginLink = document.getElementById("localLoginLink");
+
+        localLogin.style.display = localLogin.style.display === "none" ? "block" : "none";
+        googleLoginLink.style.display = googleLoginLink.style.display === "none" ? "block" : "none";
+        googleLogin.style.display = googleLogin.style.display === "none" ? "block" : "none";
+        localLoginLink.style.display = localLoginLink.style.display === "none" ? "block" : "none";
+        // Set focus
+        if (localLogin.style.display === "block")
+          usernameField.focus();
+        else googleLogin.focus();
+      }
+
+      document.getElementById("googleLogin").focus();
+      </script>
+
+      <?php } ?>
     </td>
   </tr>
 </table>

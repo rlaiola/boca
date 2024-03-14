@@ -17,6 +17,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 require('header.php');
 
+$authMethod = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+
 if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) && is_numeric($_GET["user"]) &&
     isset($_GET["logout"]) && $_GET["logout"] == 1) {
 	DBLogOut($_SESSION["usertable"]["contestnumber"], $_GET["site"], $_GET["user"]);
@@ -66,7 +68,15 @@ if (isset($_POST["username"]) && isset($_POST["userfullname"]) && isset($_POST["
 
 	$passcheck = $_POST["passwordo"];
 	$a = DBUserInfo($_SESSION["usertable"]["contestnumber"], $_SESSION["usertable"]["usersitenumber"], $_SESSION["usertable"]["usernumber"], null, false);
-	if(myhash($a['userpassword'] . session_id()) != $passcheck) {
+
+  if ($authMethod != "password") {
+    $p = $passcheck;
+  }
+  else {
+    $p = myhash($a['userpassword'] . session_id());
+  }
+
+	if($p != $passcheck) {
 		MSGError('Admin password is incorrect');
 	} else {
 		if ($_POST["passwordn1"] == $_POST["passwordn2"]) {
@@ -461,19 +471,19 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
 	  <input type="text" name="userip" value="<?php if(isset($u)) echo $u["userpermitip"]; ?>" size="20" maxlength="20" />
         </td>
       </tr>
-      <tr> 
+      <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Password:</td>
         <td width="65%">
 	  <input type="password" name="passwordn1" value="" size="20" maxlength="200" />
         </td>
       </tr>
-      <tr> 
+      <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Retype Password:</td>
         <td width="65%">
 	  <input type="password" name="passwordn2" value="" size="20" maxlength="200" />
         </td>
       </tr>
-      <tr> 
+      <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Allow password change:</td>
         <td width="65%">
 		<select name="changepass">
@@ -482,7 +492,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
 		</select>
         </td>
       </tr>
-      <tr> 
+      <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Admin (this user) Password:</td>
         <td width="65%">
 	  <input type="password" name="passwordo" value="" size="20" maxlength="200" />

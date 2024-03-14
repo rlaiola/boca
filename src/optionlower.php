@@ -25,6 +25,12 @@ if(!ValidSession()) { // || $_SESSION["usertable"]["usertype"] == 'team') {
         InvalidSession("optionlower.php");
         ForceLoad("index.php");
 }
+
+if ($_SESSION["usertable"]["authmethod"] != "password") {
+  echo "<br><br><center><b>UPDATES ARE NOT ALLOWED</b></center>"; 
+  exit;
+}
+
 $loc = $_SESSION['loc'];
 
 if (isset($_GET["username"]) && isset($_GET["userfullname"]) && isset($_GET["userdesc"]) && 
