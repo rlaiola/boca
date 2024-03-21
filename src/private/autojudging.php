@@ -539,38 +539,47 @@ while(42) {
 	    }
 	    */
 	    // retval 5 (presentation) and retval 6 (wronganswer) are already compatible with the compare script
-	    if($localretval < 4 || $localretval > 6) {
-	      // contact staff
-	      $retval = 7;
-	      $answer='(Contact staff)' . $answertmp;
-	      if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
-	      break;
-	    }
-	    if($localretval == 6) {
-	      $retval=$localretval;
-	      $answer='(Wrong answer)'. $answertmp;
-	      if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
-	      break;
-	    }
-	    if($localretval == 5) {
-	      $retval=$localretval;
-	      $answer='(Presentation error)'. $answertmp;
-	      if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
-	    } else {
-	      if($localretval != 4) {
-		$retval = 7;
-		$answer='(Contact staff)' . $answertmp;
-		if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
-		break;
-	      }
+
+      echo "localretval = " . $localretval . "\n";
+      $retval = $localretval;
+      $answer = $answertmp;
+      if ($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
+
+	  //   if($localretval < 4 || $localretval > 6) {
+	  //     // contact staff
+	  //     $retval = 7;
+	  //     $answer='(Contact staff)' . $answertmp;
+	  //     if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
+	  //     break;
+	  //   }
+	  //   if($localretval == 6) {
+	  //     $retval=$localretval;
+	  //     $answer='(Wrong answer)'. $answertmp;
+	  //     if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
+	  //     break;
+	  //   }
+	  //   if($localretval == 5) {
+	  //     $retval=$localretval;
+	  //     $answer='(Presentation error)'. $answertmp;
+	  //     if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
+	  //   } else {
+	  //     if($localretval != 4) {
+		// $retval = 7;
+		// $answer='(Contact staff)' . $answertmp;
+		// if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
+		// break;
+	  //     }
+
+              echo "retval = " . $retval . "\n";
+
 	      $ncor++;
-	      if($retval == 0 || $retval == 1) {
-		// YES!
-		$answer='(YES)' . $answertmp;
-		if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
-		$retval = 1;
-	      }
-	    }
+	  //     if($retval == 0 || $retval == 1) {
+		// // YES!
+		// $answer='(YES)' . $answertmp;
+		// if($showcor) $answertmp .= ' (' . $ncor . '/' . $ninputlist . ' OKs)';
+		// $retval = 1;
+	  //     }
+	  //   }
 	  } else {
 	    echo "==> ERROR reading output file " . $dir . $ds . 'output' . $ds . $file . " - skipping it!\n";
 	  }
@@ -657,30 +666,48 @@ while(42) {
       }
     */
   }
-  if($retval >= 7 && $retval <= 9) {
-    $ans = file("allout");
-    $anstmp = '';
-    if(count($ans) > 0)
-      $anstmp = substr(trim(escape_string($ans[count($ans)-1])),0,100);
-    unset($ans);
-    if(strpos(file_get_contents('allerr'),'Error: Could not find or load main class') === false) {
-      $answer = "(probably runtime error - unusual code: $retval) " . $anstmp;
-      // runtime error
-      $retval = 3;
-    } else {
-      $answer = "(probably wrong name of class - unusual code: $retval) "; // . $anstmp;
-      $retval = 8;
-    }
+  // if($retval >= 7 && $retval <= 9) {
+  //   $ans = file("allout");
+  //   $anstmp = '';
+  //   if(count($ans) > 0)
+  //     $anstmp = substr(trim(escape_string($ans[count($ans)-1])),0,100);
+  //   unset($ans);
+  //   if(strpos(file_get_contents('allerr'),'Error: Could not find or load main class') === false) {
+  //     $answer = "(probably runtime error - unusual code: $retval) " . $anstmp;
+  //     // runtime error
+  //     $retval = 3;
+  //   } else {
+  //     $answer = "(probably wrong name of class - unusual code: $retval) "; // . $anstmp;
+  //     $retval = 8;
+  //   }
+  // }
+  // if($retval == 0 || $retval > 9) {
+  //   $ans = file("allout");
+  //   $anstmp = substr(trim(escape_string($ans[count($ans)-1])),0,100);
+  //   unset($ans);
+  //   LogLevel("Autojudging: Script returned unusual code: $retval ($anstmp)".
+	//      "(run=$number, site=$site, contest=$contest)",1);
+  //   echo "Autojudging script returned unusual code $retval ($anstmp)".
+  //     "(contest=$contest, site=$site, run=$number)\n";
+  //   $answer = "(check output files - unusual code: $retval) " . $anstmp;
+  //   // contact staff
+  //   $retval = 7;
+  // }
+
+  // Check whether answer number exists in the database
+  // https://stackoverflow.com/questions/7106772/most-efficient-way-to-search-for-object-in-an-array-by-a-specific-propertys-val
+  $answers = DBGetAnswers($contest);
+  // print_r($answers);
+  $obj = array_column($answers, null, 'number')[$retval] ?? null;
+  print_r($obj);
+  if ($obj) {
+    echo "yes = " . $obj['yes'];
+    // $answer =
+    //   ($obj->fake != "f" ? 
+    //     ($obj->yes == "t" ? "YES - " : "NO - ") : "") . $answer;
   }
-  if($retval == 0 || $retval > 9) {
-    $ans = file("allout");
-    $anstmp = substr(trim(escape_string($ans[count($ans)-1])),0,100);
-    unset($ans);
-    LogLevel("Autojudging: Script returned unusual code: $retval ($anstmp)".
-	     "(run=$number, site=$site, contest=$contest)",1);
-    echo "Autojudging script returned unusual code $retval ($anstmp)".
-      "(contest=$contest, site=$site, run=$number)\n";
-    $answer = "(check output files - unusual code: $retval) " . $anstmp;
+  else {
+    $answer = "(probably runtime error - unusual code: $retval) " . $answer;
     // contact staff
     $retval = 7;
   }
