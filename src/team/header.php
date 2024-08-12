@@ -143,19 +143,20 @@ $currentURL = $_SERVER['REQUEST_URI'];
 $currentPage = basename($currentURL);
 
 $highlightClass = 'current-page';
+$selectedPage = ''; 
 
 list($clockstr,$clocktype)=siteclock();
 echo "</td><td bgcolor=\"#aaaaee\" align=center nowrap>&nbsp;".$clockstr."&nbsp;</td></tr>\n";
 echo "</table>\n";
 echo "<table border=0 width=\"100%\" align=center>\n";
 echo " <tr>\n";
+
 foreach ($menuItems as $item) {
     $menuItemClass = '';
     if (basename($item['url']) == $currentPage) {
         $menuItemClass = $highlightClass;
     }
-    echo "  <td align=center width=\"12%\"><a class=\"menu $menuItemClass\" style=\"font-weight:bold\" href={$item['url']}>{$item['name']}</a></td>\n";
-
+    echo "  <td align=center width=\"12%\"><a class=\"menu $menuItemClass\" style=\"font-weight:bold; padding: 2px 3px; border-radius: 5px;\" href={$item['url']}>{$item['name']}</a></td>\n";
 }
 echo " </tr>\n"; 
 echo "</table>\n";
