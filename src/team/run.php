@@ -373,13 +373,15 @@ if($redo) {
   $_SESSION['forceredo']=false;
   if(($st = DBSiteInfo($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usersitenumber"])) == null)
     ForceLoad("../index.php");
-  $strtmp="<br>\n<table width=\"100%\" border=1>\n <tr>\n   
-  <th class=\"sortable-header\" onclick=\"sortTable(0)\">Run #</th>
-  <th class=\"sortable-header\" onclick=\"sortTable(1)\">Time</th>
-  <th class=\"sortable-header\" onclick=\"sortTable(2)\">Problem</th>
-  <th class=\"sortable-header\" onclick=\"sortTable(3)\">Language</th>
-  <th class=\"sortable-header\" onclick=\"sortTable(4)\">Answer</th>
-  <th class=\"sortable-header\" onclick=\"sortTable(5)\">File</th> </tr>\n";
+    $strtmp = "<br>\n<table id=\"run-table\" width=\"100%\" border=1>\n <thead>\n<tr>\n";
+    $strtmp .= "<th><b>Run #</b><br><input class='filter-input' type='text' placeholder='Filter Run #' onkeyup='filterTable(this, 0)'></th>\n";
+    $strtmp .= "<th><b>Time</b><br><input class='filter-input' type='text' placeholder='Filter Time' onkeyup='filterTable(this, 1)'></th>\n";
+    $strtmp .= "<th><b>Problem</b><br><input class='filter-input' type='text' placeholder='Filter Problem' onkeyup='filterTable(this, 2)'></th>\n";
+    $strtmp .= "<th><b>Language</b><br><input class='filter-input' type='text' placeholder='Filter Language' onkeyup='filterTable(this, 3)'></th>\n";
+    $strtmp .= "<th><b>Answer</b><br><input class='filter-input' type='text' placeholder='Filter Answer' onkeyup='filterTable(this, 4)'></th>\n";
+    $strtmp .= "<th><b>File</b><br><input class='filter-input' type='text' placeholder='Filter File' onkeyup='filterTable(this, 5)'></th>\n";
+    $strtmp .= "</tr></thead>\n<tbody>\n";
+    
 
   $strcolors = "0";
   $run = DBUserRuns($_SESSION["usertable"]["contestnumber"],
@@ -504,6 +506,54 @@ if($redo) {
 echo $strtmp;
 ?>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('sort-direction').addEventListener('click', toggleSortDirection);
+  document.getElementById('sort-select').addEventListener('change', sortTable);
+});
+
+let sortDirection = true; // true for ascending, false for descending
+
+function toggleSortDirection() {
+  sortDirection = !sortDirection;
+  document.getElementById('sort-direction').innerText = sortDirection ? '⬆' : '⬇';
+  sortTable();
+}
+
+function sortTable() {
+  const table = document.getElementById('run-table');
+  const tbody = table.tBodies[0];
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const index = document.getElementById('sort-select').value;
+
+  rows.sort((a, b) => {
+    const cellA = a.children[index].innerText.toLowerCase();
+    const cellB = b.children[index].innerText.toLowerCase();
+
+    if (!isNaN(cellA) && !isNaN(cellB)) {
+      return sortDirection ? cellA - cellB : cellB - cellA;
+    } else {
+      return sortDirection ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+    }
+  });
+
+  rows.forEach(row => tbody.appendChild(row));
+}
+
+function filterTable(input, column) {
+  const filter = input.value.toLowerCase();
+  const table = document.getElementById('run-table');
+  const rows = table.getElementsByTagName('tr');
+
+  for (let i = 1; i < rows.length; i++) {
+    const cells = rows[i].getElementsByTagName('td');
+    if (cells[column]) {
+      const txtValue = cells[column].textContent || cells[column].innerText;
+      rows[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? '' : 'none';
+    }
+  }
+}
+</script>
 
 </body>
 </html>
