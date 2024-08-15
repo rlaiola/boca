@@ -94,15 +94,6 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sort-direction').addEventListener('click', toggleSortDirection);
-
-    // Adiciona evento de clique aos links de arquivos de descrição
-    const descfileLinks = document.querySelectorAll('.descfile-link');
-    descfileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            alert('O arquivo foi baixado!');
-            link.style.color = 'red'; // Muda a cor do link para vermelho
-        });
-    });
 });
 
 let sortDirection = true; // true for ascending, false for descending
@@ -117,7 +108,7 @@ function sortTable() {
     const table = document.getElementById('problem-table');
     const tbody = table.tBodies[0];
     const rows = Array.from(tbody.querySelectorAll('tr'));
-    const index = 0; // Sempre ordenar pela coluna "Name"
+    const index = 0; // Order by name
     
     rows.sort((a, b) => {
         const cellA = a.children[index].innerText.toLowerCase();
