@@ -87,7 +87,7 @@ function togglePasswordVisibility(fieldId, buttonId) {
         toggleButton.textContent = "Hide Password";
     } else {
         passwordField.type = "password";
-        toggleButton.textContent = "Show Password";
+        toggleButton.textContent = "Show/Hide Password";
     }
 }
 </script>
@@ -118,21 +118,21 @@ function togglePasswordVisibility(fieldId, buttonId) {
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
         <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" />
-        <button type="button" onclick="togglePasswordVisibility('passwordo', 'togglePasswordO')">Show Password</button>
+        <button type="button" onclick="togglePasswordVisibility('passwordo', 'togglePasswordO')">Show/Hide Password</button>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
         <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" />
-        <button type="button" onclick="togglePasswordVisibility('passwordn1', 'togglePasswordN1')">Show Password</button>
+        <button type="button" onclick="togglePasswordVisibility('passwordn1', 'togglePasswordN1')">Show/Hide Password</button>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
         <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" />
-        <button type="button" onclick="togglePasswordVisibility('passwordn2', 'togglePasswordN2')">Show Password</button>
+        <button type="button" onclick="togglePasswordVisibility('passwordn2', 'togglePasswordN2')">Show/Hide Password</button>
         </td>
       </tr>
     </table>

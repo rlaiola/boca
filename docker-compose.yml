@@ -25,22 +25,17 @@ services:
 
     # web app
     boca-web:
-        image: ghcr.io/joaofazolo/boca-docker/boca-web:1.2
         environment:
             # database configuration
             # privileged user password
             - BOCA_DB_SUPER_PASSWORD=superpass
-            - BOCA_ANONYMIZED_SCORE=true
         ports: 
             - 8000:80
-        volumes:
-            - ./src/optionlower.php:/var/www/boca/src/optionlower.php
 
-    # # online judge
-    # boca-jail:
-    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:1.2
-    #     privileged: true
-
+    # online judge
+    boca-jail:
+        privileged: true
+        
     # database
     boca-db:
         image: postgres:14-alpine
