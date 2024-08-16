@@ -153,6 +153,11 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
                 <input type="submit" name="Submit" value="Login">
               </td>
             </tr>
+            <tr>
+              <td colspan="2" align="center">
+                <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">Forgot your password? Contact the system administrator</font>
+              </td>
+            </tr>
           </table>
         </div>
       </form>
