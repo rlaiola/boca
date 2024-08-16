@@ -86,3 +86,42 @@ p.link a:hover span {
   text-align:left;
   display: block;
 }
+
+/* Estilo para destacar a linha do usuário logado */
+.highlighted-row {
+    background-color: #ffeb3b; /* Amarelo claro */
+    font-weight: bold;
+}
+
+/* Estilos para o modo escuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+table.dark-mode {
+    color: #ffffff;
+}
+
+th.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+td.dark-mode {
+    background-color: #1e1e1e;
+}
+
+a.dark-mode {
+    color: #bb86fc;
+}
+
+a.dark-mode:hover {
+    color: #ffffff;
+}
+
+button.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
