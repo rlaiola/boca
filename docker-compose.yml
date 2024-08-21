@@ -34,6 +34,9 @@ services:
             - BOCA_DB_SUPER_PASSWORD=superpass
             # - BOCA_FORGOT_PASSWORD_LINK=https://senha.inf.ufes.br/
         volumes:
+            - ./src/admin/user.php:/var/www/boca/src/admin/user.php
+            - ./src/Css.php:/var/www/boca/src/Css.php
+            - ./src/index.php:/var/www/boca/src/index.php
             - ./src/optionlower.php:/var/www/boca/src/optionlower.php
         ports: 
             - 8000:80
