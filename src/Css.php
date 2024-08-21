@@ -86,3 +86,32 @@ p.link a:hover span {
   text-align:left;
   display: block;
 }
+
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: bootstrap-icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 2;
+  vertical-align: text-top;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-eye-fill::before { content: url('images/password/eye-fill.svg'); }
+.bi-eye-slash-fill::before { content: url(images/password/eye-slash-fill.svg); }
+.bi-eye-slash::before { content: url(images/password/eye-slash.svg); }
+.bi-eye::before { content: url('images/password/eye.svg'); }
+
+form i {
+	margin-left: -30px;
+	cursor: pointer;
+}
+
+input.error {
+  color: red;
+  border: solid 1px red;
+}
