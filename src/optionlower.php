@@ -159,7 +159,6 @@ function validatePasswords() {
       <input type="submit" name="Submit" value="Send">
   </center>
 </form>
-<!-- Aviso de erro -->
 <div id="error-message"></div>
 
 </body>
