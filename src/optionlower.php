@@ -109,6 +109,9 @@ function validatePasswords() {
 </script>
 
 <br><br>
+<!-- Aviso de erro -->
+<div id="error-message" style="display: none; color: red; text-align: center; margin-bottom: 10px;"></div>
+
 <form name="form1" action="javascript:computeHASH()">
   <center>
     <table border="0">
