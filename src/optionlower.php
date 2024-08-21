@@ -61,49 +61,50 @@ $a = DBUserInfo($_SESSION["usertable"]["contestnumber"],
 <script language="JavaScript">
 function computeHASH()
 {
-    var username, userdesc, userfull, passHASHo, passHASHn;
+	var username, userdesc, userfull, passHASHo, passHASHn;
+	if (document.form1.passwordn1.value == document.form1.passwordo.value) {
+		alert("New password is the same as the old one. Please choose a different password.");
+		return;
+	}
+	if (document.form1.passwordn1.value != document.form1.passwordn2.value) {
+		alert("New password and confirmation do not match. Please try again.");
+		return;
+	}
 
-    // Obter valores dos campos do formulário
-    username = document.form1.username.value;
-    userdesc = document.form1.userdesc.value;
-    userfull = document.form1.userfull.value;
+	username = document.form1.username.value;
+	userdesc = document.form1.userdesc.value;
+	userfull = document.form1.userfull.value;
 
-    // Obter elementos de senha
-    var passwordo = document.form1.passwordo.value;
-    var passwordn1 = document.form1.passwordn1.value;
-    var passwordn2 = document.form1.passwordn2.value;
-
-    // Verificar se as novas senhas correspondem
-    if (passwordn1 !== passwordn2) {
-        // Exibir mensagem de erro se as senhas não correspondem
-        var errorMessage = document.getElementById('error-message');
-        errorMessage.innerText = 'New passwords do not match. Please try again.';
-        errorMessage.style.display = 'block';
-        return; // Não prosseguir com a alteração da senha
-    }
-
-    // Resetar a mensagem de erro caso as senhas correspondam
-    var errorMessage = document.getElementById('error-message');
-    errorMessage.style.display = 'none';
-
-    // Prosseguir com a lógica existente para computar os hashes e enviar a solicitação
-    passHASHo = js_myhash(js_myhash(passwordo) + '<?php echo session_id(); ?>');
-    passHASHn = bighexsoma(js_myhash(passwordn2), js_myhash(passwordo));
-
-    // Limpar os campos de senha por segurança
-    document.form1.passwordo.value = ' ';
-    document.form1.passwordn1.value = ' ';
-    document.form1.passwordn2.value = ' ';
-
-    // Redirecionar para a página de atualização com os parâmetros hash
-    document.location = 'option.php?username=' + username + '&userdesc=' + userdesc + '&userfullname=' + userfull + '&passwordo=' + passHASHo + '&passwordn=' + passHASHn;
+	passHASHo = js_myhash(js_myhash(document.form1.passwordo.value)+'<?php echo session_id(); ?>');
+	passHASHn = bighexsoma(js_myhash(document.form1.passwordn2.value),js_myhash(document.form1.passwordo.value));
+	document.form1.passwordo.value = '                                                         ';
+	document.form1.passwordn1.value = '                                                         ';
+	document.form1.passwordn2.value = '                                                         ';
+	document.location='option.php?username='+username+'&userdesc='+userdesc+'&userfullname='+userfull+'&passwordo='+passHASHo+'&passwordn='+passHASHn;
 }
 
-// Função para redefinir o formulário e limpar a mensagem de erro
-function clearForm() {
-    document.form1.reset();
-    var errorMessage = document.getElementById('error-message');
-    errorMessage.style.display = 'none';
+function validatePasswords() {
+	const errorMessage = document.getElementById('error-message');
+	errorMessage.innerText = "";
+
+	if (document.form1.passwordn1.value != "" &&
+		document.form1.passwordn1.value === document.form1.passwordo.value) {
+		document.form1.passwordn1.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " New password is the same as the old one.";
+		errorMessage.append(msg);
+	} else {
+		document.form1.passwordn1.classList.remove("error");
+	}
+
+	if (document.form1.passwordn1.value != document.form1.passwordn2.value) {
+		document.form1.passwordn2.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " New password and confirmation do not match.";
+		errorMessage.append(msg);
+	} else {
+		document.form1.passwordn2.classList.remove("error");
+	}
 }
 </script>
 
@@ -135,28 +136,35 @@ function clearForm() {
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordo" size="20" maxlength="200" />
+          <input type="password" name="passwordo" size="20" maxlength="200" required />
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn1" size="20" maxlength="200" />
+          <input type="password" name="passwordn1" size="20" maxlength="200" required />
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn2" size="20" maxlength="200" />
+          <input type="password" name="passwordn2" size="20" maxlength="200" required />
         </td>
       </tr>
     </table>
+    <script>
+      document.form1.passwordo.onkeyup = validatePasswords;
+      document.form1.passwordn1.onkeyup = validatePasswords;
+      document.form1.passwordn2.onkeyup = validatePasswords;
+    </script>
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
       <input type="button" name="Clear" value="Clear" onclick="clearForm()">
   </center>
 </form>
+<!-- Aviso de erro -->
+<div id="error-message"></div>
 
 </body>
 </html>

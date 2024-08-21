@@ -86,3 +86,14 @@ p.link a:hover span {
   text-align:left;
   display: block;
 }
+
+input.error {
+  color: red;
+  border: solid 1px red;
+}
+
+#error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}

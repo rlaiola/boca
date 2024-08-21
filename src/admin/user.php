@@ -485,7 +485,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr> 
         <td width="35%" align=right>Admin (this user) Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordo" value="" size="20" maxlength="200" />
+	  <input type="password" name="passwordo" value="" size="20" maxlength="200" required />
         </td>
       </tr>
     </table>
