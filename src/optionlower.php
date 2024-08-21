@@ -84,10 +84,10 @@ function computeHASH()
 }
 
 function validatePasswords() {
-	const errorMessage = document.getElementById('error-message');
+	const errorMessage = document.getElementById("error-message");
 	errorMessage.innerText = "";
 
-	if (document.form1.passwordn1.value != "" &&
+	if (document.form1.passwordn1.value !== "" &&
 		document.form1.passwordn1.value === document.form1.passwordo.value) {
 		document.form1.passwordn1.classList.add("error");
 		const msg = document.createElement('p');
@@ -97,7 +97,7 @@ function validatePasswords() {
 		document.form1.passwordn1.classList.remove("error");
 	}
 
-	if (document.form1.passwordn1.value != document.form1.passwordn2.value) {
+	if (document.form1.passwordn1.value !== document.form1.passwordn2.value) {
 		document.form1.passwordn2.classList.add("error");
 		const msg = document.createElement('p');
 		msg.innerText = String.fromCharCode(0x274C) + " New password and confirmation do not match.";
@@ -109,8 +109,6 @@ function validatePasswords() {
 </script>
 
 <br><br>
-<!-- Aviso de erro -->
-<div id="error-message" style="display: none; color: red; text-align: center; margin-bottom: 10px;"></div>
 
 <form name="form1" action="javascript:computeHASH()">
   <center>
@@ -160,7 +158,6 @@ function validatePasswords() {
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
-      <input type="button" name="Clear" value="Clear" onclick="clearForm()">
   </center>
 </form>
 <!-- Aviso de erro -->
