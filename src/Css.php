@@ -107,8 +107,8 @@ p.link a:hover span {
 .bi-eye::before { content: url('images/password/eye.svg'); }
 
 form i {
-	margin-left: -30px;
-	cursor: pointer;
+  margin-left: -30px;
+  cursor: pointer;
 }
 
 input.error {
