@@ -109,7 +109,6 @@ function validatePasswords() {
 </script>
 
 <br><br>
-
 <form name="form1" action="javascript:computeHASH()">
   <center>
     <table border="0">
