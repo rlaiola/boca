@@ -128,36 +128,20 @@ if(!isset($_SESSION["popuptime"]) || $_SESSION["popuptime"] < time()-120) {
 	}
 }
 
-$menuItems = [
-    ['url' => 'problem.php', 'name' => 'Problems'],
-    ['url' => 'run.php', 'name' => 'Runs'],
-    ['url' => 'score.php', 'name' => 'Score'],
-    ['url' => 'clar.php', 'name' => 'Clarifications'],
-    ['url' => 'task.php', 'name' => 'Tasks'],
-    ['url' => 'files.php', 'name' => 'Backups'],
-    ['url' => 'option.php', 'name' => 'Options'],
-    ['url' => '../index.php', 'name' => 'Logout'],
-];
-
-$currentURL = $_SERVER['REQUEST_URI'];
-$currentPage = basename($currentURL);
-
-$highlightClass = 'current-page';
-$selectedPage = ''; 
-
 list($clockstr,$clocktype)=siteclock();
 echo "</td><td bgcolor=\"#aaaaee\" align=center nowrap>&nbsp;".$clockstr."&nbsp;</td></tr>\n";
 echo "</table>\n";
 echo "<table border=0 width=\"100%\" align=center>\n";
 echo " <tr>\n";
-
-foreach ($menuItems as $item) {
-    $menuItemClass = '';
-    if (basename($item['url']) == $currentPage) {
-        $menuItemClass = $highlightClass;
-    }
-    echo "  <td align=center width=\"12%\"><a class=\"menu $menuItemClass\" style=\"font-weight:bold; padding: 2px 3px; border-radius: 5px;\" href={$item['url']}>{$item['name']}</a></td>\n";
-}
+$currentPage = basename($_SERVER['REQUEST_URI']);
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "problem.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=problem.php>Problems</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "clar.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=clar.php>Clarifications</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "task.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=task.php>Tasks</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "files.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=files.php>Backups</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "option.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
+echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=../index.php>Logout</a></td>\n";
 echo " </tr>\n"; 
 echo "</table>\n";
 ?>
