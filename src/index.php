@@ -152,13 +152,13 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
                         const togglePassword = document.querySelector("#togglePassword");
                         const password = document.form1.password;
 
-                        password.onkeyup = function() {
+                        password.addEventListener("keyup", function () {
                           if (!this.value) {
                             togglePassword.style.display = "none";
                           } else {
                             togglePassword.style.display = "";
                           }
-                        }
+                        });
                           
                         togglePassword.addEventListener("click", function () {
                           // toggle the type attribute

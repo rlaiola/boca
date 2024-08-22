@@ -108,13 +108,13 @@ function computeHASH()
           const toggleOldPassword = document.querySelector("#toggleOldPassword");
           const passwordo = document.form1.passwordo;
 
-          passwordo.onkeyup = function() {
+          passwordo.addEventListener("keyup", function() {
             if (!this.value) {
               toggleOldPassword.style.display = "none";
             } else {
               toggleOldPassword.style.display = "";
             }
-          }
+          });
           
           toggleOldPassword.addEventListener("click", function () {
             // toggle the type attribute
@@ -136,13 +136,13 @@ function computeHASH()
           const toggleNewPassword = document.querySelector("#toggleNewPassword");
           const passwordn1 = document.form1.passwordn1;
 
-          passwordn1.onkeyup = function() {
+          passwordn1.addEventListener("keyup", function() {
             if (!this.value) {
               toggleNewPassword.style.display = "none";
             } else {
               toggleNewPassword.style.display = "";
             }
-          }
+          });
 
           toggleNewPassword.addEventListener("click", function () {
             // toggle the type attribute
@@ -164,13 +164,13 @@ function computeHASH()
           const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
           const passwordn2 = document.form1.passwordn2;
 
-          passwordn2.onkeyup = function() {
+          passwordn2.addEventListener("keyup", function() {
             if (!this.value) {
               toggleNewPassword2.style.display = "none";
             } else {
               toggleNewPassword2.style.display = "";
             }
-          }
+          });
 
           toggleNewPassword2.addEventListener("click", function () {
             // toggle the type attribute
