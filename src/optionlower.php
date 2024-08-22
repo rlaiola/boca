@@ -62,14 +62,8 @@ $a = DBUserInfo($_SESSION["usertable"]["contestnumber"],
 function computeHASH()
 {
 	var username, userdesc, userfull, passHASHo, passHASHn;
-	if (document.form1.passwordn1.value == document.form1.passwordo.value) {
-		alert("New password is the same as the old one. Please choose a different password.");
-		return;
-	}
-	if (document.form1.passwordn1.value != document.form1.passwordn2.value) {
-		alert("New password and confirmation do not match. Please try again.");
-		return;
-	}
+	if (document.form1.passwordn1.value != document.form1.passwordn2.value) return;
+	if (document.form1.passwordn1.value == document.form1.passwordo.value) return;
 	username = document.form1.username.value;
 	userdesc = document.form1.userdesc.value;
 	userfull = document.form1.userfull.value;
@@ -108,7 +102,7 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" required />
+        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" />
         <i class="bi bi-eye-slash" id="toggleOldPassword" style="display: none;"></i>
         <script>
           const toggleOldPassword = document.querySelector("#toggleOldPassword");
@@ -136,7 +130,7 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" required />
+        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" />
         <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
         <script>
           const toggleNewPassword = document.querySelector("#toggleNewPassword");
@@ -147,18 +141,6 @@ function computeHASH()
               toggleNewPassword.style.display = "none";
             } else {
               toggleNewPassword.style.display = "";
-            }
-
-            if (this.value == document.form1.passwordo.value) {
-              this.classList.add("error");
-            } else {
-              this.classList.remove("error");
-            }
-
-            if (this.value != document.form1.passwordn2.value) {
-              document.form1.passwordn2.classList.add("error");
-            } else {
-              document.form1.passwordn2.classList.remove("error");
             }
           }
 
@@ -176,7 +158,7 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" required />
+        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" />
         <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
         <script>
           const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
@@ -187,12 +169,6 @@ function computeHASH()
               toggleNewPassword2.style.display = "none";
             } else {
               toggleNewPassword2.style.display = "";
-            }
-
-            if (document.form1.passwordn1.value != this.value) {
-              this.classList.add("error");
-            } else {
-              this.classList.remove("error");
             }
           }
 
