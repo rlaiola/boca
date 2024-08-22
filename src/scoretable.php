@@ -300,104 +300,130 @@ if($redo) {
 	}
 
 	$strtmp .= "<br>\n<table id=\"myscoretable\" width=\"100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
-	if (!$des) {
-		if ($level > 0)
+	if(!$des) {
+		if($level>0)
 			$strtmp .= "<td><b>Problems</b></td>";
-	} else if ($detail) {
-		for ($i = 0; $i < count($pr); $i++)
+	} else if($detail) {
+		for($i=0;$i<count($pr);$i++)
 			$strtmp .= "<td nowrap><b>" . $pr[$i]["problem"] . " &nbsp;</b></td>";
-	}
+	} 
 	$strtmp .= "<td><b>Total</b></td>\n";
 	$strtmp .= "</tr>\n";
-	
-	$n = 0;
+	$n=0;
 	reset($score);
-	while (1) {
-		$e = key($score);
-		$c = current($score);
-		if (!isset($score[$e]['username'])) break;
-		if (!isset($score[$e]['classingroup'])) continue;
-		reset($score[$e]['classingroup']);
-		while (1) {
-			$cg1 = key($score[$e]['classingroup']);
-			$cg2 = current($score[$e]['classingroup']);
-			if (empty($cg2))
-				if (next($score[$e]['classingroup']) === false)
-					break;
-	
-			// Adicione a classe `highlighted-row` se o usuário corresponder ao usuário logado
-			$rowClass = ($score[$e]['username'] == $_SESSION["usertable"]["username"]) ? 'highlighted-row' : '';
-			
-			$strtmp .= " <tr class=\"sitegroup" . $cg1 . " " . $rowClass . "\">";
-			$strtmp .= "<td>" . $cg2 . "</td>\n";
-	
-			$_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]] = 0;
-			if ($score[$e]["userflag"] != '')
-				$strtmp .= "  <td nowrap><img alt=\"" .  $score[$e]["userflag"]. "\" width=\"18\" src=\"" . $loc. '/images/flags/' . 
-				$score[$e]["userflag"] . ".png\"> " . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
-			else
-				$strtmp .= "  <td nowrap>" . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
-	
-			$strtmp .= "<td>" . $score[$e]["userfullname"];
-			$strtmp .= "</td>";
-	
-			if ($level > 0) {
-				if (!$des) $strtmp .= "<td>";
-				for ($h = 0; $h < count($pr); $h++) {
-					$ee = $pr[$h]["number"];
-					if ($detail) {
-						if ($des) {
-							$strtmp .= "<td nowrap>";
-							if (isset($score[$e]["problem"][$ee]["solved"]) && $score[$e]["problem"][$ee]["solved"]) {
-								$strtmp .= "<img alt=\"" . $score[$e]["problem"][$ee]["colorname"].":\" width=\"18\" ".
-									"src=\"" . balloonurl($score[$e]["problem"][$ee]["color"]) ."\" />";
-							} else {
-								if ($level > 3 && isset($score[$e]["problem"][$ee]["judging"]) && $score[$e]["problem"][$ee]["judging"])
-									$strtmp .= "<img alt=\"\" width=\"18\" ".
-										"src=\"$loc/images/bigballoontransp-blink.gif\" />\n";
-								else
-									$strtmp .= "&nbsp;";
-							}
-						}
-						if ($ver && $level < 3) {
-							if (isset($score[$e]["problem"][$ee]["solved"]) && $score[$e]["problem"][$ee]["solved"]) {
-								if ($level == 1) {
-									$strtmp .= "/" . $score[$e]["problem"][$ee]["time"] . "\n";
-								} else
-									$strtmp .= $score[$e]["problem"][$ee]["count"] . "/" . 
-										$score[$e]["problem"][$ee]["time"] . "\n";
-							} else if ($des) $strtmp .= "&nbsp;";
-						} else {
-							if (isset($score[$e]["problem"][$ee]['count']) && $score[$e]["problem"][$ee]["count"] != 0) {
-								$tn = $score[$e]["problem"][$ee]["count"];
-								if (isset($score[$e]["problem"][$ee]["solved"]) && $score[$e]["problem"][$ee]["solved"]) $t = $score[$e]["problem"][$ee]["time"];
-								else $t = "-";
-								$strtmp .= "<font size=\"-2\">" . $tn . "/${t}" . "</font>\n";
-							} else if ($des) $strtmp .= "&nbsp;";
-						}
-						if ($des)
-							$strtmp .= "</td>";
-					}
-				}
-				if (!$des) $strtmp .= "&nbsp;</td>\n";
+	while(1) {
+		$e=key($score);
+		$c=current($score);
+		if(!isset($score[$e]['username'])) break;
+	if(!isset($score[$e]['classingroup'])) continue;  
+	  reset($score[$e]['classingroup']);
+ 	  while(1) {
+		  $cg1=key($score[$e]['classingroup']);
+		  $cg2=current($score[$e]['classingroup']);
+		  if(empty($cg2))
+			  if(next($score[$e]['classingroup'])===false)
+				  break;
+		// Adiciona a classe `highlighted-row` se o usuário do scoreboard corresponder ao usuário logado
+		$rowClass = ($score[$e]['username'] == $_SESSION["usertable"]["username"]) ? 'highlight' : '';
+  	    $strtmp .= " <tr class=\"";
+		$strtmp .= "sitegroup" . $cg1 . " " . $rowClass . "\">";
+		$strtmp .= "<td>" . $cg2 . "</td>\n";
+/*
+		if($level>3 && !$final && $score[$e]["site"]==$ct['contestlocalsite'] &&
+		   ((isset($_SESSION["scorepos"][$score[$e]["username"]."-".$score[$e]["site"]]) &&
+			 $_SESSION["scorepos"][$score[$e]["username"]."-".$score[$e]["site"]] > $cg2) || 
+			(isset($_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]) &&
+			 $_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]>time()))) {
+			$strtmp .= "  <td nowrap bgcolor=\"#b0b0a0\">" . $score[$e]["username"]."/".$score[$e]["site"];
+			$strtmp .= "<td bgcolor=\"#b0b0a0\">" . $score[$e]["userfullname"];
+			if(!isset($_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]) ||
+				$_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]==0) {
+				$_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]] = time()+1;
 			}
-			$strtmp .= "  <td nowrap>" . $score[$e]["totalcount"] . " (" . $score[$e]["totaltime"] . ")</td>\n";
-			$strtmp .= " </tr>\n";
-			$n++;
-			if (next($score[$e]['classingroup']) === false)
-				break;
 		}
-		if (next($score) === false)
+		else {
+*/
+			$_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]=0;
+			if( $score[$e]["userflag"] != '')
+			  $strtmp .= "  <td nowrap><img alt=\"" .  $score[$e]["userflag"]. "\" width=\"18\" src=\"" . $loc. '/images/flags/' . 
+			    $score[$e]["userflag"] . ".png\"> " . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			else
+			  $strtmp .= "  <td nowrap>" . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+
+	//		if($score[$e]['usershortinstitution'] != '') 
+	//		  $strtmp .= "<td>[" . $score[$e]['usershortinstitution'] . '] ' . $score[$e]["userfullname"];
+	//		else
+			  $strtmp .= "<td>" . $score[$e]["userfullname"];
+//		}
+		$_SESSION["scorepos"][$score[$e]["username"]."-".$score[$e]["site"]] = $cg2;
+
+//    $strtmp .= "(" . $score[$e]["site"] . ")";
+//    $strtmp .= "</td>\n";
+//    if(!$detail && $score[$e]["userdesc"]!="")
+//        $strtmp .= "(" . $score[$e]["userdesc"] . ")";
+		$strtmp .= "</td>";
+		if($level > 0) {
+			if(!$des) $strtmp .= "<td>";
+			for($h=0;$h<count($pr);$h++) {
+				$ee = $pr[$h]["number"];
+				if($detail) {
+					if($des) {
+						$strtmp .= "<td nowrap>";
+//					$name=$score[$e]["problem"][$ee]["name"];
+						if(isset($score[$e]["problem"][$ee]["solved"]) && $score[$e]["problem"][$ee]["solved"]) {
+							$strtmp .= "<img alt=\"".$score[$e]["problem"][$ee]["colorname"].":\" width=\"18\" ".
+								"src=\"" . balloonurl($score[$e]["problem"][$ee]["color"]) ."\" />";
+						}
+						else {
+							if($level>3 && isset($score[$e]["problem"][$ee]["judging"]) && $score[$e]["problem"][$ee]["judging"])
+								$strtmp .= "<img alt=\"\" width=\"18\" ".
+									"src=\"$loc/images/bigballoontransp-blink.gif\" />\n";
+							else
+								$strtmp .= "&nbsp;";
+						}
+					}
+					if ($ver && $level<3) {
+						if(isset($score[$e]["problem"][$ee]["solved"]) && $score[$e]["problem"][$ee]["solved"]) {
+							if ($level==1) {
+								$strtmp .= "/". $score[$e]["problem"][$ee]["time"] . "\n";
+							}
+							else
+								$strtmp .= $score[$e]["problem"][$ee]["count"] . "/" . 
+									$score[$e]["problem"][$ee]["time"] . "\n";					
+						} else if($des) $strtmp .= "&nbsp;";
+					}
+					else {
+						if (isset($score[$e]["problem"][$ee]['count']) && $score[$e]["problem"][$ee]["count"]!=0) {
+							$tn = $score[$e]["problem"][$ee]["count"];
+							if (isset($score[$e]["problem"][$ee]["solved"]) && $score[$e]["problem"][$ee]["solved"]) $t = $score[$e]["problem"][$ee]["time"];
+							else $t = "-";
+							$strtmp .= "<font size=\"-2\">" . $tn . "/${t}" . "</font>\n";
+						} else if($des) $strtmp .= "&nbsp;";
+					}
+					if($des)
+						$strtmp .= "</td>";
+				}
+			}
+			if(!$des) $strtmp .= "&nbsp;</td>\n";
+		}
+		$strtmp .= "  <td nowrap>" . 
+			$score[$e]["totalcount"] . " (" . $score[$e]["totaltime"] . ")</td>\n";
+		$strtmp .= " </tr>\n";
+		$n++;
+		if(next($score[$e]['classingroup'])===false)
 			break;
+	  }
+	  if(next($score)===false)
+		  break;
 	}
 	$strtmp .= "</table>";
 	if ($n == 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
 	else {
-		if (!$des)
-			if ($level > 0) $strtmp .= "<br><font color=\"#ff0000\">P.S. Problem names are hidden.</font>";
+		if(!$des) 
+			if($level>0) $strtmp .= "<br><font color=\"#ff0000\">P.S. Problem names are hidden.</font>";
 			else  $strtmp .= "<br><font color=\"#ff0000\">P.S. Problem data are hidden.</font>";
 	}
-	
+
 	$conf=globalconf();
 	if(isset($conf['doenc']) && $conf['doenc'])
 	  $strtmp = "<!-- " . time() . " --> <?php exit; ?>\n" . encryptData($strtmp,$conf["key"],false);
