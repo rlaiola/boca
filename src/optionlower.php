@@ -150,9 +150,9 @@ function validatePasswords() {
       </tr>
     </table>
     <script>
-      document.form1.passwordo.onkeyup = validatePasswords;
-      document.form1.passwordn1.onkeyup = validatePasswords;
-      document.form1.passwordn2.onkeyup = validatePasswords;
+      document.form1.passwordo.addEventListener("keyup", validatePasswords);
+      document.form1.passwordn1.addEventListener("keyup", validatePasswords);
+      document.form1.passwordn2.addEventListener("keyup", validatePasswords);
     </script>
   </center>
   <center>
