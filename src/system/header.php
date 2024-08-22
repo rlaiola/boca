@@ -36,11 +36,11 @@ echo "<link rel=stylesheet href=\"../Css.php\" type=\"text/css\">\n";
 //echo "<meta http-equiv=\"refresh\" content=\"60\" />";
 if(!ValidSession()) {
 	InvalidSession("system/index.php");
-	ForceLoad("../index.php");
+        ForceLoad("../index.php");
 }
 if($_SESSION["usertable"]["usertype"] != "system") {
 	IntrusionNotify("system/index.php");
-	ForceLoad("../index.php");
+        ForceLoad("../index.php");
 }
 
 echo "</head><body><table border=1 width=\"100%\">\n";
