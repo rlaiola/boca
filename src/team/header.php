@@ -46,8 +46,8 @@ if($_SESSION["usertable"]["usertype"] != "team") {
 }
 
 echo "<script language=\"javascript\" src=\"../reload.js\"></script>\n";
-echo "</head><body onload=\"Comecaoad=\"Parar()\"><table border=1 width=\"100%\">\n";
-echo "<tr><td nowrap bgcolor=\"#aaaaee\" aligr()\" onunln=center>";
+echo "</head><body onload=\"Comecar()\" onunload=\"Parar()\"><table border=1 width=\"100%\">\n";
+echo "<tr><td nowrap bgcolor=\"#aaaaee\" align=center>";
 echo "<img src=\"../images/smallballoontransp.png\" alt=\"\">";
 echo "<font color=\"#000000\">BOCA</font>";
 echo "</td><td bgcolor=\"#aaaaee\" width=\"99%\">\n";
@@ -128,11 +128,7 @@ if(!isset($_SESSION["popuptime"]) || $_SESSION["popuptime"] < time()-120) {
 	}
 }
 
-$enableClarifications = getenv('ENABLE_CLARIFICATIONS') === 'true';
-$enableTasks = getenv('ENABLE_TASKS') === 'true';
-$enableBackup = getenv('ENABLE_BACKUP') === 'true';
-
-
+list($clockstr,$clocktype)=siteclock();
 echo "</td><td bgcolor=\"#aaaaee\" align=center nowrap>&nbsp;".$clockstr."&nbsp;</td></tr>\n";
 echo "</table>\n";
 echo "<table border=0 width=\"100%\" align=center>\n";
@@ -140,13 +136,13 @@ echo " <tr>\n";
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=problem.php>Problems</a></td>\n";
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
-if ($enableClarifications) {
+if (getenv('BOCA_DISABLE_CLARIFICATIONS') !== 'true') {
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=clar.php>Clarifications</a></td>\n";
 }
-if ($enableTasks) {
+if (getenv('BOCA_DISABLE_TASKS') !== 'true') {
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=task.php>Tasks</a></td>\n";
 }
-if ($enableBackup) {
+if (getenv('BOCA_DISABLE_BACKUP') !== 'true') {
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=files.php>Backups</a></td>\n";
 }
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
