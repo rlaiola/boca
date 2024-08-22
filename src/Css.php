@@ -110,8 +110,3 @@ form i {
   margin-left: -30px;
   cursor: pointer;
 }
-
-input.error {
-  color: red;
-  border: solid 1px red;
-}
