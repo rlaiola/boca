@@ -313,6 +313,20 @@ function computeHASH()
 //	document.form3.passwordn1.value = js_myhash(document.form3.passwordn1.value);
 //	document.form3.passwordn2.value = js_myhash(document.form3.passwordn2.value);
 }
+
+function validatePasswords() {
+	const errorMessage = document.getElementById("error-message");
+	errorMessage.innerText = "";
+
+	if (document.form3.passwordn1.value !== document.form3.passwordn2.value) {
+		document.form3.passwordn2.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " User password and confirmation do not match.";
+		errorMessage.append(msg);
+	} else {
+		document.form3.passwordn2.classList.remove("error");
+	}
+}
 </script>
 
 <br><br><center><b>Clicking on a user number will bring the user data for edition.<br>
@@ -351,11 +365,24 @@ Note that any changes will overwrite the already defined data.<br>
 (Specially care if you use a user number that is already existent.)<br>
 <br>
 </b>
-    <table border="0">
+  </center>
+
 <form name="form3" action="user.php" method="post">
   <input type=hidden name="confirmation" value="noconfirm" />
   <script language="javascript">
     function conf3() {
+      if (document.form3.passwordn1.value === "" ||
+          document.form3.passwordn2.value === "" ||
+          document.form3.passwordo.value === ""
+      ) {
+        return;
+      }
+
+      if (document.form3.passwordn1.value != document.form3.passwordn2.value) {
+        alert("User password and confirmation do not match. Please try again.");
+        return false;
+      }
+
       computeHASH();
       if (confirm("Confirm?")) {
         document.form3.confirmation.value='confirm';
@@ -374,6 +401,7 @@ if (isset($u)) {
 ?>
     function conf5() {
       document.form3.confirmation.value='noconfirm';
+      document.form3.passwordn2.classList.remove("error");
     }
   </script>
    <center>
@@ -458,19 +486,19 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr> 
         <td width="35%" align=right>User IP:</td>
         <td width="65%">
-	  <input type="text" name="userip" value="<?php if(isset($u)) echo $u["userpermitip"]; ?>" size="20" maxlength="20" />
+          <input type="text" name="userip" value="<?php if(isset($u)) echo $u["userpermitip"]; ?>" size="20" maxlength="20" />
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn1" value="" size="20" maxlength="200" />
+          <input type="password" name="passwordn1" value="" size="20" maxlength="200" required />
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Retype Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn2" value="" size="20" maxlength="200" />
+          <input type="password" name="passwordn2" value="" size="20" maxlength="200" required />
         </td>
       </tr>
       <tr> 
@@ -485,22 +513,27 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr> 
         <td width="35%" align=right>Admin (this user) Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordo" value="" size="20" maxlength="200" required />
+          <input type="password" name="passwordo" value="" size="20" maxlength="200" required />
         </td>
       </tr>
     </table>
+    <script>
+      document.form3.passwordo.addEventListener("keyup", validatePasswords);
+      document.form3.passwordn1.addEventListener("keyup", validatePasswords);
+      document.form3.passwordn2.addEventListener("keyup", validatePasswords);
+    </script>
   </center>
   <center>
-      <input type="submit" name="Submit" value="Send" onClick="conf3()">
+      <input type="submit" name="Submit" value="Send" onClick="return conf3()">
 <?php if(isset($u)) { ?>
       <input type="submit" name="Delete" value="Delete" onClick="conf4()">
 <?php } ?>
-      <input type="submit" name="Cancel" value="Cancel" onClick="conf5()">
+      <input type="reset" name="Cancel" value="Cancel" onClick="conf5()">
 <?php if(isset($u)) { ?>
 <br><br><b>WARNING: deleting a user will completely remove EVERYTHING related to it (including runs, clarifications, etc).<b><br>
 <?php } ?>
   </center>
 </form>
-
+<div id="error-message"></div>
 </body>
 </html>
