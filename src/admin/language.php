@@ -58,7 +58,7 @@ if (isset($_POST["Submit3"]) && isset($_POST["langnumber"]) && is_numeric($_POST
       }
     }
   </script>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
   <td><b>Language #</b></td>
   <td><b>Name</b></td>
@@ -79,6 +79,68 @@ echo "</table>";
 if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES DEFINED</font></b></center>";
 
 ?>
+<div id="externalToolbar" style="display: none"></div>
+<script language="JavaScript">
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '25%', '50%', '25%'
+    ],
+    col_types: [
+      'number', 'string', 'string'
+    ],
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    highlight_keywords: true,
+    // no_results_message: {
+    //   content: '<?php echo "<center><b><font color=\"#ff0000\">NO LANGUAGES FOUND</font></b></center>" ?>',
+    // },
+    paging: {
+      results_per_page: ['Records: ', [10, 25, 50, 100]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      // height: '400px',
+      height: 'auto'
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort'
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
 
 <br><br><center><b>Clicking on a language number will DELETE it.<br>
 WARNING: deleting a language will remove EVERYTHING related to it.<br>
