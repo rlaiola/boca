@@ -40,15 +40,15 @@ if(isset($_GET["order"]) && $_GET["order"] != "") {
 }
 ?>
 <br>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
-  <td><b><a href="clar.php?order=clar">Clar #</a></b></td>
-  <td><b><a href="clar.php?order=site">Site</a></b></td>
-  <td><b><a href="clar.php?order=user">User</a></b></td>
+  <td><b>Clar #</b></td>
+  <td><b>Site</b></td>
+  <td><b>User</b></td>
   <td><b>Time</b></td>
-  <td><b><a href="clar.php?order=problem">Problem</a></b></td>
-  <td><b><a href="clar.php?order=status">Status</a></b></td>
-  <td><b><a href="clar.php?order=judge">Judge (Site)</a></b></td>
+  <td><b>Problem</b></td>
+  <td><b>Status</b></td>
+  <td><b>Judge (Site)</b></td>
   <td><b>Question</b></td>
   <td><b>Answer</b></td>
  </tr>
@@ -108,5 +108,181 @@ echo "</table>";
 if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICATIONS AVAILABLE</font></b></center>";
 
 ?>
+<div id="externalToolbar" <?php if (count($clar) == 0) echo "style=\"display: none\""; ?>></div>
+<script language="JavaScript">
+  // Cast to integer contained in string
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom sorter
+  function customProblemSorter(n1, n2) {
+    if (n1.value  == "General" && n2.value != "General") {
+      return -1;
+    }
+    if (n2.value == "General" && n1.value != "General") {
+      return 1;
+    }
+    if (n1.value < n2.value) {
+      return -1;
+    }
+    if (n2.value < n1.value) {
+      return 1;
+    }
+    return 0;
+  }
+
+  // Custom sorter
+  function customJudgeSorter(n1, n2) {
+    if (n1.value == "‎" && n2.value != "‎") {
+      return -1;
+    }
+    else if (n2.value == "‎" && n1.value != "‎") {
+      return 1;
+    }
+    else if (n1.value == "‎" && n2.value == "‎") {
+      return 0;
+    }
+    else if (n1.value.indexOf(' admin') == 0 && n2.value.indexOf(' admin') != 0) {
+      return -1;
+    }
+    else if (n2.value.indexOf(' admin') == 0 && n1.value.indexOf(' admin') != 0) {
+      return 1;
+    }
+    else if (n1.value < n2.value) {
+      return -1;
+    }
+    else if (n2.value < n1.value) {
+      return 1;
+    }
+    else return 0;
+  }
+
+  // Custom sorter
+  function customTextAreaSorter(n1, n2) {
+    if (n1.value < n2.value) {
+      return -1;
+    }
+    if (n2.value < n1.value) {
+      return 1;
+    }
+    return 0;
+  }
+
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '7%', '6%', '6%',
+      '6%', '7%', '8%', 
+      '8%', '26%', '26%'
+    ],
+    col_types: [
+      'number', 'number', 'number',
+      'customproblem', 'string', 'string',
+      'customjudge', 'customtext', 'customtext'
+    ],
+    /* cell_parser delegate used for filtering images in a column */
+    cell_parser: {
+      cols: [4, 6, 7, 8],
+      parse: function(o, cell, colIndex) {
+        /* Clars targeted to General comes first */
+        if (colIndex == 4) {
+          var txt = cell.textContent || cell.innerText;
+          if (txt == 'General') {
+            return ' General';
+          }
+          else return txt;
+        }
+        /* admin users comes before other users, except if empty */
+        else if (colIndex == 6) {
+          var txt = cell.textContent || cell.innerText;
+
+          if (txt.indexOf('admin') == 0) {
+            return '‎' + txt;
+          }
+          else if (txt == ' ') {
+            return '‎';
+          }
+          else return txt;
+        }
+        else {
+          var txt = cell.getElementsByTagName('textarea')[0].value;
+          return txt;
+        }
+      }
+    },
+    col_1: 'select',
+    col_2: 'select',
+    col_4: 'select',
+    col_5: 'select',
+    col_6: 'select',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($clar) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO CLARIFICATIONS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [10, 25, 50, 100]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($clar) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort',
+        // Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customproblem', customStringCaster, customProblemSorter);
+          sort.addSortType('customjudge', customStringCaster, customJudgeSorter);
+          sort.addSortType('customtext', customStringCaster, customTextAreaSorter);
+        }
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
 </body>
 </html>
