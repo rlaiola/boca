@@ -112,6 +112,14 @@ div.grd_Cont {
   border: 1px solid;
 }
 
+div.grd_Cont .flt {
+  height: auto;
+  font-family: system-ui;
+  font-size: 12pt;
+  border: 0;
+  border-radius: 0;
+}
+
 div.grd_tblCont table td {
   border-bottom: 1px solid !important;
   text-wrap: wrap;
