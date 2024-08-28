@@ -38,7 +38,7 @@ if (isset($_GET["delete"]) && is_numeric($_GET["delete"])) {
       }
     }
   </script>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
   <td><b>Bkp #</b></td>
   <td><b>Time</b></td>
@@ -73,5 +73,76 @@ echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AVAILABLE</font></b></center>";
 
 ?>
+<div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
+<script language="JavaScript">
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '10%', '10%', '20%',
+      '50%', '10%'
+    ],
+    col_types: [
+      'number', 'date', 'string',
+      'string', 'string'
+    ],
+    col_2: 'select',
+    col_4: 'select',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($run) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO BACKUPS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [100, 1000, 10000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($run) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort'
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
+
 </body>
 </html>
