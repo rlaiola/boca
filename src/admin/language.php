@@ -107,9 +107,11 @@ if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES
     loader: true,
     status_bar: true,
     ignore_diacritics: true,
+    <?php if (count($lang) != 0) { ?>
     no_results_message: {
       content: '<?php echo "<center><b><font color=\"#ff0000\">NO LANGUAGES FOUND</font></b></center>" ?>',
     },
+    <?php } ?>
     paging: {
       results_per_page: ['Records: ', [10, 25, 50, 100]],
     },
