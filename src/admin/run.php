@@ -31,21 +31,21 @@ else
 <form name="form1" method="post" action="<?php echo $runphp; ?>">
   <input type=hidden name="confirmation" value="noconfirm" />
 <br>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
-  <td><b><a href="<?php echo $runphp; ?>?order=run">Run #</a></b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=site">Site</a></b></td>
+  <td><b>Run #</b></td>
+  <td><b>Site</b></td>
 <?php if($runphp == "run.php") { ?>
-  <td><b><a href="<?php echo $runphp; ?>?order=user">User</a></b></td>
+  <td><b>User</b></td>
 <?php } ?>
   <td><b>Time</b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=problem">Problem</a></b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=language">Language</a></b></td>
+  <td><b>Problem</b></td>
+  <td><b>Language</b></td>
 <!--  <td><b>Filename</b></td> -->
-  <td><b><a href="<?php echo $runphp; ?>?order=status">Status</a></b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=judge">Judge (Site)</a></b></td>
+  <td><b>Status</b></td>
+  <td><b>Judge (Site)</b></td>
   <td><b>AJ</b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=answer">Answer</a></b></td>
+  <td><b>Answer</b></td>
  </tr>
 <?php
 if (($s=DBSiteInfo($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usersitenumber"])) == null)
@@ -172,6 +172,7 @@ echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
 else {
 ?>
+  <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
   <br>
   <script language="javascript">
     function conf() {
@@ -180,6 +181,85 @@ else {
       }
     }
   </script>
+<script language="JavaScript">
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '125px', '80px', '150px',
+      '75px', '26%', '200px',
+      '95px', '175px', '30px',
+      '34%'
+    ],
+    col_types: [
+      'number', 'number', 'string',
+      'number', 'string', 'string',
+      'string', 'string', 'string',
+      'string'
+    ],
+    col_1: 'select',
+    col_2: 'select',
+    col_4: 'select',
+    col_5: 'select',
+    col_6: 'select',
+    col_7: 'select',
+    col_8: 'none',
+    col_9: 'select',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($run) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO RUNS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($run) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort'
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
   <center>
 <b>Click on the number of a run to edit it or select them with<br />the checkboxes and use the buttons to work on multiple runs:</b><br /><br />
       <input type="submit" name="auto" value="Re-run autojudge for selected runs" onClick="conf()">
