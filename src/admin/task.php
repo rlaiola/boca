@@ -66,15 +66,15 @@ if (isset($_GET["done"]) && is_numeric($_GET["done"]) && isset($_GET["site"]) &&
 //      }
     }
   </script>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
-  <td><b><a href="task.php?order=task">Task #</a></b></td>
+  <td><b>Task #</b></td>
   <td><b>Time</b></td>
-  <td><b><a href="task.php?order=user">User / Site</a></b></td>
-  <td><b><a href="task.php?order=description">Description</a></b></td>
+  <td><b>User / Site</b></td>
+  <td><b>Description</b></td>
   <td><b>File</b></td>
-  <td><b><a href="task.php?order=staff">Staff / Site</a></b></td>
-  <td><b><a href="task.php?order=status">Status</a></b></td>
+  <td><b>Staff / Site</b></td>
+  <td><b>Status</b></td>
   <td><b>Actions</b></td>
  </tr>
 <?php
@@ -141,9 +141,82 @@ for ($i=0; $i<count($task); $i++) {
   echo "</td>\n";
 }
 echo "</table>";
-if (count($task) == 0) echo "<br><center><b><font color=\"#ff0000\">NO TASKS FOUND</font></b></center>";
+if (count($task) == 0) echo "<br><center><b><font color=\"#ff0000\">NO TASKS AVAILABLE</font></b></center>";
 
 ?>
-
+<div id="externalToolbar" <?php if (count($task) == 0) echo "style=\"display: none\""; ?>></div>
+<script language="JavaScript">
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '7%', '5%', '21%',
+      '29%', '5%', '13%',
+      '8%', '13%'
+    ],
+    col_types: [
+      'number', 'number', 'string',
+      'string', 'string', 'string',
+      'string', 'none'
+    ],
+    col_2: 'select',
+    col_5: 'select',
+    col_6: 'select',
+    col_7: 'none',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($task) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO TASKS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($task) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort'
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
 </body>
 </html>
