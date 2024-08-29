@@ -299,7 +299,7 @@ if($redo) {
 		}
 	}
 
-	$strtmp .= "<br>\n<table id=\"myscoretable\" width=\"100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
+	$strtmp .= "<br>\n<table class=\"bocaTable\" id=\"myscoretable\" width=\"100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
 	if(!$des) {
 		if($level>0)
 			$strtmp .= "<td><b>Problems</b></td>";
@@ -442,3 +442,91 @@ if($redo) {
 }
 echo $strtmp;
 ?>
+
+<div id="externalToolbar" <?php if ($n == 0) echo "style=\"display: none\""; ?>></div>
+<style>
+  div.grd_headTblCont table thead tr td,
+  table.bocaTable tbody tr td {
+    position: sticky;
+    z-index: 1;
+    width: 100px;
+    padding: 0;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(-n + 2),
+  table.bocaTable tbody tr td:nth-child(-n + 2) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: #e0e0d0;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(2),
+  table.bocaTable tbody tr td:nth-child(2) {
+    left: 52px;
+  }
+
+  div.grd_headTblCont table thead tr:nth-child(2) {
+	display: none;
+  }
+</style>
+<script language="JavaScript">
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+        '50px', '200px', '150px',
+    ],
+    col_types: [
+      'number', 'string', 'string'
+    ],
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if ($n != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO MATCHES FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if ($n != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    extensions: [
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true,
+      },
+      {
+        name: 'sort'
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
