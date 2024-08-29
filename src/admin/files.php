@@ -111,7 +111,7 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AV
     },
     <?php } ?>
     paging: {
-      results_per_page: ['Records: ', [100, 1000, 10000]],
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
     },
     // grid layout customisation
     grid_layout: {

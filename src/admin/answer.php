@@ -132,7 +132,7 @@ if ($n == 0) echo "<br><center><b><font color=\"#ff0000\">NO ANSWERS DEFINED</fo
     },
     <?php } ?>
     paging: {
-      results_per_page: ['Records: ', [10, 25, 50, 100]],
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
     },
     // grid layout customisation
     grid_layout: {
