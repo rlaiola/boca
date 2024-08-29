@@ -191,6 +191,8 @@ if($redo) {
 	if(!isset($hor)) $hor = -1;
 	if($hor>$duration) $hor=$duration;
 
+	if (($s = DBSiteInfo($ct['contestnumber'],$_SESSION["usertable"]["usersitenumber"])) == null)
+		ForceLoad("index.php");
 	$level=$s["sitescorelevel"];
 	if($level<=0) $level=-$level;
 	else {
