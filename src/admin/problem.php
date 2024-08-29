@@ -289,8 +289,8 @@ for ($i=0; $i<count($prob); $i++) {
 	  }
     }
   </script>
-<form name="form0" enctype="multipart/form-data" method="post" action="problem.php">
-<table width="100%" border=1>
+<form name="form0" enctype="multipart/form-data" method="post" action="problem.php" style="margin: 0">
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
   <td><b>Problem #</b></td>
   <td><b>Short Name</b></td>
@@ -474,6 +474,104 @@ echo "</table></form>";
 if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS DEFINED</font></b></center>";
 
 ?>
+<div id="externalToolbar" <?php if (count($prob) == 0) echo "style=\"display: none\""; ?>></div>
+<style>
+  div.grd_headTblCont table thead tr td,
+  table.bocaTable > tbody > tr > td {
+    position: sticky;
+    z-index: 1;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(-n + 2),
+  table.bocaTable > tbody > tr > td:nth-child(-n + 3) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: #e0e0d0;
+  }
+
+  /* Fake row */
+  table.bocaTable > tbody > tr:nth-child(1) > td:nth-child(3) {
+    z-index: 1;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(2),
+  table.bocaTable > tbody > tr > td:nth-child(3),
+  table.bocaTable > tbody > tr:nth-child(1) > td:nth-child(2) {
+    left: 112px;
+  }
+</style>
+<script language="JavaScript">
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '110px', '225px', '225px',
+      '225px', '225px', '225px',
+      '275px', '300px'
+    ],
+    col_types: [
+      'number', 'string', 'string',
+      'string', 'string', 'string',
+      'none', 'none'
+    ],
+    col_6: 'none',
+    col_7: 'none',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($prob) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO PROBLEMS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($prob) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort'
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
 
 <br><br><center><b>Clicking on a problem number will delete it.<br>
 WARNING: deleting a problem will remove EVERYTHING related to it.<br>
