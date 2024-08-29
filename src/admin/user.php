@@ -233,7 +233,7 @@ else
     }
   </script>
 <br>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
   <td nowrap><b>User #</b></td>
   <td><b>Site</b></td>
@@ -296,12 +296,146 @@ for ($i=0; $i < count($usr); $i++) {
   echo "</tr>";
 }
 echo "</table>\n";
+if (count($usr) == 0) echo "<br><center><b><font color=\"#ff0000\">NO USERS DEFINED</font></b></center>";
 
 unset($u);
 if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) && is_numeric($_GET["user"]))
   $u = DBUserInfo($_SESSION["usertable"]["contestnumber"], $_GET["site"], $_GET["user"]);
 
 ?>
+<div id="externalToolbar" <?php if (count($usr) == 0) echo "style=\"display: none\""; ?>></div>
+<?php if (count($usr) != 0) { ?>
+<style>
+  div.grd_headTblCont table thead tr td,
+  table.bocaTable tbody tr td {
+    position: sticky;
+    z-index: 1;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(-n + 3),
+  table.bocaTable tbody tr td:nth-child(-n + 3) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: #e0e0d0;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(2),
+  table.bocaTable tbody tr td:nth-child(2) {
+    left: 202px;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(3),
+  table.bocaTable tbody tr td:nth-child(3) {
+    left: 294px;
+  }
+</style>
+<?php } ?>
+<script language="JavaScript">
+  // Cast to integer contained in string
+  function customDateCaster(val) {
+    var date = moment(val, 'HH:mm:ss Z - DD/MMM/YYYY', true);
+    return date.isValid() ?
+      date : val === "never" ?
+        moment().add(5, 'years') :
+        moment().add(Number.POSITIVE_INFINTITY, 'years');
+  }
+
+  // Custom sorter
+  function customDateSorter(n1, n2) {
+    if (n1.value < n2.value) {
+      return -1;
+    }
+    if (n2.value < n1.value) {
+      return 1;
+    }
+    return 0;
+  }
+
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '200px', '90px', '150px',
+      '150px', '90px', '175px',
+      '275px', '275px', '90px',
+      '90px', '275px', '750px'
+    ],
+    col_types: [
+      'number', 'number', 'string',
+      'string', 'string', 'ipaddress',
+      'customdate', 'customdate', 'string',
+      'string', 'string', 'string'
+    ],
+    col_1: 'select',
+    col_4: 'select',
+    col_8: 'select',
+    col_9: 'select',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($usr) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO USERS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($usr) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort',
+        // Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customdate', customDateCaster, customDateSorter);
+        }
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
 <script language="JavaScript" src="../sha256.js"></script>
 <script language="JavaScript" src="../hex.js"></script>
 <script language="JavaScript">
