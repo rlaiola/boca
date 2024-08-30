@@ -417,7 +417,7 @@ if($redo) {
 		  break;
 	}
 	$strtmp .= "</table>";
-	if ($n == 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
+	if ($n === 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
 	else {
 		if(!$des) 
 			if($level>0) $strtmp .= "<br><font color=\"#ff0000\">P.S. Problem names are hidden.</font>";
@@ -445,7 +445,7 @@ if($redo) {
 echo $strtmp;
 ?>
 
-<div id="externalToolbar" <?php if ($n == 0) echo "style=\"display: none\""; ?>></div>
+<div id="externalToolbar" <?php if ($n === 0) echo "style=\"display: none\""; ?>></div>
 <style>
   div.grd_headTblCont table thead tr td,
   table.bocaTable tbody tr td {
@@ -473,13 +473,29 @@ echo $strtmp;
   }
 </style>
 <script language="JavaScript">
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
         '50px', '200px', '150px',
     ],
     col_types: [
-      'number', 'string', 'string'
+      'number', 'customstring', 'customstring'
     ],
     responsive: {
       details: true
@@ -499,7 +515,7 @@ echo $strtmp;
     loader: true,
     status_bar: true,
     ignore_diacritics: true,
-    <?php if ($n != 0) { ?>
+    <?php if ($n !== 0) { ?>
     no_results_message: {
       content: '<?php echo "<center><b><font color=\"#ff0000\">NO MATCHES FOUND</font></b></center>" ?>',
     },
@@ -510,7 +526,7 @@ echo $strtmp;
     // grid layout customisation
     grid_layout: {
       width: '100%',
-      <?php if ($n != 0) { ?>
+      <?php if ($n !== 0) { ?>
       height: '400px'
       <?php } else { ?>
       height: 'auto'
@@ -522,7 +538,17 @@ echo $strtmp;
         enable_tick_all: true,
       },
       {
-        name: 'sort'
+        name: 'sort',
+		// Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
+        }
       },
     ]
   };
