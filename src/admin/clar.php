@@ -110,12 +110,23 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
 ?>
 <div id="externalToolbar" <?php if (count($clar) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
-  // Cast to integer contained in string
+  // Custom string caster
   function customStringCaster(val) {
     return val.toString();
   }
 
-  // Custom sorter
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  // Custom string sorter
   function customProblemSorter(n1, n2) {
     if (n1.value  == "General" && n2.value != "General") {
       return -1;
@@ -123,10 +134,10 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
     if (n2.value == "General" && n1.value != "General") {
       return 1;
     }
-    if (n1.value < n2.value) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
       return -1;
     }
-    if (n2.value < n1.value) {
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
       return 1;
     }
     return 0;
@@ -143,30 +154,21 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
     else if (n1.value == "‎" && n2.value == "‎") {
       return 0;
     }
-    else if (n1.value.indexOf(' admin') == 0 && n2.value.indexOf(' admin') != 0) {
+    else if (n1.value.toLowerCase().indexOf(' admin') == 0 &&
+             n2.value.toLowerCase().indexOf(' admin') != 0) {
       return -1;
     }
-    else if (n2.value.indexOf(' admin') == 0 && n1.value.indexOf(' admin') != 0) {
+    else if (n2.value.toLowerCase().indexOf(' admin') == 0 &&
+             n1.value.toLowerCase().indexOf(' admin') != 0) {
       return 1;
     }
-    else if (n1.value < n2.value) {
+    else if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
       return -1;
     }
-    else if (n2.value < n1.value) {
+    else if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
       return 1;
     }
     else return 0;
-  }
-
-  // Custom sorter
-  function customTextAreaSorter(n1, n2) {
-    if (n1.value < n2.value) {
-      return -1;
-    }
-    if (n2.value < n1.value) {
-      return 1;
-    }
-    return 0;
   }
 
   var tfConfig = {
@@ -178,8 +180,8 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
     ],
     col_types: [
       'number', 'number', 'number',
-      'customproblem', 'string', 'string',
-      'customjudge', 'customtext', 'customtext'
+      'customstring', 'customproblem', 'customstring',
+      'customjudge', 'customstring', 'customstring'
     ],
     /* cell_parser delegate used for filtering images in a column */
     cell_parser: {
@@ -273,7 +275,7 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
           // them. If not specified defaults to `less than compare` type
           sort.addSortType('customproblem', customStringCaster, customProblemSorter);
           sort.addSortType('customjudge', customStringCaster, customJudgeSorter);
-          sort.addSortType('customtext', customStringCaster, customTextAreaSorter);
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
         }
       },
     ]

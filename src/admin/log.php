@@ -70,13 +70,29 @@ if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAIL
 ?>
 <div id="externalToolbar" <?php if (count($log) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
-  // Cast to integer contained in string
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  // Custom date caster
   function customDateCaster(val) {
     var date = moment(val, 'HH:mm:ss Z - DD/MMM/YYYY', true);
     return date;
   }
 
-  // Custom sorter
+  // Custom date sorter
   function customDateSorter(n1, n2) {
     if (n1.value < n2.value) {
       return -1;
@@ -96,8 +112,8 @@ if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAIL
     ],
     col_types: [
       'number', 'number', 'ipaddress',
-      'string', 'customdate', 'string',
-      'string'
+      'customstring', 'customdate', 'customstring',
+      'customstring'
     ],
     col_0: 'select',
     col_1: 'select',
@@ -157,6 +173,7 @@ if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAIL
           // desired format, if not specified it returns the string
           // 3. an optional compare function taking 2 values and compares
           // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
           sort.addSortType('customdate', customDateCaster, customDateSorter);
         }
       },

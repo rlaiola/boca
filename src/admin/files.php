@@ -75,6 +75,22 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AV
 ?>
 <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
@@ -82,8 +98,8 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AV
       '50%', '10%'
     ],
     col_types: [
-      'number', 'date', 'string',
-      'string', 'string'
+      'number', 'date', 'customstring',
+      'customstring', 'customstring'
     ],
     col_2: 'select',
     col_4: 'select',
@@ -133,7 +149,17 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AV
         enable_tick_all: true
       },
       {
-        name: 'sort'
+        name: 'sort',
+        // Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
+        }
       },
     ]
   };

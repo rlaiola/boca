@@ -332,7 +332,23 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
 </style>
 <?php } ?>
 <script language="JavaScript">
-  // Cast to integer contained in string
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  // Custom date caster
   function customDateCaster(val) {
     var date = moment(val, 'HH:mm:ss Z - DD/MMM/YYYY', true);
     return date.isValid() ?
@@ -341,7 +357,7 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
         moment().add(Number.POSITIVE_INFINTITY, 'years');
   }
 
-  // Custom sorter
+  // Custom date sorter
   function customDateSorter(n1, n2) {
     if (n1.value < n2.value) {
       return -1;
@@ -361,10 +377,10 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
       '90px', '275px', '750px'
     ],
     col_types: [
-      'number', 'number', 'string',
-      'string', 'string', 'ipaddress',
-      'customdate', 'customdate', 'string',
-      'string', 'string', 'string'
+      'number', 'number', 'customstring',
+      'customstring', 'customstring', 'ipaddress',
+      'customdate', 'customdate', 'customstring',
+      'customstring', 'customstring', 'customstring'
     ],
     col_1: 'select',
     col_4: 'select',
@@ -425,6 +441,7 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
           // desired format, if not specified it returns the string
           // 3. an optional compare function taking 2 values and compares
           // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
           sort.addSortType('customdate', customDateCaster, customDateSorter);
         }
       },

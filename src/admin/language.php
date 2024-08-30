@@ -81,13 +81,29 @@ if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES
 ?>
 <div id="externalToolbar" style="display: none"></div>
 <script language="JavaScript">
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
       '25%', '50%', '25%'
     ],
     col_types: [
-      'number', 'string', 'string'
+      'number', 'customstring', 'customstring'
     ],
     responsive: {
       details: true
@@ -132,7 +148,17 @@ if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES
         enable_tick_all: true
       },
       {
-        name: 'sort'
+        name: 'sort',
+        // Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
+        }
       },
     ]
   };

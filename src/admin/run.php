@@ -170,7 +170,6 @@ for ($i=0; $i<count($run); $i++) {
 
 echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
-else {
 ?>
   <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
   <br>
@@ -182,6 +181,22 @@ else {
     }
   </script>
 <script language="JavaScript">
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
@@ -191,11 +206,19 @@ else {
       '34%'
     ],
     col_types: [
-      'number', 'number', 'string',
-      'number', 'string', 'string',
-      'string', 'string', 'string',
-      'string'
+      'number', 'number', 'customstring',
+      'number', 'customstring', 'customstring',
+      'customstring', 'customstring', 'customstring',
+      'customstring'
     ],
+    /* cell_parser delegate used for filtering images in a column */
+    cell_parser: {
+      cols: [4, 5],
+      parse: function(o, cell, colIndex) {
+        var txt = cell.textContent || cell.innerText;
+        return txt;
+      }
+    },
     col_1: 'select',
     col_2: 'select',
     col_4: 'select',
@@ -250,7 +273,17 @@ else {
         enable_tick_all: true
       },
       {
-        name: 'sort'
+        name: 'sort',
+        // Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
+        }
       },
     ]
   };
@@ -267,8 +300,5 @@ else {
 <br><br>
   </center>
   </form>
-<?php
-}
-?>
 </body>
 </html>
