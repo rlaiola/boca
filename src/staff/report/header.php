@@ -45,7 +45,10 @@ require_once($locr."/freport.php");
 
 echo "<html><head><title>Report Page</title>\n";
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
-
+echo "<script src=\"$loc/vendor/tablefilter/0.7.3/tablefilter.js\"></script>\n";
+echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"$loc/vendor/tablefilter/0.7.3/style/tablefilter.css\">\n";
+echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"$loc/vendor/tablefilter/0.7.3/style/filtersVisibility.css\">\n";
+echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"$loc/vendor/tablefilter/0.7.3/style/colsVisibility.css\">\n";
 echo "<link rel=stylesheet href=\"$loc/Css.php\" type=\"text/css\">\n";
 
 $contest=$_SESSION["usertable"]["contestnumber"];
