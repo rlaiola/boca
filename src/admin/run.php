@@ -180,119 +180,119 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
       }
     }
   </script>
-<script language="JavaScript">
-  // Custom string caster
-  function customStringCaster(val) {
-    return val.toString();
-  }
-
-  // Custom string sorter
-  function customStringSorter(n1, n2) {
-    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
-      return -1;
+  <script language="JavaScript">
+    // Custom string caster
+    function customStringCaster(val) {
+      return val.toString();
     }
-    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  }
 
-  var tfConfig = {
-    base_path: '../vendor/tablefilter/0.7.3/',
-    col_widths: [
-      '125px', '80px', '150px',
-      '75px', '26%', '200px',
-      '95px', '175px', '30px',
-      '34%'
-    ],
-    col_types: [
-      'number', 'number', 'customstring',
-      'number', 'customstring', 'customstring',
-      'customstring', 'customstring', 'customstring',
-      'customstring'
-    ],
-    /* cell_parser delegate used for filtering images in a column */
-    cell_parser: {
-      cols: [4, 5],
-      parse: function(o, cell, colIndex) {
-        var txt = cell.textContent || cell.innerText;
-        return txt;
+    // Custom string sorter
+    function customStringSorter(n1, n2) {
+      if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+        return -1;
       }
-    },
-    col_1: 'select',
-    col_2: 'select',
-    col_4: 'select',
-    col_5: 'select',
-    col_6: 'select',
-    col_7: 'select',
-    col_8: 'none',
-    col_9: 'select',
-    responsive: {
-      details: true
-    },
-    toolbar: {
-      target_id: 'externalToolbar'
-    },
-    sticky_headers: true,
-    rows_counter: {
-      ignore_case: true
-    },
-    watermark: 'Filter...',
-    auto_filter: {
-      delay: 100 //milliseconds
-    },
-    msg_filter: 'Filtering...',
-    loader: true,
-    status_bar: true,
-    ignore_diacritics: true,
-    <?php if (count($run) != 0) { ?>
-    no_results_message: {
-      content: '<?php echo "<center><b><font color=\"#ff0000\">NO RUNS FOUND</font></b></center>" ?>',
-    },
-    <?php } ?>
-    paging: {
-      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
-    },
-    // grid layout customisation
-    grid_layout: {
-      width: '100%',
-      <?php if (count($run) != 0) { ?>
-      height: '400px'
-      <?php } else { ?>
-      height: 'auto'
-      <?php } ?>
-    },
-    btn_reset: true,
-    extensions: [
-      {
-        name: 'filtersVisibility',
-        visible_at_start: false
-      },
-      {
-        name: 'colsVisibility',
-        enable_tick_all: true
-      },
-      {
-        name: 'sort',
-        // Register custom sorter when sort extension is loaded
-        on_sort_loaded: function(o, sort) {
-          // addSortType accepts:
-          // 1. an identifier of the sort type (lowercase)
-          // 2. an optional function that takes a string and casts it to a
-          // desired format, if not specified it returns the string
-          // 3. an optional compare function taking 2 values and compares
-          // them. If not specified defaults to `less than compare` type
-          sort.addSortType('customstring', customStringCaster, customStringSorter);
+      if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+        return 1;
+      }
+      return 0;
+    }
+
+    var tfConfig = {
+      base_path: '../vendor/tablefilter/0.7.3/',
+      col_widths: [
+        '9%', '6%', '10%',
+        '5%', '15%', '14%',
+        '6%', '13%', '2%',
+        '20%'
+      ],
+      col_types: [
+        'number', 'number', 'customstring',
+        'number', 'customstring', 'customstring',
+        'customstring', 'customstring', 'customstring',
+        'customstring'
+      ],
+      /* cell_parser delegate used for filtering images in a column */
+      cell_parser: {
+        cols: [4, 5],
+        parse: function(o, cell, colIndex) {
+          var txt = cell.textContent || cell.innerText;
+          return txt;
         }
       },
-    ]
-  };
-  var tf = new TableFilter(
-    document.querySelector('.bocaTable'),
-    tfConfig
-  );
-  tf.init();
-</script>
+      col_1: 'select',
+      col_2: 'select',
+      col_4: 'select',
+      col_5: 'select',
+      col_6: 'select',
+      col_7: 'select',
+      col_8: 'none',
+      col_9: 'select',
+      responsive: {
+        details: true
+      },
+      toolbar: {
+        target_id: 'externalToolbar'
+      },
+      sticky_headers: true,
+      rows_counter: {
+        ignore_case: true
+      },
+      watermark: 'Filter...',
+      auto_filter: {
+        delay: 100 //milliseconds
+      },
+      msg_filter: 'Filtering...',
+      loader: true,
+      status_bar: true,
+      ignore_diacritics: true,
+      <?php if (count($run) != 0) { ?>
+      no_results_message: {
+        content: '<?php echo "<center><b><font color=\"#ff0000\">NO RUNS FOUND</font></b></center>" ?>',
+      },
+      <?php } ?>
+      paging: {
+        results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+      },
+      // grid layout customisation
+      grid_layout: {
+        width: '100%',
+        <?php if (count($run) != 0) { ?>
+        height: '400px'
+        <?php } else { ?>
+        height: 'auto'
+        <?php } ?>
+      },
+      btn_reset: true,
+      extensions: [
+        {
+          name: 'filtersVisibility',
+          visible_at_start: false
+        },
+        {
+          name: 'colsVisibility',
+          enable_tick_all: true
+        },
+        {
+          name: 'sort',
+          // Register custom sorter when sort extension is loaded
+          on_sort_loaded: function(o, sort) {
+            // addSortType accepts:
+            // 1. an identifier of the sort type (lowercase)
+            // 2. an optional function that takes a string and casts it to a
+            // desired format, if not specified it returns the string
+            // 3. an optional compare function taking 2 values and compares
+            // them. If not specified defaults to `less than compare` type
+            sort.addSortType('customstring', customStringCaster, customStringSorter);
+          }
+        },
+      ]
+    };
+    var tf = new TableFilter(
+      document.querySelector('.bocaTable'),
+      tfConfig
+    );
+    tf.init();
+  </script>
   <center>
 <b>Click on the number of a run to edit it or select them with<br />the checkboxes and use the buttons to work on multiple runs:</b><br /><br />
       <input type="submit" name="auto" value="Re-run autojudge for selected runs" onClick="conf()">
