@@ -16,6 +16,74 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////
 require('header.php');
+
+echo '<script>
+  function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.querySelector(\'table\');
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = \'asc\';
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName(\'td\')[columnIndex];
+        y = rows[i + 1].getElementsByTagName(\'td\')[columnIndex];
+
+        if (dir === \'asc\') {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir === \'desc\') {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount++;
+      } else {
+        if (switchcount === 0 && dir === \'asc\') {
+          dir = \'desc\';
+          switching = true;
+        }
+      }
+    }
+
+    // Remove sorting classes from all columns
+    for (var j = 0; j < rows[0].cells.length; j++) {
+      rows[0].cells[j].classList.remove(\'asc\', \'desc\');
+    }
+
+    // Add the sorting class to the current column
+    rows[0].cells[columnIndex].classList.toggle(dir);
+  }
+</script>';
+
+$strtmp = "<br><br>
+<div>
+    <button id=\"sort-direction\">⬆</button>
+    <label for=\"sort-select\">Sort by: </label>
+    <select id=\"sort-select\">
+        <option value=\"0\">Run #</option>
+        <option value=\"1\">Time</option>
+        <option value=\"2\">Problem</option>
+        <option value=\"3\">Language</option>
+        <option value=\"4\">Answer</option>
+        <option value=\"5\">File</option>
+    </select>
+</div>";
+echo $strtmp;
+
 $ds = DIRECTORY_SEPARATOR;
 if($ds=="") $ds = "/";
 
@@ -318,8 +386,16 @@ if($redo) {
   $_SESSION['forceredo']=false;
   if(($st = DBSiteInfo($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usersitenumber"])) == null)
     ForceLoad("../index.php");
-  $strtmp="<br>\n<table class=\"bocaTable\" width=\"100%\" border=1 style=\"width: 100%\">\n <tr>\n  <td><b>Run #</b></td>\n<td><b>Time</b></td>\n".
-    "  <td><b>Problem</b></td>\n  <td><b>Language</b></td>\n  <td><b>Answer</b></td>\n  <td><b>File</b></td>\n </tr>\n";
+    $strtmp = "<br>\n<table id=\"run-table\" width=\"100%\" border=1>\n <thead>\n<tr>\n";
+    $strtmp .= "<th><b>Run #</b><br><input class='filter-input' type='text' placeholder='Filter Run #' onkeyup='filterTable(this, 0)'></th>\n";
+    $strtmp .= "<th><b>Time</b><br><input class='filter-input' type='text' placeholder='Filter Time' onkeyup='filterTable(this, 1)'></th>\n";
+    $strtmp .= "<th><b>Problem</b><br><input class='filter-input' type='text' placeholder='Filter Problem' onkeyup='filterTable(this, 2)'></th>\n";
+    $strtmp .= "<th><b>Language</b><br><input class='filter-input' type='text' placeholder='Filter Language' onkeyup='filterTable(this, 3)'></th>\n";
+    $strtmp .= "<th><b>Answer</b><br><input class='filter-input' type='text' placeholder='Filter Answer' onkeyup='filterTable(this, 4)'></th>\n";
+    $strtmp .= "<th><b>File</b><br><input class='filter-input' type='text' placeholder='Filter File' onkeyup='filterTable(this, 5)'></th>\n";
+    $strtmp .= "</tr></thead>\n<tbody>\n";
+    
+
   $strcolors = "0";
   $run = DBUserRuns($_SESSION["usertable"]["contestnumber"],
 		    $_SESSION["usertable"]["usersitenumber"],
@@ -357,103 +433,6 @@ if($redo) {
   }
   $strtmp .= "</table>";
   if (count($run) == 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
-
-  $strtmp .= "<div id=\"externalToolbar\" " . ((count($run) == 0) ? "style=\"display: none\"" : "") . "></div>";
-  $strtmp .= "
-  <script language=\"JavaScript\">
-  // Custom string caster
-  function customStringCaster(val) {
-    return val.toString();
-  }
-
-  // Custom string sorter
-  function customStringSorter(n1, n2) {
-    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
-      return -1;
-    }
-    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  }
-
-  var tfConfig = {
-    base_path: '../vendor/tablefilter/0.7.3/',
-    col_widths: [
-      '10%', '10%', '15%',
-      '15%', '35%', '15%'
-    ],
-    col_types: [
-      'number', 'date', 'customstring',
-      'customstring', 'customstring', 'customstring'
-    ],
-    col_2: 'select',
-    col_3: 'select',
-    col_4: 'select',
-    responsive: {
-      details: true
-    },
-    toolbar: {
-      target_id: 'externalToolbar'
-    },
-    sticky_headers: true,
-    rows_counter: {
-      ignore_case: true
-    },
-    watermark: 'Filter...',
-    auto_filter: {
-      delay: 100 //milliseconds
-    },
-    msg_filter: 'Filtering...',
-    loader: true,
-    status_bar: true,
-    ignore_diacritics: true," .
-    (count($run) != 0 ? 
-    "no_results_message: {
-      content: '<center><b><font color=\"#ff0000\">NO RUNS FOUND</font></b></center>',
-    }," : "") . "
-    paging: {
-      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
-    },
-    // grid layout customisation
-    grid_layout: {
-      width: '100%'," .
-      (count($run) != 0 ?
-      "height: '400px'" :
-      "height: 'auto'") . "
-    },
-    btn_reset: true,
-    extensions: [
-      {
-        name: 'filtersVisibility',
-        visible_at_start: false
-      },
-      {
-        name: 'colsVisibility',
-        enable_tick_all: true
-      },
-      {
-        name: 'sort',
-        // Register custom sorter when sort extension is loaded
-        on_sort_loaded: function(o, sort) {
-          // addSortType accepts:
-          // 1. an identifier of the sort type (lowercase)
-          // 2. an optional function that takes a string and casts it to a
-          // desired format, if not specified it returns the string
-          // 3. an optional compare function taking 2 values and compares
-          // them. If not specified defaults to `less than compare` type
-          sort.addSortType('customstring', customStringCaster, customStringSorter);
-        }
-      },
-    ]
-  };
-  var tf = new TableFilter(
-    document.querySelector('.bocaTable'),
-    tfConfig
-  );
-  tf.init();
-</script>";
-
   $linesubmission = @file_get_contents($_SESSION["locr"] . $ds . "private" . $ds . 'run-using-command.config');
   if(trim($linesubmission) == '1') {
     $strtmp .= "<br><br><center><b>To submit a program, use the command-line tool:</b>\n<br>".
@@ -539,5 +518,68 @@ if($redo) {
 }
 echo $strtmp;
 ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('sort-direction').addEventListener('click', toggleSortDirection);
+  document.getElementById('sort-select').addEventListener('change', sortTable);
+});
+
+let sortDirection = true; // true for ascending, false for descending
+
+function toggleSortDirection() {
+  sortDirection = !sortDirection;
+  document.getElementById('sort-direction').innerText = sortDirection ? '⬆' : '⬇';
+  sortTable();
+}
+
+function sortTable() {
+  const table = document.getElementById('run-table');
+  const tbody = table.tBodies[0];
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const index = document.getElementById('sort-select').value;
+
+  rows.sort((a, b) => {
+    const cellA = a.children[index].innerText.toLowerCase();
+    const cellB = b.children[index].innerText.toLowerCase();
+
+    if (!isNaN(cellA) && !isNaN(cellB)) {
+      return sortDirection ? cellA - cellB : cellB - cellA;
+    } else {
+      return sortDirection ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+    }
+  });
+
+  rows.forEach(row => tbody.appendChild(row));
+}
+
+function filterTable(input, column) {
+  const filters = document.querySelectorAll('.filter-input'); // Seleciona todos os filtros de coluna
+  const table = document.getElementById('run-table');
+  const rows = table.getElementsByTagName('tr');
+
+  for (let i = 1; i < rows.length; i++) {
+    let shouldDisplay = true;
+
+    for (let j = 0; j < filters.length; j++) {
+      const filterValue = filters[j].value.toLowerCase();
+      const cell = rows[i].getElementsByTagName('td')[j];
+
+      if (cell) {
+        const txtValue = cell.textContent || cell.innerText;
+        // Se houver um valor no filtro e a célula não corresponder, marca a linha como não exibível
+        if (filterValue !== '' && txtValue.toLowerCase().indexOf(filterValue) === -1) {
+          shouldDisplay = false;
+          break; // Sai do loop interno, já que a linha não deve ser exibida
+        }
+      }
+    }
+
+    // Exibe ou oculta a linha com base na correspondência com todos os filtros
+    rows[i].style.display = shouldDisplay ? '' : 'none';
+  }
+}
+</script>
+
 </body>
 </html>
