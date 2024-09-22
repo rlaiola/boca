@@ -317,17 +317,20 @@ if($redo) {
 		if(!isset($score[$e]['username'])) break;
 	if(!isset($score[$e]['classingroup'])) continue;  
 	  reset($score[$e]['classingroup']);
- 	  while(1) {
+ 	  
+	  while(1) {
 		  $cg1=key($score[$e]['classingroup']);
 		  $cg2=current($score[$e]['classingroup']);
 		  if(empty($cg2))
 			  if(next($score[$e]['classingroup'])===false)
 				  break;
-		// Adiciona a classe `highlighted-row` se o usuário do scoreboard corresponder ao usuário logado
+		
+		
 		$rowClass = ($score[$e]['username'] == $_SESSION["usertable"]["username"]) ? 'highlight' : '';
-  	    $strtmp .= " <tr class=\"";
-		$strtmp .= "sitegroup" . $cg1 . " " . $rowClass . "\">";
-		$strtmp .= "<td>" . $cg2 . "</td>\n";
+
+        // Adiciona a classe highlight se for o usuário logado
+        $strtmp .= "<tr class=\"sitegroup" . $cg1 . " " . $rowClass . "\">";
+        $strtmp .= "<td>" . $cg2 . "</td>\n";
 /*
 		if($level>3 && !$final && $score[$e]["site"]==$ct['contestlocalsite'] &&
 		   ((isset($_SESSION["scorepos"][$score[$e]["username"]."-".$score[$e]["site"]]) &&
