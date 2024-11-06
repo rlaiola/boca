@@ -21,7 +21,7 @@ require('header.php');
 if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
 	ForceLoad("../index.php");
 ?>
-<br><b>Information:</b>
+
 <?php
 /*
 <br>General information: <a href="https://global.naquadah.com.br/boca/info_sheet.pdf">info_sheet.pdf</a>
