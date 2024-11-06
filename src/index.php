@@ -210,6 +210,26 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
                 <input type="submit" name="Submit" value="Login">
               </td>
             </tr>
+            <tr>
+              <td colspan="2" align="center">
+                <?php
+                  $forgotLink = getenv('BOCA_FORGOT_PASSWORD_LINK');
+                  if ($forgotLink) {
+                ?>
+                <a href="<?php echo $forgotLink; ?>">
+                <?php 
+                  } else {
+                ?>
+                <a href="" onclick="javascript: alert('Contact system administrator.');">
+                <?php
+                  }
+                ?>
+                  <font face="Verdana, Arial, Helvetica, sans-serif" size="-2">
+                    Forgot password?
+                  </font>
+                </a>
+              </td>
+            </tr>
           </table>
         </div>
       </form>
