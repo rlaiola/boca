@@ -505,7 +505,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
 <?php if(isset($u)) { ?>
       <input type="submit" name="Delete" value="Delete" onClick="conf4()">
 <?php } ?>
-      <input type="submit" name="Cancel" value="Cancel" onClick="conf5()">
+      <input type="submit" name="Clear" value="Clear" onClick="conf5()">
 <?php if(isset($u)) { ?>
 <br><br><b>WARNING: deleting a user will completely remove EVERYTHING related to it (including runs, clarifications, etc).<b><br>
 <?php } ?>
