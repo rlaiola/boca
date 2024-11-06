@@ -108,19 +108,85 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordo" size="20" maxlength="200" />
+        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" />
+        <i class="bi bi-eye-slash" id="toggleOldPassword" style="display: none;"></i>
+        <script>
+          const toggleOldPassword = document.querySelector("#toggleOldPassword");
+          const passwordo = document.form1.passwordo;
+
+          passwordo.addEventListener("keyup", function() {
+            if (!this.value) {
+              toggleOldPassword.style.display = "none";
+            } else {
+              toggleOldPassword.style.display = "";
+            }
+          });
+          
+          toggleOldPassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = passwordo.getAttribute("type") === "password" ? "text" : "password";
+            passwordo.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+          });
+        </script>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn1" size="20" maxlength="200" />
+        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" />
+        <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
+        <script>
+          const toggleNewPassword = document.querySelector("#toggleNewPassword");
+          const passwordn1 = document.form1.passwordn1;
+
+          passwordn1.addEventListener("keyup", function() {
+            if (!this.value) {
+              toggleNewPassword.style.display = "none";
+            } else {
+              toggleNewPassword.style.display = "";
+            }
+          });
+
+          toggleNewPassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = passwordn1.getAttribute("type") === "password" ? "text" : "password";
+            passwordn1.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+          });
+        </script>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn2" size="20" maxlength="200" />
+        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" />
+        <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
+        <script>
+          const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
+          const passwordn2 = document.form1.passwordn2;
+
+          passwordn2.addEventListener("keyup", function() {
+            if (!this.value) {
+              toggleNewPassword2.style.display = "none";
+            } else {
+              toggleNewPassword2.style.display = "";
+            }
+          });
+
+          toggleNewPassword2.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = passwordn2.getAttribute("type") === "password" ? "text" : "password";
+            passwordn2.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+          });
+        </script>
         </td>
       </tr>
     </table>
