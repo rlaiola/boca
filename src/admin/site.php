@@ -525,7 +525,7 @@ echo "):</td>";
       <input type="submit" name="Submit1" value="Send" onClick="conf()">
       <input type="submit" name="Submit2" value="Start Now" onClick="conf()">
       <input type="submit" name="Submit3" value="Stop Now" onClick="conf()">
-      <input type="reset" name="Submit4" value="Restore fields">
+      <input type="reset" name="Submit4" value="Clear">
 <br>
       <input type="submit" name="Logoff" value="Logoff all users" onClick="conf()">
       <input type="submit" name="Logins" value="Disable logins" onClick="conf()">
@@ -605,11 +605,12 @@ if($main) {
       <tr>
         <td width="25%" align=right>Import file:</td>
         <td width="75%">
-          <input type="file" name="importfile" size="40">
+          <input type="file" id="importfile" name="importfile" size="40">
         </td>
       </tr>
     </table>
       <input type="submit" name="Submit" value="Import" onClick="conf()">
+      <input type="button" onclick="document.getElementById('importfile').value=''" value="Clear">
   </center>
 		<?php } ?>
 </form>

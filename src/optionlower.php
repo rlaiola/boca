@@ -25,14 +25,20 @@ if(!ValidSession()) { // || $_SESSION["usertable"]["usertype"] == 'team') {
         InvalidSession("optionlower.php");
         ForceLoad("index.php");
 }
+
+if ($_SESSION["usertable"]["authmethod"] != "password") {
+  echo "<br><br><center><b>UPDATES ARE NOT ALLOWED</b></center>"; 
+  exit;
+}
+
 $loc = $_SESSION['loc'];
 
 if (isset($_GET["username"]) && isset($_GET["userfullname"]) && isset($_GET["userdesc"]) && 
     isset($_GET["passwordo"]) && isset($_GET["passwordn"])) {
-  if($_SESSION["usertable"]["usertype"] == 'team') {
-    MSGError('Updates are not allowed');
-    ForceLoad("option.php");
-  }    
+  // if($_SESSION["usertable"]["usertype"] == 'team') {
+  //   MSGError('Updates are not allowed');
+  //   ForceLoad("option.php");
+  // }    
 
 	$username = myhtmlspecialchars($_GET["username"]);
 	$userfullname = myhtmlspecialchars($_GET["userfullname"]);
@@ -187,6 +193,7 @@ function computeHASH()
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
+      <input type="reset" name="Clear" value="Clear">
   </center>
 </form>
 
