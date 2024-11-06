@@ -198,10 +198,13 @@ function DBFakeContest() {
 	DBRenewSiteTime($param, $c);
 	$cf = globalconf();
 	$pass = myhash($cf["basepass"]);
+
+	$username = getenv("BOCA_SYSTEM_USER") ? getenv("BOCA_SYSTEM_USER") : "system";
+
 	DBExec($c, "insert into usertable (contestnumber, usersitenumber, usernumber, username, userfullname, ".
 		"userdesc, usertype, userenabled, usermultilogin, userpassword, userip, userlastlogin, usersession, ".
 		"userlastlogout, userpermitip) ".
-		"values (0, 1, 1, 'system', 'Systems', NULL, 'system', 't', ".
+		"values (0, 1, 1, '$username', 'Systems', NULL, 'system', 't', ".
            "'t', '$pass', NULL, NULL, '', NULL, NULL)", "DBFakeContest(insert system user)");
 	DBExec($c, "commit work");
 }
@@ -1162,11 +1165,13 @@ function DBNewSite ($contest, $c=null, $param=array()) {
 	$cf=globalconf();
 	$admpass = myhash($cf["basepass"]);
 
+	$username = getenv("BOCA_ADMIN_USER") ? getenv("BOCA_ADMIN_USER") : 'admin';
+	
 	DBExec($c, "insert into usertable ".
 		"(contestnumber, usersitenumber, usernumber, username, userfullname, " .
 		"userdesc, usertype, userenabled, usermultilogin, userpassword, userip, userlastlogin, ".
 		"usersession, usersessionextra, userlastlogout, userpermitip, updatetime) values " .
-		"($contest, $number, 1000, 'admin', 'Administrator', NULL, 'admin', ".
+		"($contest, $number, 1000, '$username', 'Administrator', NULL, 'admin', ".
 		   "'t', 't', '$admpass', NULL, NULL, '', '', NULL, NULL, $updatetime)");
 	$param=array();
 	$param['contest']=$contest;
@@ -1188,7 +1193,11 @@ function DBUserUpdate($contest, $site, $user, $username, $userfull, $userdesc, $
 		MSGError ("Incorrect password.");
 	}
 	else { 
-		if(!$a['changepassword']) {
+		// Always enable password change for BOCA_LOCAL_USERS via UI
+		$authMethod = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+		$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
+		if ($authMethod != "password" && in_array($username, $localUsers));
+		elseif(!$a['changepassword']) {
 			MSGError('Password change is DISABLED'); return;
 		}
 		if ($a["userpassword"] == "") $temp = myhash("");
@@ -1324,14 +1333,25 @@ function DBNewUser($param, $c=null) {
 		$a = DBGetRow ($sql, 0, $c);
 		if ($a == null) {
 			$ret=2;
-		  $sql = "select * from sitetable where sitenumber=$site and contestnumber=$contest";
-		  $aa = DBGetRow ($sql, 0, $c);
-		   if($aa==null) {
-		     if($cw)
-		   	DBExec ($c, "rollback work");
-		     MSGError("Site $site does not exist");
-		     return false;
-		   }
+			$sql = "select * from sitetable where sitenumber=$site and contestnumber=$contest";
+			$aa = DBGetRow ($sql, 0, $c);
+			if($aa==null) {
+				if($cw)
+				DBExec ($c, "rollback work");
+				MSGError("Site $site does not exist");
+				return false;
+			}
+
+			// If BOCA_LOCAL_USERS are added via UI, either LDAP or Google auth
+			// methods (!= password), set default password.
+			$authMethod = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+			$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
+			if ($authMethod != "password" && in_array($username, $localUsers)) {
+				$cf=globalconf();
+				$pass=myhash($cf["basepass"]);
+				if ($type != "admin" && $changepass != "t" && substr($pass,0,1) != "!") $pass = '!' . $pass;
+		  	}
+
 			$sql = "insert into usertable (contestnumber, usersitenumber, usernumber, username, usericpcid, userfullname, " .
 				"userdesc, usertype, userenabled, usermultilogin, userpassword, userpermitip) values " .
 				"($contest, $site, $user, '$username', '$usericpcid', '$userfull', '$userdesc', '$type', '$enabled', " .
