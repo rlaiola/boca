@@ -68,8 +68,15 @@ $a = DBUserInfo($_SESSION["usertable"]["contestnumber"],
 function computeHASH()
 {
 	var username, userdesc, userfull, passHASHo, passHASHn;
-	if (document.form1.passwordn1.value != document.form1.passwordn2.value) return;
-	if (document.form1.passwordn1.value == document.form1.passwordo.value) return;
+	if (document.form1.passwordn1.value == document.form1.passwordo.value) {
+		alert("New password is the same as the old one. Please choose a different password.");
+		return;
+	}
+	if (document.form1.passwordn1.value != document.form1.passwordn2.value) {
+		alert("New password and confirmation do not match. Please try again.");
+		return;
+	}
+
 	username = document.form1.username.value;
 	userdesc = document.form1.userdesc.value;
 	userfull = document.form1.userfull.value;
@@ -80,6 +87,30 @@ function computeHASH()
 	document.form1.passwordn1.value = '                                                         ';
 	document.form1.passwordn2.value = '                                                         ';
 	document.location='option.php?username='+username+'&userdesc='+userdesc+'&userfullname='+userfull+'&passwordo='+passHASHo+'&passwordn='+passHASHn;
+}
+
+function validatePasswords() {
+	const errorMessage = document.getElementById("error-message");
+	errorMessage.innerText = "";
+
+	if (document.form1.passwordn1.value !== "" &&
+		document.form1.passwordn1.value === document.form1.passwordo.value) {
+		document.form1.passwordn1.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " New password is the same as the old one.";
+		errorMessage.append(msg);
+	} else {
+		document.form1.passwordn1.classList.remove("error");
+	}
+
+	if (document.form1.passwordn1.value !== document.form1.passwordn2.value) {
+		document.form1.passwordn2.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " New password and confirmation do not match.";
+		errorMessage.append(msg);
+	} else {
+		document.form1.passwordn2.classList.remove("error");
+	}
 }
 </script>
 
@@ -108,7 +139,7 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" />
+        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" required />
         <i class="bi bi-eye-slash" id="toggleOldPassword" style="display: none;"></i>
         <script>
           const toggleOldPassword = document.querySelector("#toggleOldPassword");
@@ -136,7 +167,7 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" />
+        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" required />
         <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
         <script>
           const toggleNewPassword = document.querySelector("#toggleNewPassword");
@@ -164,7 +195,7 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" />
+        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" required />
         <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
         <script>
           const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
@@ -190,12 +221,18 @@ function computeHASH()
         </td>
       </tr>
     </table>
+    <script>
+      document.form1.passwordo.addEventListener("keyup", validatePasswords);
+      document.form1.passwordn1.addEventListener("keyup", validatePasswords);
+      document.form1.passwordn2.addEventListener("keyup", validatePasswords);
+    </script>
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
       <input type="reset" name="Clear" value="Clear">
   </center>
 </form>
+<div id="error-message"></div>
 
 </body>
 </html>

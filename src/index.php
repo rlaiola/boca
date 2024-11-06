@@ -197,13 +197,13 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
                       Name
                       </font></td>
                     <td> 
-                      <input type="text" name="name">
+                      <input type="text" name="name" required />
                     </td>
                   </tr>
                   <tr> 
                     <td><font face="Verdana, Arial, Helvetica, sans-serif" >Password</font></td>
                     <td> 
-                      <input type="password" name="password">
+                      <input type="password" name="password" required />
                       <i class="bi bi-eye-slash" id="togglePassword" style="display: none;"></i>
                       <script>
                         const togglePassword = document.querySelector("#togglePassword");

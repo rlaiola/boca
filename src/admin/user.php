@@ -323,6 +323,20 @@ function computeHASH()
 //	document.form3.passwordn1.value = js_myhash(document.form3.passwordn1.value);
 //	document.form3.passwordn2.value = js_myhash(document.form3.passwordn2.value);
 }
+
+function validatePasswords() {
+	const errorMessage = document.getElementById("error-message");
+	errorMessage.innerText = "";
+
+	if (document.form3.passwordn1.value !== document.form3.passwordn2.value) {
+		document.form3.passwordn2.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " User password and confirmation do not match.";
+		errorMessage.append(msg);
+	} else {
+		document.form3.passwordn2.classList.remove("error");
+	}
+}
 </script>
 
 <br><br><center><b>Clicking on a user number will bring the user data for edition.<br>
@@ -367,6 +381,18 @@ Note that any changes will overwrite the already defined data.<br>
   <input type=hidden name="confirmation" value="noconfirm" />
   <script language="javascript">
     function conf3() {
+      if (document.form3.passwordn1.value === "" ||
+          document.form3.passwordn2.value === "" ||
+          document.form3.passwordo.value === ""
+      ) {
+        return;
+      }
+
+      if (document.form3.passwordn1.value != document.form3.passwordn2.value) {
+        alert("User password and confirmation do not match. Please try again.");
+        return false;
+      }
+
       computeHASH();
       if (confirm("Confirm?")) {
         document.form3.confirmation.value='confirm';
@@ -385,6 +411,7 @@ if (isset($u)) {
 ?>
     function conf5() {
       document.form3.confirmation.value='noconfirm';
+      document.form3.passwordn2.classList.remove("error");
     }
   </script>
    <center>
@@ -469,13 +496,13 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr> 
         <td width="35%" align=right>User IP:</td>
         <td width="65%">
-	  <input type="text" name="userip" value="<?php if(isset($u)) echo $u["userpermitip"]; ?>" size="20" maxlength="20" />
+          <input type="text" name="userip" value="<?php if(isset($u)) echo $u["userpermitip"]; ?>" size="20" maxlength="20" />
         </td>
       </tr>
       <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Password:</td>
         <td width="65%">
-          <input type="password" name="passwordn1" value="" size="20" maxlength="200" />
+          <input type="password" name="passwordn1" value="" size="20" maxlength="200" required />
           <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
           <script>
             const toggleNewPassword = document.querySelector("#toggleNewPassword");
@@ -503,7 +530,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Retype Password:</td>
         <td width="65%">
-          <input type="password" name="passwordn2" value="" size="20" maxlength="200" />
+          <input type="password" name="passwordn2" value="" size="20" maxlength="200" required />
           <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
           <script>
             const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
@@ -540,7 +567,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Admin (this user) Password:</td>
         <td width="65%">
-          <input type="password" name="passwordo" value="" size="20" maxlength="200" />
+          <input type="password" name="passwordo" value="" size="20" maxlength="200" required />
           <i class="bi bi-eye-slash" id="toggleAdminPassword" style="display: none;"></i>
           <script>
             const toggleAdminPassword = document.querySelector("#toggleAdminPassword");
@@ -566,9 +593,14 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
         </td>
       </tr>
     </table>
+    <script>
+      document.form3.passwordo.addEventListener("keyup", validatePasswords);
+      document.form3.passwordn1.addEventListener("keyup", validatePasswords);
+      document.form3.passwordn2.addEventListener("keyup", validatePasswords);
+    </script>
   </center>
   <center>
-      <input type="submit" name="Submit" value="Send" onClick="conf3()">
+      <input type="submit" name="Submit" value="Send" onClick="return conf3()">
 <?php if(isset($u)) { ?>
       <input type="submit" name="Delete" value="Delete" onClick="conf4()">
 <?php } ?>
@@ -578,6 +610,6 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
 <?php } ?>
   </center>
 </form>
-
+<div id="error-message"></div>
 </body>
 </html>

@@ -88,6 +88,17 @@ p.link a:hover span {
   display: block;
 }
 
+input.error {
+  color: red;
+  border: solid 1px red;
+}
+
+#error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
 .highlight {background-color: <?php echo $cordestaque?>;font-weight: bold;}
 
 [class^="bi-"]::before,
