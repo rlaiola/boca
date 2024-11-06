@@ -56,7 +56,8 @@ echo "</table>\n";
 if(!isset($_SESSION["scorenomenu"]) || !$_SESSION["scorenomenu"]) {
 	echo "<table border=0 width=\"100%\" align=center>\n";
 	echo " <tr>\n";
-	echo "  <td align=center><a class=menu style=\"font-weight:bold\" href=index.php>Score</a></td>\n";
+	$currentPage = basename($_SERVER['REQUEST_URI']);
+	echo "  <td align=center><a class=\"menu" . (str_contains($currentPage, "index.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=index.php>Score</a></td>\n";
 	echo "  <td align=center><a class=menu style=\"font-weight:bold\" href=../index.php>Logout</a></td>\n";
 	echo " </tr>\n";
 	echo "</table>\n";

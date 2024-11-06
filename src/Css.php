@@ -47,7 +47,8 @@ DIV.dir {background-color:<?php echo $corfundo?>; layer-background-color:<?php e
 A {font-family:"Courier New", Courier, mono; font-size:12pt; color:<?php echo $corfrente?>} 
 A.header {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt} 
 A.menu {font-family:Verdana, Arial, Helvetica, sans-serif; text-decoration:none; font-size:12pt; border: 1px solid <?php echo $corfundo?>} 
-A.menu:hover {background-color:<?php echo $cormenu?>; border-bottom:1px solid #555555; border-right:1px solid #555555;border-top:1px solid white;border-left:1px solid white} 
+A.menu:hover {background-color:<?php echo $cormenu?>; border-bottom: 4px solid #555555; padding-bottom: 2px;}
+A.current-page {border-bottom: 4px solid; padding-bottom: 2px;}
 A.user {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt} 
 A.user:hover {font-weight: bolder} 
 A.disabled {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; text-decoration:none; color:#BFBFBF} 
