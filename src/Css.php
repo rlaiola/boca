@@ -20,6 +20,7 @@ $corfundo = "#e0e0d0";
 $corfrente = "#000000";
 $corfundo2 = "#dfdfdf";
 $cormenu = "#dfdfdf";
+$cordestaque = "#fbe790";
 ?>
 div#popupnew {
 position:absolute;
@@ -86,3 +87,5 @@ p.link a:hover span {
   text-align:left;
   display: block;
 }
+
+.highlight {background-color: <?php echo $cordestaque?>;font-weight: bold;}
