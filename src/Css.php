@@ -20,6 +20,7 @@ $corfundo = "#e0e0d0";
 $corfrente = "#000000";
 $corfundo2 = "#dfdfdf";
 $cormenu = "#dfdfdf";
+$cordestaque = "#fbe790";
 ?>
 div#popupnew {
 position:absolute;
@@ -46,7 +47,8 @@ DIV.dir {background-color:<?php echo $corfundo?>; layer-background-color:<?php e
 A {font-family:"Courier New", Courier, mono; font-size:12pt; color:<?php echo $corfrente?>} 
 A.header {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt} 
 A.menu {font-family:Verdana, Arial, Helvetica, sans-serif; text-decoration:none; font-size:12pt; border: 1px solid <?php echo $corfundo?>} 
-A.menu:hover {background-color:<?php echo $cormenu?>; border-bottom:1px solid #555555; border-right:1px solid #555555;border-top:1px solid white;border-left:1px solid white} 
+A.menu:hover {background-color:<?php echo $cormenu?>; border-bottom: 4px solid #555555; padding-bottom: 2px;}
+A.current-page {border-bottom: 4px solid; padding-bottom: 2px;}
 A.user {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt} 
 A.user:hover {font-weight: bolder} 
 A.disabled {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12pt; text-decoration:none; color:#BFBFBF} 
@@ -85,4 +87,41 @@ p.link a:hover span {
   color: #000;
   text-align:left;
   display: block;
+}
+
+input.error {
+  color: red;
+  border: solid 1px red;
+}
+
+#error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+.highlight {background-color: <?php echo $cordestaque?>;font-weight: bold;}
+
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: bootstrap-icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 2;
+  vertical-align: text-top;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-eye-fill::before { content: url('images/password/eye-fill.svg'); }
+.bi-eye-slash-fill::before { content: url(images/password/eye-slash-fill.svg); }
+.bi-eye-slash::before { content: url(images/password/eye-slash.svg); }
+.bi-eye::before { content: url('images/password/eye.svg'); }
+
+form i {
+  margin-left: -30px;
+  cursor: pointer;
 }

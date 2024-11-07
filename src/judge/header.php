@@ -66,7 +66,7 @@ echo "<tr><td nowrap bgcolor=\"#$cc\" align=center>";
 echo "<img src=\"../images/smallballoontransp.png\" alt=\"\">";
 echo "<font color=\"#000000\">BOCA</font>";
 echo "</td><td bgcolor=\"#$cc\" width=\"99%\">\n";
-echo "Username: " . $_SESSION["usertable"]["userfullname"] . " (site=".$_SESSION["usertable"]["usersitenumber"].")<br>\n";
+echo "Username: " . $_SESSION["usertable"]["username"] . " (site=".$_SESSION["usertable"]["usersitenumber"].")<br>\n";
 list($clockstr,$clocktype)=siteclock();
 echo "</td><td bgcolor=\"#$cc\" align=center nowrap>&nbsp;".$clockstr."&nbsp;</td></tr>\n";
 echo "</table>\n";
@@ -86,22 +86,24 @@ $nc=count($clar);
 
 echo "<table border=0 width=\"100%\" align=center>\n";
 echo " <tr>\n";
-//echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=problem.php>Problems</a></td>\n";
+$currentPage = basename($_SERVER['REQUEST_URI']);
+//echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "problem.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=problem.php>Problems</a></td>\n";
 
-echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=run.php>Runs ($nr)</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs ($nr)</a></td>\n";
 if($isboss) {
-  echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=runchief.php>Chief ($nrchief)</a></td>\n";
+  echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "runchief.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=runchief.php>Chief ($nrchief)</a></td>\n";
 }
 {
-  echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=allrunlist.php>All runs </a></td>\n";
+  echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "allrunlist.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=allrunlist.php>All runs </a></td>\n";
 }
-echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
 if (getenv('BOCA_DISABLE_CLARIFICATIONS') !== 'true') {
-echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=clar.php>Clarifications ($nc)</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "clar.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=clar.php>Clarifications ($nc)</a></td>\n";
 }
-echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=history.php>History</a></td>\n";
-echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=team.php>As Team</a></td>\n";
-echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
+
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "history.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=history.php>History</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "team.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=team.php>As Team</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "option.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
 echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=../index.php>Logout</a></td>\n";
 echo " </tr>\n"; 
 echo "</table>\n";
