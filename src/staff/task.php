@@ -186,8 +186,8 @@ if (!$anyprinted) echo "<br><center><b><font color=\"#ff0000\">NO TASKS AVAILABL
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-      '8%', '5%', '20%',
-      '34%', '15%', '8%',
+      '8%', '5%', '23%',
+      '31%', '15%', '8%',
 	  '10%'
     ],
     col_types: [

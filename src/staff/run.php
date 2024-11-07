@@ -69,7 +69,6 @@ else $s["sitejudging"]=$_SESSION["usertable"]["usersitenumber"];
 
 $run = DBAllRunsInSites($_SESSION["usertable"]["contestnumber"], $s["sitejudging"], $order);
 
-
 $limittasks=false;
 if(is_readable($_SESSION["locr"] . $ds . 'private' . $ds . 'score.sep')) {
         $limittasks=true;
@@ -188,8 +187,7 @@ if ($run[$i]["judge"] != "") {
 }
 
 echo "</table>";
-//if (!$anyprinted) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
-//else {
+if (!$anyprinted) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
 ?>
   <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
   <br>
@@ -222,7 +220,7 @@ echo "</table>";
       col_widths: [
         '100px', '75px', '150px',
         '75px', '225px', '200px',
-        '75px', '500px'
+        '75px', '475px'
       ],
       col_types: [
         'number', 'number', 'customstring',
