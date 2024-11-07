@@ -137,9 +137,15 @@ $currentPage = basename($_SERVER['REQUEST_URI']);
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "problem.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=problem.php>Problems</a></td>\n";
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
+if (getenv('BOCA_DISABLE_CLARIFICATIONS') !== 'true') {
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "clar.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=clar.php>Clarifications</a></td>\n";
+}
+if (getenv('BOCA_DISABLE_TASKS') !== 'true') {
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "task.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=task.php>Tasks</a></td>\n";
+}
+if (getenv('BOCA_DISABLE_BACKUP') !== 'true') {
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "files.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=files.php>Backups</a></td>\n";
+}
 echo "  <td align=center width=\"12%\"><a class=\"menu" . (str_contains($currentPage, "option.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
 echo "  <td align=center width=\"12%\"><a class=menu style=\"font-weight:bold\" href=../index.php>Logout</a></td>\n";
 echo " </tr>\n"; 

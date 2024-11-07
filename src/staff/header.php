@@ -65,8 +65,10 @@ if(($s = DBSiteInfo($_SESSION["usertable"]["contestnumber"], $_SESSION["usertabl
 echo "<table border=0 width=\"100%\" align=center>\n";
 echo " <tr>\n";
 $currentPage = basename($_SERVER['REQUEST_URI']);
+if (getenv('BOCA_DISABLE_TASKS') !== 'true') {
 echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "task.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=task.php>Tasks</a></td>\n";
 //echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "task.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=task.php>Tasks ($nr)</a></td>\n";
+}
 echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
 echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
 
