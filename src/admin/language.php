@@ -79,7 +79,7 @@ echo "</table>";
 if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES DEFINED</font></b></center>";
 
 ?>
-<div id="externalToolbar" style="display: none"></div>
+<div id="externalToolbar"  <?php if (count($lang) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
   function customStringCaster(val) {
@@ -134,8 +134,11 @@ if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES
     // grid layout customisation
     grid_layout: {
       width: '100%',
-      // height: '400px',
+      <?php if (count($lang) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
       height: 'auto'
+      <?php } ?>
     },
     btn_reset: true,
     extensions: [

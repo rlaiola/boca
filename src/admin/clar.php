@@ -175,8 +175,8 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
       '7%', '6%', '6%',
-      '6%', '7%', '8%', 
-      '8%', '26%', '26%'
+      '6%', '15%', '8%', 
+      '8%', '22%', '22%'
     ],
     col_types: [
       'number', 'number', 'number',

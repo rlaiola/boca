@@ -197,6 +197,34 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
       return 0;
     }
 
+    // Custom sorter
+    function customJudgeSorter(n1, n2) {
+      if (n1.value == "‎" && n2.value != "‎") {
+        return -1;
+      }
+      else if (n2.value == "‎" && n1.value != "‎") {
+        return 1;
+      }
+      else if (n1.value == "‎" && n2.value == "‎") {
+        return 0;
+      }
+      else if (n1.value.toLowerCase().indexOf(' admin') == 0 &&
+              n2.value.toLowerCase().indexOf(' admin') != 0) {
+        return -1;
+      }
+      else if (n2.value.toLowerCase().indexOf(' admin') == 0 &&
+              n1.value.toLowerCase().indexOf(' admin') != 0) {
+        return 1;
+      }
+      else if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+        return -1;
+      }
+      else if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+        return 1;
+      }
+      else return 0;
+    }
+
     var tfConfig = {
       base_path: '../vendor/tablefilter/0.7.3/',
       col_widths: [
@@ -208,15 +236,26 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
       col_types: [
         'number', 'number', 'customstring',
         'number', 'customstring', 'customstring',
-        'customstring', 'customstring', 'customstring',
+        'customstring', 'customjudge', 'customstring',
         'customstring'
       ],
       /* cell_parser delegate used for filtering images in a column */
       cell_parser: {
-        cols: [4, 5],
+        cols: [4, 5, 7],
         parse: function(o, cell, colIndex) {
-          var txt = cell.textContent || cell.innerText;
-          return txt;
+          /* admin users comes before other users, except if empty */
+          if (colIndex == 7) {
+            var txt = cell.textContent || cell.innerText;
+
+            if (txt.indexOf('admin') == 0) {
+              return ' ' + txt;
+            }
+            else if (txt == ' ') {
+              return '‎';
+            }
+            else return txt;
+          }
+          else return cell.textContent || cell.innerText;
         }
       },
       col_1: 'select',
@@ -282,6 +321,7 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
             // desired format, if not specified it returns the string
             // 3. an optional compare function taking 2 values and compares
             // them. If not specified defaults to `less than compare` type
+            sort.addSortType('customjudge', customStringCaster, customJudgeSorter);
             sort.addSortType('customstring', customStringCaster, customStringSorter);
           }
         },

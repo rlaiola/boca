@@ -97,7 +97,7 @@ for ($i=0; $i<count($ans); $i++) {
 echo "</table>";
 if ($n == 0) echo "<br><center><b><font color=\"#ff0000\">NO ANSWERS DEFINED</font></b></center>";
 ?>
-<div id="externalToolbar" style="display: none"></div>
+<div id="externalToolbar"  <?php if (count($ans) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
   function customStringCaster(val) {
@@ -154,8 +154,11 @@ if ($n == 0) echo "<br><center><b><font color=\"#ff0000\">NO ANSWERS DEFINED</fo
     // grid layout customisation
     grid_layout: {
       width: '100%',
-      // height: '400px'
+      <?php if (count($ans) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
       height: 'auto'
+      <?php } ?>
     },
     btn_reset: true,
     extensions: [
