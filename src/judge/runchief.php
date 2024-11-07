@@ -31,21 +31,21 @@ $order = myhtmlspecialchars($_GET["order"]);
 <form name="form1" method="post" action="<?php echo $runphp; ?>">
   <input type=hidden name="confirmation" value="noconfirm" />
 <br>
-<table width="100%" border=1>
+<table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
-  <td><b><a href="<?php echo $runphp; ?>?order=run">Run #</a></b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=site">Site</a></b></td>
+  <td><b>Run #</b></td>
+  <td><b>Site</b></td>
 <?php if($runphp == "run.php") { ?>
-  <td><b><a href="<?php echo $runphp; ?>?order=user">User</a></b></td>
+  <td><b>User</b></td>
 <?php } ?>
   <td><b>Time</b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=problem">Problem</a></b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=language">Language</a></b></td>
+  <td><b>Problem</b></td>
+  <td><b>Language</b></td>
 <!--  <td><b>Filename</b></td> -->
-  <td><b><a href="<?php echo $runphp; ?>?order=status">Status</a></b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=judge">Judge (Site)</a></b></td>
+  <td><b>Status</b></td>
+  <td><b>Judge (Site)</b></td>
   <td><b>AJ</b></td>
-  <td><b><a href="<?php echo $runphp; ?>?order=answer">Answer</a></b></td>
+  <td><b>Answer</b></td>
   <td><b>Team</b></td>
  </tr>
 <?php
@@ -175,7 +175,7 @@ echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
 else {
 ?>
-  <br>
+  <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
   <script language="javascript">
     function conf() {
       if (confirm("Confirm?")) {
@@ -183,6 +183,154 @@ else {
       }
     }
   </script>
+  <script language="JavaScript">
+    // Custom string caster
+    function customStringCaster(val) {
+      return val.toString();
+    }
+
+    // Custom string sorter
+    function customStringSorter(n1, n2) {
+      if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+        return -1;
+      }
+      if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+        return 1;
+      }
+      return 0;
+    }
+
+    // Custom sorter
+    function customJudgeSorter(n1, n2) {
+      if (n1.value == "‎" && n2.value != "‎") {
+        return -1;
+      }
+      else if (n2.value == "‎" && n1.value != "‎") {
+        return 1;
+      }
+      else if (n1.value == "‎" && n2.value == "‎") {
+        return 0;
+      }
+      else if (n1.value.toLowerCase().indexOf(' admin') == 0 &&
+              n2.value.toLowerCase().indexOf(' admin') != 0) {
+        return -1;
+      }
+      else if (n2.value.toLowerCase().indexOf(' admin') == 0 &&
+              n1.value.toLowerCase().indexOf(' admin') != 0) {
+        return 1;
+      }
+      else if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+        return -1;
+      }
+      else if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+        return 1;
+      }
+      else return 0;
+    }
+
+    var tfConfig = {
+      base_path: '../vendor/tablefilter/0.7.3/',
+      col_widths: [
+        '9%', '6%', '6%',
+        '15%', '14%', '6%',
+        '12%', '2%', '20%',
+        '10%'
+      ],
+      col_types: [
+        'number', 'number', 'number',
+        'customstring', 'customstring', 'customjudge',
+        'customstring', 'customstring', 'customstring',
+        'customstring'
+      ],
+      /* cell_parser delegate used for filtering images in a column */
+      cell_parser: {
+        cols: [6],
+        parse: function(o, cell, colIndex) {
+          /* admin users comes before other users, except if empty */
+          var txt = cell.textContent || cell.innerText;
+
+          if (txt.indexOf('admin') == 0) {
+            return ' ' + txt;
+          }
+          else return txt;
+        }
+      },
+      col_1: 'select',
+      col_3: 'select',
+      col_4: 'select',
+      col_5: 'select',
+      col_6: 'select',
+      col_7: 'none',
+      col_8: 'select',
+      col_9: 'select',
+      responsive: {
+        details: true
+      },
+      toolbar: {
+        target_id: 'externalToolbar'
+      },
+      sticky_headers: true,
+      rows_counter: {
+        ignore_case: true
+      },
+      watermark: 'Filter...',
+      auto_filter: {
+        delay: 100 //milliseconds
+      },
+      msg_filter: 'Filtering...',
+      loader: true,
+      status_bar: true,
+      ignore_diacritics: true,
+      <?php if (count($run) != 0) { ?>
+      no_results_message: {
+        content: '<?php echo "<center><b><font color=\"#ff0000\">NO RUNS FOUND</font></b></center>" ?>',
+      },
+      <?php } ?>
+      paging: {
+        results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+      },
+      // grid layout customisation
+      grid_layout: {
+        width: '100%',
+        <?php if (count($run) != 0) { ?>
+        height: '400px'
+        <?php } else { ?>
+        height: 'auto'
+        <?php } ?>
+      },
+      btn_reset: true,
+      extensions: [
+        {
+          name: 'filtersVisibility',
+          visible_at_start: false
+        },
+        {
+          name: 'colsVisibility',
+          enable_tick_all: true
+        },
+        {
+          name: 'sort',
+          // Register custom sorter when sort extension is loaded
+          on_sort_loaded: function(o, sort) {
+            // addSortType accepts:
+            // 1. an identifier of the sort type (lowercase)
+            // 2. an optional function that takes a string and casts it to a
+            // desired format, if not specified it returns the string
+            // 3. an optional compare function taking 2 values and compares
+            // them. If not specified defaults to `less than compare` type
+            sort.addSortType('customjudge', customStringCaster, customJudgeSorter);
+            sort.addSortType('customstring', customStringCaster, customStringSorter);
+          }
+        },
+      ]
+    };
+    var tf = new TableFilter(
+      document.querySelector('.bocaTable'),
+      tfConfig
+    );
+    tf.init();
+  </script>
+  <br>
   <center>
 <b>Click on the number of a run to edit it or select them with<br />the checkboxes and use the buttons to work on multiple runs:</b><br /><br />
       <input type="submit" name="auto" value="Re-run autojudge for selected runs" onClick="conf()">

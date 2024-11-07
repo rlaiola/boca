@@ -34,6 +34,10 @@ $runeditphp = "runeditchief.php";
 
 echo "<html><head><title>Judge's Page</title>\n";
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
+echo "<script src=\"../vendor/tablefilter/0.7.3/tablefilter.js\"></script>\n";
+echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/tablefilter.css\">\n";
+echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/filtersVisibility.css\">\n";
+echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/colsVisibility.css\">\n";
 echo "<link rel=stylesheet href=\"../Css.php\" type=\"text/css\">\n";
 
 //temporario!!!!
@@ -66,7 +70,7 @@ echo "<tr><td nowrap bgcolor=\"#$cc\" align=center>";
 echo "<img src=\"../images/smallballoontransp.png\" alt=\"\">";
 echo "<font color=\"#000000\">BOCA</font>";
 echo "</td><td bgcolor=\"#$cc\" width=\"99%\">\n";
-echo "Username: " . $_SESSION["usertable"]["userfullname"] . " (site=".$_SESSION["usertable"]["usersitenumber"].")<br>\n";
+echo "Username: " . $_SESSION["usertable"]["username"] . " (site=".$_SESSION["usertable"]["usersitenumber"].")<br>\n";
 list($clockstr,$clocktype)=siteclock();
 echo "</td><td bgcolor=\"#$cc\" align=center nowrap>&nbsp;".$clockstr."&nbsp;</td></tr>\n";
 echo "</table>\n";
