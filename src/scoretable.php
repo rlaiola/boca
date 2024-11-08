@@ -317,7 +317,6 @@ if($redo) {
 		if(!isset($score[$e]['username'])) break;
 	if(!isset($score[$e]['classingroup'])) continue;  
 	  reset($score[$e]['classingroup']);
- 	  
 	  while(1) {
 		  $cg1=key($score[$e]['classingroup']);
 		  $cg2=current($score[$e]['classingroup']);
