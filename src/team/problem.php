@@ -49,7 +49,7 @@ if(is_readable('/var/www/boca/src/sample/secretcontest/maratona.pdf')) {
 ?>
 
 
-<br><br><br>
+<br>
 <table width="100%" border=1>
  <tr>
   <td><b>Name</b></td>
