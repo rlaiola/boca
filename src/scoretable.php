@@ -488,8 +488,23 @@ echo $strtmp;
     background-color: #e0e0d0;
   }
 
+  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 2) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: #e0e0d0;
+  }
+
+  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 2) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: #ffff00;
+  }
+
   div.grd_headTblCont table thead tr td:nth-child(2),
-  table.bocaTable tbody tr td:nth-child(2) {
+  table.bocaTable tbody tr td:nth-child(2),
+  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(2) {
     left: 52px;
   }
 
