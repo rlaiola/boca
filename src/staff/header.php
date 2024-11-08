@@ -51,7 +51,7 @@ echo "<tr><td nowrap bgcolor=\"#ffa020\" align=center>";
 echo "<img src=\"../images/smallballoontransp.png\" alt=\"\">";
 echo "<font color=\"#000000\">BOCA</font>";
 echo "</td><td bgcolor=\"#ffa020\" width=\"99%\">\n";
-echo "Username: " . $_SESSION["usertable"]["userfullname"] . " (site=".$_SESSION["usertable"]["usersitenumber"].")<br>\n";
+echo "Username: " . $_SESSION["usertable"]["username"] . " (site=".$_SESSION["usertable"]["usersitenumber"].")<br>\n";
 list($clockstr,$clocktype)=siteclock();
 echo "</td><td bgcolor=\"#ffa020\" align=center nowrap>&nbsp;".$clockstr."&nbsp;</td></tr>\n";
 echo "</table>\n";
@@ -64,16 +64,19 @@ if(($s = DBSiteInfo($_SESSION["usertable"]["contestnumber"], $_SESSION["usertabl
 
 echo "<table border=0 width=\"100%\" align=center>\n";
 echo " <tr>\n";
-echo "  <td align=center width=\"20%\"><a class=menu style=\"font-weight:bold\" href=task.php>Tasks</a></td>\n";
-//echo "  <td align=center width=\"20%\"><a class=menu style=\"font-weight:bold\" href=task.php>Tasks ($nr)</a></td>\n";
-echo "  <td align=center width=\"20%\"><a class=menu style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
-echo "  <td align=center width=\"20%\"><a class=menu style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
+$currentPage = basename($_SERVER['REQUEST_URI']);
+if (getenv('BOCA_DISABLE_TASKS') !== 'true') {
+echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "task.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=task.php>Tasks</a></td>\n";
+//echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "task.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=task.php>Tasks ($nr)</a></td>\n";
+}
+echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
+echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
 
 //echo " <td align=center width=\"20%\"><a href=\"#\" class=menu style=\"font-weight:bold\" onClick=\"window.open('report/stat.php', ".
 //                "'Problem Statistics','width=800,height=600,scrollbars=yes,toolbar=yes,menubar=yes,".
 //                "resizable=yes')\">Statistics</a></td>\n";
 
-//echo "  <td align=center width=\"20%\"><a class=menu style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
+//echo "  <td align=center width=\"20%\"><a class=\"menu" . (str_contains($currentPage, "option.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
 echo "  <td align=center width=\"20%\"><a class=menu style=\"font-weight:bold\" href=../index.php>Logout</a></td>\n";
 echo " </tr>\n"; 
 echo "</table>\n";
