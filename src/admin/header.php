@@ -39,6 +39,11 @@ if(!isset($_POST['noflush'])) {
 	require_once("$locr/version.php");
 	echo "<html><head><title>Admin's Page</title>\n";
 	echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
+	echo "<script src=\"../vendor/tablefilter/0.7.3/tablefilter.js\"></script>\n";
+	echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/tablefilter.css\">\n";
+	echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/filtersVisibility.css\">\n";
+	echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/colsVisibility.css\">\n";
+	echo "<script src=\"../vendor/moment.js/2.30.1/moment.min.js\"></script>\n";
 	echo "<link rel=stylesheet href=\"$loc/Css.php\" type=\"text/css\">\n";
 }
 

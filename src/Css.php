@@ -90,6 +90,87 @@ p.link a:hover span {
   display: block;
 }
 
+div.grd_headTblCont {
+  border: none;
+  margin: 0;
+  background-color: <?php echo $corfundo?>;
+}
+
+div.grd_headTblCont table,
+div.grd_tblCont table {
+  border-collapse: separate;
+  border: black;
+}
+
+div.grd_headTblCont table td {
+  height: inherit;
+  background-color: <?php echo $corfundo?>;
+  border: 1px solid black !important;
+  padding: 0;
+}
+
+div.grd_Cont {
+  box-shadow: none;
+  background-color: inherit;
+  border: 1px solid;
+}
+
+div.grd_Cont .flt {
+  height: auto;
+  font-family: system-ui;
+  font-size: 12pt;
+  border: 0;
+  border-radius: 0;
+}
+
+div.grd_tblCont table td {
+  border-bottom: 1px solid !important;
+  text-wrap: wrap;
+  padding: 0;
+}
+
+div.grd_tblCont {
+  background: transparent;
+  overflow: auto;
+}
+
+.inf {
+  background-color: <?php echo $corfundo?>;
+  border: 0;
+  border-radius: 0;
+}
+
+select.pgSlc {
+  height: auto;
+  margin: inherit;
+  border: initial;
+  vertical-align: inherit;
+}
+
+select.pgSlc:focus {
+  border-color: inherit;
+  outline: inherit;
+  box-shadow: inherit;
+}
+
+span .pgInp,
+span .reset {
+  cursor: pointer;
+}
+
+span.rspgSpan {
+  display: inline-block;
+  padding: .5em;
+  vertical-align: top;
+}
+
+select.rspg {
+  height: auto;
+  margin-top: 5px;
+  border: initial;
+  vertical-align: top;
+}
+
 input.error {
   color: red;
   border: solid 1px red;

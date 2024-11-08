@@ -298,6 +298,7 @@ if(isset($_POST['name']) && $_POST['name'] != '') {
 
 $runtmp = $_SESSION["locr"] . $ds . "private" . $ds . "runtmp" . $ds . "run-contest" . $_SESSION["usertable"]["contestnumber"] . 
   "-site". $_SESSION["usertable"]["usersitenumber"] . "-user" . $_SESSION["usertable"]["usernumber"] . ".php";
+  
 $redo = TRUE;
 if(!isset($_SESSION['forceredo']) || $_SESSION['forceredo']==false) {
   $actualdelay = 15;
@@ -309,8 +310,8 @@ if(!isset($_SESSION['forceredo']) || $_SESSION['forceredo']==false) {
 	if(isset($conf['doenc']) && $conf['doenc'])
 	  $strtmp = decryptData(substr($strtmp,strpos($strtmp,"\n")+1),$conf["key"],'runtmp');
 	else $strtmp = substr($strtmp,strpos($strtmp,"\n")+1);
-	if($strtmp !== false)
-	  $redo = FALSE;
+	// if($strtmp !== false)
+	//   $redo = FALSE;
       }
     }
   }
@@ -320,7 +321,7 @@ if($redo) {
   $_SESSION['forceredo']=false;
   if(($st = DBSiteInfo($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usersitenumber"])) == null)
     ForceLoad("../index.php");
-  $strtmp="<br>\n<table width=\"100%\" border=1>\n <tr>\n  <td><b>Run #</b></td>\n<td><b>Time</b></td>\n".
+  $strtmp="<br>\n<table class=\"bocaTable\" width=\"100%\" border=1 style=\"width: 100%\">\n <tr>\n  <td><b>Run #</b></td>\n<td><b>Time</b></td>\n".
     "  <td><b>Problem</b></td>\n  <td><b>Language</b></td>\n  <td><b>Answer</b></td>\n  <td><b>File</b></td>\n </tr>\n";
   $strcolors = "0";
   $run = DBUserRuns($_SESSION["usertable"]["contestnumber"],
@@ -360,6 +361,9 @@ if($redo) {
   $strtmp .= "</table>";
   if (count($run) == 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
   $linesubmission = @file_get_contents($_SESSION["locr"] . $ds . "private" . $ds . 'run-using-command.config');
+
+  $strtmp .= "<div id=\"externalToolbar\" " . (count($run) == 0 ? "style=\"display: none\"" : "") . "></div>";
+
   if(trim($linesubmission) == '1') {
     $strtmp .= "<br><br><center><b>To submit a program, use the command-line tool:</b>\n<br>".
       "<pre>boca-submit-run USER PASSWORD PROBLEM LANGUAGE FILE</pre><br>".
@@ -445,6 +449,101 @@ if($redo) {
 echo $strtmp;
 ?>
 
+<script language="JavaScript">
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
 
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+      '10%', '7%', '17%',
+      '16%', '30%', '20%'
+    ],
+    col_types: [
+      'number', 'number', 'customstring',
+      'customstring', 'customstring', 'customstring'
+    ],
+    col_2: 'select',
+    col_3: 'select',
+    col_4: 'select',
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if (count($run) != 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO RUNS FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if (count($run) != 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    btn_reset: true,
+    extensions: [
+      {
+        name: 'filtersVisibility',
+        visible_at_start: false
+      },
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true
+      },
+      {
+        name: 'sort',
+        // Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
+        }
+      }
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>
 </body>
 </html>

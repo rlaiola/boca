@@ -191,6 +191,8 @@ if($redo) {
 	if(!isset($hor)) $hor = -1;
 	if($hor>$duration) $hor=$duration;
 
+	if (($s = DBSiteInfo($ct['contestnumber'],$_SESSION["usertable"]["usersitenumber"])) == null)
+		ForceLoad("index.php");
 	$level=$s["sitescorelevel"];
 	if($level<=0) $level=-$level;
 	else {
@@ -299,7 +301,7 @@ if($redo) {
 		}
 	}
 
-	$strtmp .= "<br>\n<table id=\"myscoretable\" width=\"100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
+	$strtmp .= "<br>\n<table class=\"bocaTable\" id=\"myscoretable\" width=\"100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
 	if(!$des) {
 		if($level>0)
 			$strtmp .= "<td><b>Problems</b></td>";
@@ -440,7 +442,7 @@ if($redo) {
 		  break;
 	}
 	$strtmp .= "</table>";
-	if ($n == 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
+	if ($n === 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
 	else {
 		if(!$des) 
 			if($level>0) $strtmp .= "<br><font color=\"#ff0000\">P.S. Problem names are hidden.</font>";
@@ -467,3 +469,117 @@ if($redo) {
 }
 echo $strtmp;
 ?>
+
+<div id="externalToolbar" <?php if ($n === 0) echo "style=\"display: none\""; ?>></div>
+<style>
+  div.grd_headTblCont table thead tr td,
+  table.bocaTable tbody tr td {
+    position: sticky;
+    z-index: 1;
+    width: 100px;
+    padding: 0;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(-n + 2),
+  table.bocaTable tbody tr td:nth-child(-n + 2) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background-color: #e0e0d0;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(2),
+  table.bocaTable tbody tr td:nth-child(2) {
+    left: 52px;
+  }
+
+  div.grd_headTblCont table thead tr:nth-child(2) {
+	display: none;
+  }
+</style>
+<script language="JavaScript">
+  // Custom string caster
+  function customStringCaster(val) {
+    return val.toString();
+  }
+
+  // Custom string sorter
+  function customStringSorter(n1, n2) {
+    if (n1.value.toLowerCase() < n2.value.toLowerCase()) {
+      return -1;
+    }
+    if (n2.value.toLowerCase() < n1.value.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  }
+
+  var tfConfig = {
+    base_path: '../vendor/tablefilter/0.7.3/',
+    col_widths: [
+        '50px', '200px', '150px',
+    ],
+    col_types: [
+      'number', 'customstring', 'customstring'
+    ],
+    responsive: {
+      details: true
+    },
+    toolbar: {
+      target_id: 'externalToolbar'
+    },
+    sticky_headers: true,
+    rows_counter: {
+      ignore_case: true
+    },
+    watermark: 'Filter...',
+    auto_filter: {
+      delay: 100 //milliseconds
+    },
+    msg_filter: 'Filtering...',
+    loader: true,
+    status_bar: true,
+    ignore_diacritics: true,
+    <?php if ($n !== 0) { ?>
+    no_results_message: {
+      content: '<?php echo "<center><b><font color=\"#ff0000\">NO MATCHES FOUND</font></b></center>" ?>',
+    },
+    <?php } ?>
+    paging: {
+      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+    },
+    // grid layout customisation
+    grid_layout: {
+      width: '100%',
+      <?php if ($n !== 0) { ?>
+      height: '400px'
+      <?php } else { ?>
+      height: 'auto'
+      <?php } ?>
+    },
+    extensions: [
+      {
+        name: 'colsVisibility',
+        enable_tick_all: true,
+      },
+      {
+        name: 'sort',
+		// Register custom sorter when sort extension is loaded
+        on_sort_loaded: function(o, sort) {
+          // addSortType accepts:
+          // 1. an identifier of the sort type (lowercase)
+          // 2. an optional function that takes a string and casts it to a
+          // desired format, if not specified it returns the string
+          // 3. an optional compare function taking 2 values and compares
+          // them. If not specified defaults to `less than compare` type
+          sort.addSortType('customstring', customStringCaster, customStringSorter);
+        }
+      },
+    ]
+  };
+  var tf = new TableFilter(
+    document.querySelector('.bocaTable'),
+    tfConfig
+  );
+  tf.init();
+</script>

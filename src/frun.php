@@ -967,7 +967,7 @@ function DBUserRuns($contest,$site,$user) {
 				"r.contestnumber=a.contestnumber and r.runproblem=p.problemnumber and " .
 				"r.runsitenumber=$site and r.usernumber=$user and not r.runstatus ~ 'deleted' and " .
 				"(r.rundatediffans<=$t or (r.runstatus != 'judged' and r.rundatediff<=$t)) and " .
-				"a.answernumber=r.runanswer order by r.runnumber",
+				"a.answernumber=r.runanswer order by r.rundatediff desc",
 				"DBUserRuns(get run/prob/ans/lang)");
 	$n = DBnlines($r);
 
