@@ -205,6 +205,7 @@ To submit a new backup file, just fill in the following fields:</b></center>
   </script>
   <center>
       <input type="submit" name="Submit" value="Send" onClick="conf()">
+      <input type="reset" name="Submit2" value="Clear">
   </center>
 </form>
 

@@ -25,14 +25,20 @@ if(!ValidSession()) { // || $_SESSION["usertable"]["usertype"] == 'team') {
         InvalidSession("optionlower.php");
         ForceLoad("index.php");
 }
+
+if ($_SESSION["usertable"]["authmethod"] != "password") {
+  echo "<br><br><center><b>UPDATES ARE NOT ALLOWED</b></center>"; 
+  exit;
+}
+
 $loc = $_SESSION['loc'];
 
 if (isset($_GET["username"]) && isset($_GET["userfullname"]) && isset($_GET["userdesc"]) && 
     isset($_GET["passwordo"]) && isset($_GET["passwordn"])) {
-  if($_SESSION["usertable"]["usertype"] == 'team') {
-    MSGError('Updates are not allowed');
-    ForceLoad("option.php");
-  }    
+  // if($_SESSION["usertable"]["usertype"] == 'team') {
+  //   MSGError('Updates are not allowed');
+  //   ForceLoad("option.php");
+  // }    
 
 	$username = myhtmlspecialchars($_GET["username"]);
 	$userfullname = myhtmlspecialchars($_GET["userfullname"]);
@@ -62,8 +68,15 @@ $a = DBUserInfo($_SESSION["usertable"]["contestnumber"],
 function computeHASH()
 {
 	var username, userdesc, userfull, passHASHo, passHASHn;
-	if (document.form1.passwordn1.value != document.form1.passwordn2.value) return;
-	if (document.form1.passwordn1.value == document.form1.passwordo.value) return;
+	if (document.form1.passwordn1.value == document.form1.passwordo.value) {
+		alert("New password is the same as the old one. Please choose a different password.");
+		return;
+	}
+	if (document.form1.passwordn1.value != document.form1.passwordn2.value) {
+		alert("New password and confirmation do not match. Please try again.");
+		return;
+	}
+
 	username = document.form1.username.value;
 	userdesc = document.form1.userdesc.value;
 	userfull = document.form1.userfull.value;
@@ -74,6 +87,30 @@ function computeHASH()
 	document.form1.passwordn1.value = '                                                         ';
 	document.form1.passwordn2.value = '                                                         ';
 	document.location='option.php?username='+username+'&userdesc='+userdesc+'&userfullname='+userfull+'&passwordo='+passHASHo+'&passwordn='+passHASHn;
+}
+
+function validatePasswords() {
+	const errorMessage = document.getElementById("error-message");
+	errorMessage.innerText = "";
+
+	if (document.form1.passwordn1.value !== "" &&
+		document.form1.passwordn1.value === document.form1.passwordo.value) {
+		document.form1.passwordn1.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " New password is the same as the old one.";
+		errorMessage.append(msg);
+	} else {
+		document.form1.passwordn1.classList.remove("error");
+	}
+
+	if (document.form1.passwordn1.value !== document.form1.passwordn2.value) {
+		document.form1.passwordn2.classList.add("error");
+		const msg = document.createElement('p');
+		msg.innerText = String.fromCharCode(0x274C) + " New password and confirmation do not match.";
+		errorMessage.append(msg);
+	} else {
+		document.form1.passwordn2.classList.remove("error");
+	}
 }
 </script>
 
@@ -102,27 +139,100 @@ function computeHASH()
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordo" size="20" maxlength="200" />
+        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" required />
+        <i class="bi bi-eye-slash" id="toggleOldPassword" style="display: none;"></i>
+        <script>
+          const toggleOldPassword = document.querySelector("#toggleOldPassword");
+          const passwordo = document.form1.passwordo;
+
+          passwordo.addEventListener("keyup", function() {
+            if (!this.value) {
+              toggleOldPassword.style.display = "none";
+            } else {
+              toggleOldPassword.style.display = "";
+            }
+          });
+          
+          toggleOldPassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = passwordo.getAttribute("type") === "password" ? "text" : "password";
+            passwordo.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+          });
+        </script>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn1" size="20" maxlength="200" />
+        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" required />
+        <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
+        <script>
+          const toggleNewPassword = document.querySelector("#toggleNewPassword");
+          const passwordn1 = document.form1.passwordn1;
+
+          passwordn1.addEventListener("keyup", function() {
+            if (!this.value) {
+              toggleNewPassword.style.display = "none";
+            } else {
+              toggleNewPassword.style.display = "";
+            }
+          });
+
+          toggleNewPassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = passwordn1.getAttribute("type") === "password" ? "text" : "password";
+            passwordn1.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+          });
+        </script>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-	  <input type="password" name="passwordn2" size="20" maxlength="200" />
+        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" required />
+        <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
+        <script>
+          const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
+          const passwordn2 = document.form1.passwordn2;
+
+          passwordn2.addEventListener("keyup", function() {
+            if (!this.value) {
+              toggleNewPassword2.style.display = "none";
+            } else {
+              toggleNewPassword2.style.display = "";
+            }
+          });
+
+          toggleNewPassword2.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = passwordn2.getAttribute("type") === "password" ? "text" : "password";
+            passwordn2.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+          });
+        </script>
         </td>
       </tr>
     </table>
+    <script>
+      document.form1.passwordo.addEventListener("keyup", validatePasswords);
+      document.form1.passwordn1.addEventListener("keyup", validatePasswords);
+      document.form1.passwordn2.addEventListener("keyup", validatePasswords);
+    </script>
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
+      <input type="reset" name="Clear" value="Clear">
   </center>
 </form>
+<div id="error-message"></div>
 
 </body>
 </html>

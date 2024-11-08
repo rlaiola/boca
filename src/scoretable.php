@@ -325,8 +325,10 @@ if($redo) {
 		  if(empty($cg2))
 			  if(next($score[$e]['classingroup'])===false)
 				  break;
+		// Adiciona a classe `highlighted-row` se o usuário do scoreboard corresponder ao usuário logado
+		$rowClass = ($score[$e]['username'] == $_SESSION["usertable"]["username"]) ? 'highlight' : '';
   	    $strtmp .= " <tr class=\"";
-		$strtmp .= "sitegroup" . $cg1 . "\">";
+		$strtmp .= "sitegroup" . $cg1 . " " . $rowClass . "\">";
 		$strtmp .= "<td>" . $cg2 . "</td>\n";
 /*
 		if($level>3 && !$final && $score[$e]["site"]==$ct['contestlocalsite'] &&
@@ -346,14 +348,37 @@ if($redo) {
 			$_SESSION["scoreblink"][$score[$e]["username"]."-".$score[$e]["site"]]=0;
 			if( $score[$e]["userflag"] != '')
 			  $strtmp .= "  <td nowrap><img alt=\"" .  $score[$e]["userflag"]. "\" width=\"18\" src=\"" . $loc. '/images/flags/' . 
-			    $score[$e]["userflag"] . ".png\"> " . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			    // $score[$e]["userflag"] . ".png\"> " . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+				$score[$e]["userflag"] . ".png\"> " . 
+				(
+				  $_SESSION["usertable"]["usertype"] == "admin" || 
+				  $score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
+				  getenv('BOCA_ANONYMIZED_SCORE') != 'true' ? 
+					$score[$e]["username"] : "####"
+				) . 
+				"/".$score[$e]["usersitename"] . " </td>";
 			else
-			  $strtmp .= "  <td nowrap>" . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			  // $strtmp .= "  <td nowrap>" . $score[$e]["username"]."/".$score[$e]["usersitename"] . " </td>";
+			  $strtmp .= "  <td nowrap>" . 
+			  (
+				$_SESSION["usertable"]["usertype"] == "admin" || 
+				$score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
+				getenv('BOCA_ANONYMIZED_SCORE') != 'true' ? 
+				  $score[$e]["username"] : "####"
+			  ) . 
+			  "/".$score[$e]["usersitename"] . " </td>";
 
 	//		if($score[$e]['usershortinstitution'] != '') 
 	//		  $strtmp .= "<td>[" . $score[$e]['usershortinstitution'] . '] ' . $score[$e]["userfullname"];
 	//		else
-			  $strtmp .= "<td>" . $score[$e]["userfullname"];
+			  // $strtmp .= "<td>" . $score[$e]["userfullname"];
+			  $strtmp .= "<td>" . 
+			  	(
+				  $_SESSION["usertable"]["usertype"] == "admin" || 
+				  $score[$e]["user"] == $_SESSION["usertable"]["usernumber"] ||
+				  getenv('BOCA_ANONYMIZED_SCORE') != 'true' ? 
+				    $score[$e]["userfullname"] : "####"
+				);
 //		}
 		$_SESSION["scorepos"][$score[$e]["username"]."-".$score[$e]["site"]] = $cg2;
 

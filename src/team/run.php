@@ -173,14 +173,16 @@ if (isset($_POST["problem"]) && isset($_POST["language"]) &&
     
     //@file_put_contents($fcname . ".try", $verify1 . "\n", FILE_APPEND | LOCK_EX);
     $codes = @file($fcname . ".txt",FILE_IGNORE_NEW_LINES);
-    if(is_array($codes) && in_array($verify,$codes)) {
-      @file_put_contents($fcname . ".try", $verify1 . "-ALREADY\n", FILE_APPEND | LOCK_EX);
-      if(isset($_POST['name']) && $_POST['name'] != '') {
-	echo "\nRESULT: SAME FILE ALREADY SUBMITTED FOR THIS PROB/LANG";
-	exit;
-      }
-      MSGError("Same file already submitted for this problem and language"); ForceLoad($runteam);
-    } 
+    if (getenv('BOCA_IGNORE_SAME_FILE_CHECK') != 'true') {
+      if(is_array($codes) && in_array($verify,$codes)) {
+        @file_put_contents($fcname . ".try", $verify1 . "-ALREADY\n", FILE_APPEND | LOCK_EX);
+        if(isset($_POST['name']) && $_POST['name'] != '') {
+    echo "\nRESULT: SAME FILE ALREADY SUBMITTED FOR THIS PROB/LANG";
+    exit;
+        }
+        MSGError("Same file already submitted for this problem and language"); ForceLoad($runteam);
+      } 
+    }
     
     if(isset($_POST['pastcode']) && $_POST['pastcode'] != '') {
       $pastcode = myhtmlspecialchars($_POST["pastcode"]);

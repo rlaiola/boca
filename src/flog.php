@@ -127,16 +127,57 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 	if ($a == null) {
 		if($msg) {
 			LOGLevel("User $name tried to log in contest $contest but it does not exist.",2);
-			MSGError("User does not exist or incorrect password.");
+			MSGError("User does not exist" . ($_SESSION['google_authorized'] ? "" : " or incorrect password") . ".");
 		}
 		return false;
 	}
 	$a = DBUserInfo($b["contestnumber"], $b["contestlocalsite"],$a['usernumber'],null,false);
+
+	$localUsers = [...explode(",", getenv("BOCA_LOCAL_USERS")), ...array("system", "admin")];
+
+	$a["authmethod"] = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password";
+
+	if ($a["authmethod"] != "password" && in_array($name, $localUsers)) {
+		$a["authmethod"] = "password";
+		$p = $a["userpassword"];
+		$pass = myhash($pass);
+	}
+	else if ($a["authmethod"] == 'ldap') {
+		try {
+			$ldapManager = new LDAPManager();
+			$isAuthenticated = $ldapManager->authenticateUser($name, $pass);
+
+			if (!$isAuthenticated) {
+				LOGLevel("User $name tried to log in contest $contest but it does not exist in LDAP server or incorrect password.", 2);
+				if ($msg) MSGError("User does not exist or incorrect password.");
+				return false;
+			}
+			$p = $pass;
+			$ldapManager->disconnect();
+		} 
+		catch (Exception $e) {
+			LOGLevel("User $name tried to log in contest $contest but LDAP server is not available. " . $e->getMessage(), 2);
+			if ($msg) MSGError("LDAP server is not available.");
+			return false;
+		}
+	}
+	else if ($a["authmethod"] == 'google') {
+		if ($_SESSION["google_authorized"]) $p = $pass;
+		else {
+			LOGLevel("User $name tried to log in contest $contest but was not authorized by google",2);
+			if ($msg)
+				MSGError("User must login with Google.");
+			return false;
+		}
+	}
+	else {
+		$p = myhash($a["userpassword"] . session_id());
+	}
+
 	$_SESSION['usertable'] = $a;
 	$_SESSION['usertable']['usersession']='';
 	$_SESSION['usertable']['userip']='';
 
-	$p = myhash($a["userpassword"] . session_id());
 	$_SESSION['usertable']['userpassword'] = $p;
 	if ($d["sitepermitlogins"]=="f" && $a["usertype"] != "admin" && $a["usertype"] != "judge" && $a["usertype"] != "site" && $a["usertype"] != "staff") {
 		LOGLevel("User $name tried to login contest $contest but logins are denied.",2);
@@ -157,12 +198,6 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		return false;
 	}
 
-	if(!ctype_alnum($name)) {
-	  LOGLevel("User $name tried to log in contest $contest but username is not alphanum.",2);
-	  if($msg) MSGError("Username must be alpha numeric.");
-	  unset($_SESSION["usertable"]);
-	  return false;
-	}
 	$ccode = trim($_SERVER['HTTP_USER_AGENT']);
 	$ds = DIRECTORY_SEPARATOR;
 	if($ds=="") $ds = "/";
@@ -234,7 +269,7 @@ function DBLogInContest($name,$pass,$contest,$msg=true) {
 		DBExec($c,"update usertable set userip='" . $gip . "', updatetime=" . time() . ", userlastlogin=$t, ". 
 			   "usersession='".session_id()."' where username='$name' and contestnumber=".
 			   $b["contestnumber"]." and usersitenumber=".$b["contestlocalsite"], "DBLogIn(update user)");
-		if($name=='admin') {
+		if($a["usertype"]=='admin') {
 			list($clockstr,$clocktime)=siteclock();
 			if($clocktime < -600)
 				DBExec($c,"update contesttable set contestunlockkey='' where contestnumber=" . $b["contestnumber"], "DBLogInContest(update contest)");
@@ -264,6 +299,14 @@ function DBLogOut($contest, $site, $user, $isadmin=false) {
 			foreach(glob($dir . '*') as $file) {
 				cleardir($file,false,true);
 			}
+		}
+	}
+	if ($_SESSION["google_authorized"])  {
+		try {
+			$googleClient = new GoogleClient();
+			$googleClient->logout($_SESSION['google_token']);
+		} catch (Exception $e) {
+			LOGLevel($e->getMessage(), 0);
 		}
 	}
 	LOGLevel("User $user (contest=$contest,site=$site) logged out.",2);

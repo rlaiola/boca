@@ -21,7 +21,7 @@ require('header.php');
 if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
 	ForceLoad("../index.php");
 ?>
-<br><b>Information:</b>
+
 <?php
 /*
 <br>General information: <a href="https://global.naquadah.com.br/boca/info_sheet.pdf">info_sheet.pdf</a>
@@ -49,7 +49,7 @@ if(is_readable('/var/www/boca/src/sample/secretcontest/maratona.pdf')) {
 ?>
 
 
-<br><br><br>
+<br>
 <table class="bocaTable" width="100%" border=1 style="width: 100%">
  <tr>
   <td><b>Name</b></td>
