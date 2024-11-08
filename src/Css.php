@@ -20,7 +20,7 @@ $corfundo = "#e0e0d0";
 $corfrente = "#000000";
 $corfundo2 = "#dfdfdf";
 $cormenu = "#dfdfdf";
-$cordestaque = "#fbe790";
+$cordestaque = "#ffff00";
 ?>
 div#popupnew {
 position:absolute;
@@ -101,7 +101,7 @@ input.error {
   text-align: center;
 }
 
-.highlight {background-color: <?php echo $cordestaque?>;font-weight: bold;}
+.highlight {background-color: <?php echo $cordestaque?>;}
 
 [class^="bi-"]::before,
 [class*=" bi-"]::before {
