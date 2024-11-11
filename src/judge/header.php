@@ -93,16 +93,16 @@ echo " <tr>\n";
 $currentPage = basename($_SERVER['REQUEST_URI']);
 //echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "problem.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=problem.php>Problems</a></td>\n";
 
-echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs ($nr)</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "run.php") || str_contains($currentPage, "runedit.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs ($nr)</a></td>\n";
 if($isboss) {
-  echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "runchief.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=runchief.php>Chief ($nrchief)</a></td>\n";
+  echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "runchief.php") || str_contains($currentPage, "runeditchief.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=runchief.php>Chief ($nrchief)</a></td>\n";
 }
 {
-  echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "allrunlist.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=allrunlist.php>All runs </a></td>\n";
+  echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "allrunlist.php") || str_contains($currentPage, "runview.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=allrunlist.php>All runs </a></td>\n";
 }
 echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
 if (getenv('BOCA_DISABLE_CLARIFICATIONS') !== 'true') {
-echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "clar.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=clar.php>Clarifications ($nc)</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "clar.php") || str_contains($currentPage, "claredit.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=clar.php>Clarifications ($nc)</a></td>\n";
 }
 
 echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "history.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=history.php>History</a></td>\n";

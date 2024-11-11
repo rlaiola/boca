@@ -74,7 +74,7 @@ if(!isset($_POST['noflush'])) {
 	echo "<table border=0 width=\"100%\" align=center>\n";
 	echo " <tr>\n";
 	$currentPage = basename($_SERVER['REQUEST_URI']);
-	echo "  <td align=center><a class=\"menu" . (str_contains($currentPage, "run.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
+	echo "  <td align=center><a class=\"menu" . (str_contains($currentPage, "run.php") || str_contains($currentPage, "runedit.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=run.php>Runs</a></td>\n";
 	echo "  <td align=center><a class=\"menu" . (str_contains($currentPage, "score.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=score.php>Score</a></td>\n";
 	if (getenv('BOCA_DISABLE_CLARIFICATIONS') !== 'true') {
 	echo "  <td align=center><a class=\"menu" . (str_contains($currentPage, "clar.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=clar.php>Clarifications</a></td>\n";

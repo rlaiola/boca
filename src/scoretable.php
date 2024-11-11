@@ -307,7 +307,8 @@ if($redo) {
 			$strtmp .= "<td><b>Problems</b></td>";
 	} else if($detail) {
 		for($i=0;$i<count($pr);$i++)
-			$strtmp .= "<td nowrap><b>" . $pr[$i]["problem"] . " &nbsp;</b></td>";
+			// $strtmp .= "<td nowrap><b>" . $pr[$i]["problem"] . " &nbsp;</b></td>";
+			$strtmp .= "<td title=\"" . $pr[$i]["problem"] . "\"><b>" . $pr[$i]["problem"] . "</b></td>";
 	} 
 	$strtmp .= "<td><b>Total</b></td>\n";
 	$strtmp .= "</tr>\n";
@@ -472,6 +473,10 @@ echo $strtmp;
 
 <div id="externalToolbar" <?php if ($n === 0) echo "style=\"display: none\""; ?>></div>
 <style>
+  td {
+    word-wrap: break-word;
+  }
+
   div.grd_headTblCont table thead tr td,
   table.bocaTable tbody tr td {
     position: sticky;

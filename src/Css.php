@@ -203,7 +203,7 @@ input.error {
 .bi-eye-slash::before { content: url(images/password/eye-slash.svg); }
 .bi-eye::before { content: url('images/password/eye.svg'); }
 
-form i {
+i.bi-eye-slash {
   margin-left: -30px;
   cursor: pointer;
 }
