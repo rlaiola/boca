@@ -16,6 +16,8 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////
 require('header.php');
+$runviewphp='runview.php';
+
 $ds = DIRECTORY_SEPARATOR;
 if($ds=="") $ds = "/";
 
@@ -329,7 +331,13 @@ if($redo) {
 		    $_SESSION["usertable"]["usernumber"]);
   for ($i=0; $i<count($run); $i++) {
     $strtmp .= " <tr>\n";
-    $strtmp .= "  <td nowrap>" . $run[$i]["number"] . "</td>\n";
+    if (getenv("BOCA_ENABLE_VIEW_RUNS") == "true") {
+      $strtmp .= "<td nowrap><a href=\"" . $runviewphp . "?runnumber=".$run[$i]["number"]."&runsitenumber=".$_SESSION["usertable"]["usersitenumber"] .
+       "\">" . $run[$i]["number"] . "</a></td>\n";
+    }
+    else {
+      $strtmp .= "  <td nowrap>" . $run[$i]["number"] . "</td>\n";
+    }
     $strtmp .= "  <td nowrap>" . dateconvminutes($run[$i]["timestamp"]) . "</td>\n";
     $strtmp .= "  <td nowrap>" . $run[$i]["problem"] . "</td>\n";
     $strtmp .= "  <td nowrap>" . $run[$i]["language"] . "</td>\n";
@@ -365,7 +373,13 @@ if($redo) {
   $strtmp .= "<div id=\"externalToolbar\" " . (count($run) == 0 ? "style=\"display: none\"" : "") . "></div>";
 
   if(trim($linesubmission) == '1') {
-    $strtmp .= "<br><br><center><b>To submit a program, use the command-line tool:</b>\n<br>".
+    $strtmp .= "<br><br>";
+    
+    if (getenv("BOCA_ENABLE_VIEW_RUNS") == "true") {
+      $strtmp .= "<center><b>Click on the number of a run to visualize it.</b></center>";
+    }
+
+    $strtmp .= "<center><b>To submit a program, use the command-line tool:</b>\n<br>".
       "<pre>boca-submit-run USER PASSWORD PROBLEM LANGUAGE FILE</pre><br>".
       "where USER is your username, PASSWORD is your password, <br>".
       "PROBLEM is one of { ";
@@ -380,7 +394,11 @@ if($redo) {
     $strtmp .= "}<br>FILE is your submission file<br><br>\n";
   } else {
 
-    $strtmp .= "<br><br><center><b>To submit a program, just fill in the following fields:</b></center>\n".
+    $strtmp .= "<br><br>";
+    if (getenv("BOCA_ENABLE_VIEW_RUNS") == "true") {
+      $strtmp .= "<center><b>Click on the number of a run to visualize it.</b></center>";
+    }
+    $strtmp .= "<center><b>To submit a program, just fill in the following fields:</b></center>\n".
       "<form name=\"form1\" enctype=\"multipart/form-data\" method=\"post\" action=\"". $runteam ."\">\n".
       "  <input type=hidden name=\"confirmation\" value=\"noconfirm\" />\n".
       "  <center>\n".

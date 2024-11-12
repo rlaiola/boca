@@ -106,7 +106,7 @@ echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($current
 }
 
 echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "history.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=history.php>History</a></td>\n";
-echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "team.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=team.php>As Team</a></td>\n";
+echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "team.php") || str_contains($currentPage, "teamview.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=team.php>As Team</a></td>\n";
 echo "  <td align=center width=\"10%\"><a class=\"menu" . (str_contains($currentPage, "option.php") ? " current-page" : "") . "\" style=\"font-weight:bold\" href=option.php>Options</a></td>\n";
 echo "  <td align=center width=\"10%\"><a class=menu style=\"font-weight:bold\" href=../index.php>Logout</a></td>\n";
 echo " </tr>\n"; 

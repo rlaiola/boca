@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Last modified 21/jul/2012 by cassio@ime.usp.br
 require('header.php');
+$runviewphp='teamview.php';
 
 if (isset($_FILES["sourcefile"]) && isset($_POST["problem"]) && isset($_POST["Submit"]) && isset($_POST["language"]) &&
     is_numeric($_POST["problem"]) && is_numeric($_POST["language"]) && $_FILES["sourcefile"]["name"]!="") {
@@ -98,7 +99,13 @@ if($redo) {
 					  $_SESSION["usertable"]["usernumber"]);
 	for ($i=0; $i<count($run); $i++) {
 		$strtmp .= " <tr>\n";
-		$strtmp .= "  <td nowrap>" . $run[$i]["number"] . "</td>\n";
+		if (getenv("BOCA_ENABLE_VIEW_RUNS") == "true") {
+			$strtmp .= "<td nowrap><a href=\"" . $runviewphp . "?runnumber=".$run[$i]["number"]."&runsitenumber=".$_SESSION["usertable"]["usersitenumber"] .
+       "\">" . $run[$i]["number"] . "</a></td>\n";
+		}
+		else {
+			$strtmp .= "  <td nowrap>" . $run[$i]["number"] . "</td>\n";
+		}
 		$strtmp .= "  <td nowrap>" . dateconvminutes($run[$i]["timestamp"]) . "</td>\n";
 		$strtmp .= "  <td nowrap>" . $run[$i]["problem"] . "</td>\n";
 		$strtmp .= "  <td nowrap>" . $run[$i]["language"] . "</td>\n";
@@ -137,7 +144,11 @@ if (count($run) == 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">NO RUNS
 
 $strtmp .= "<div id=\"externalToolbar\"" . (count($run) == 0 ? " style=\"display: none\"" : "") . "></div>\n";
 
-$strtmp .= "<br><br><center><b>To submit a program, just fill in the following fields:</b></center>\n".
+$strtmp .= "<br><br>";
+if (getenv("BOCA_ENABLE_VIEW_RUNS") == "true") {
+	$strtmp .= "<center><b>Click on the number of a run to visualize it.</b></center>";
+}
+$strtmp .="<center><b>To submit a program, just fill in the following fields:</b></center>\n".
 "<form name=\"form1\" enctype=\"multipart/form-data\" method=\"post\" action=\"". $runteam ."\">\n".
 "  <input type=hidden name=\"confirmation\" value=\"noconfirm\" />\n".
 "  <center>\n".
