@@ -58,9 +58,23 @@ if(is_readable('/var/www/boca/src/sample/secretcontest/maratona.pdf')) {
   <td><b>Descfile</b></td>
  </tr>
 <?php
+
+list($score,$data0) = DBScoreSite($_SESSION["usertable"]["contestnumber"], 
+                        $_SESSION["usertable"]["usersitenumber"], 1, -1);
+// print_r(array_keys($score));
+$userkey=$_SESSION["usertable"]["usernumber"] . "-" . $_SESSION["usertable"]["usersitenumber"];
+// echo $userkey;
+$solvedproblems = $score[$userkey]["problem"];
+// echo print_r($solvedproblems);
+
 $prob = DBGetProblems($_SESSION["usertable"]["contestnumber"]);
 for ($i=0; $i<count($prob); $i++) {
-  echo " <tr>\n";
+  if (array_key_exists($prob[$i]["number"], $solvedproblems)) {
+    echo " <tr bgcolor=\"#b0b0a0\">\n";
+  }
+  else {
+    echo " <tr>\n";
+  }
 //  echo "  <td nowrap>" . $prob[$i]["number"] . "</td>\n";
   echo "  <td nowrap>" . $prob[$i]["problem"];
   if($prob[$i]["color"] != "")
@@ -175,5 +189,6 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
   );
   tf.init();
 </script>
+<br><b><font color="#b0b0a0">* Problems with a shadow overlay indicate they have already been solved.</font></b>
 </body>
 </html>
