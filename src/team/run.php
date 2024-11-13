@@ -394,7 +394,7 @@ if($redo) {
     $strtmp .= "}<br>FILE is your submission file<br><br>\n";
   } else {
 
-    $strtmp .= "<br><br>";
+    $strtmp .= "<br>";
     if (getenv("BOCA_ENABLE_VIEW_RUNS") == "true") {
       $strtmp .= "<center><b>Click on the number of a run to visualize it.</b></center>";
     }
@@ -406,7 +406,7 @@ if($redo) {
       "      <tr> \n".
       "        <td width=\"25%\" align=right>Problem:</td>\n".
       "        <td width=\"75%\">\n".
-      "          <select name=\"problem\" onclick=\"Arquivo()\">\n";
+      "          <select name=\"problem\" onclick=\"Arquivo()\" style=\"width: 75%\">\n";
     $prob = DBGetProblems($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usertype"]=='judge');
     $strtmp .= "<option selected value=\"-1\"> -- </option>\n";
     for ($i=0;$i<count($prob);$i++)
@@ -417,7 +417,7 @@ if($redo) {
       "      <tr> \n".
       "        <td width=\"25%\" align=right>Language:</td>\n".
       "        <td width=\"75%\"> \n".
-      "          <select name=\"language\" onclick=\"Arquivo()\">\n";
+      "          <select name=\"language\" onclick=\"Arquivo()\" style=\"width: 75%\">\n";
     $lang = DBGetLanguages($_SESSION["usertable"]["contestnumber"]);
     $strtmp .= "<option selected value=\"-1\"> -- </option>\n";
     for ($i=0;$i<count($lang);$i++)
@@ -428,7 +428,7 @@ if($redo) {
       "      <tr> \n".
       "        <td width=\"25%\" align=right>Source code:</td>\n".
       "        <td width=\"75%\">\n".
-      "	  <input type=\"file\" name=\"sourcefile\" size=\"40\" onclick=\"Arquivo()\">\n".
+      "	  <input type=\"file\" name=\"sourcefile\" size=\"40\" onclick=\"Arquivo()\" style=\"width: 75%\">\n".
       "        </td>\n".
       "      </tr>\n".
       "    </table>\n".
@@ -527,7 +527,7 @@ echo $strtmp;
     grid_layout: {
       width: '100%',
       <?php if (count($run) != 0) { ?>
-      height: '400px'
+      height: 'auto'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>
