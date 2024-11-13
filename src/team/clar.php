@@ -165,7 +165,7 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
     grid_layout: {
       width: '100%',
       <?php if (count($clar) != 0) { ?>
-      height: 'auto'
+      height: '400px'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>
@@ -207,7 +207,7 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
 <form name="form1" method="post" action="clar.php">
   <input type=hidden name="confirmation" value="noconfirm" />
   <center>
-    <table border="0">
+    <table border="0" width="740px">
       <tr> 
         <td width="13%" align=right>Problem:</td>
         <td width="87%"> 
