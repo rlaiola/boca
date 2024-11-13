@@ -572,7 +572,7 @@ echo $strtmp;
     grid_layout: {
       width: '100%',
       <?php if ($n !== 0) { ?>
-      height: '400px'
+      height: 'auto'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>

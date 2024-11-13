@@ -135,7 +135,7 @@ if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES
     grid_layout: {
       width: '100%',
       <?php if (count($lang) != 0) { ?>
-      height: '400px'
+      height: 'auto'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>

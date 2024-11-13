@@ -566,7 +566,7 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
     grid_layout: {
       width: '100%',
       <?php if (count($prob) != 0) { ?>
-      height: '400px'
+      height: 'auto'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>

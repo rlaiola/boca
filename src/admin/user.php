@@ -426,7 +426,7 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
     grid_layout: {
       width: '100%',
       <?php if (count($usr) != 0) { ?>
-      height: '400px'
+      height: 'auto'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>

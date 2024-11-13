@@ -148,7 +148,7 @@ if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAIL
     grid_layout: {
       width: '100%',
       <?php if (count($log) != 0) { ?>
-      height: '400px'
+      height: 'auto'
       <?php } else { ?>
       height: 'auto'
       <?php } ?>
