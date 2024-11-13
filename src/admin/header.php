@@ -38,6 +38,7 @@ require_once("$locr/db.php");
 if(!isset($_POST['noflush'])) {
 	require_once("$locr/version.php");
 	echo "<html><head><title>Admin's Page</title>\n";
+	echo "<link rel=\"icon\" type=\"image/x-icon\" href=\"../favicon.ico\">";
 	echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
 	echo "<script src=\"../vendor/tablefilter/0.7.3/tablefilter.js\"></script>\n";
 	echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"../vendor/tablefilter/0.7.3/style/tablefilter.css\">\n";
