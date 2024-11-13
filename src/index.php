@@ -73,6 +73,7 @@ $authMode = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password"
 ?>
 <title>BOCA Online Contest Administrator <?php echo $BOCAVERSION; ?> - Login</title>
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet href="Css.php" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
@@ -175,35 +176,75 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
   echo "</script>\n";
 }
 ?>
+<style>
+    .balloon-container {
+      position: relative;
+      top: 0px;
+    }
+    
+    #balloon {
+      width: 75px;
+      animation: float 3s ease-in-out infinite;
+      transition: transform 0.2s ease;
+    }
+        
+    .balloon-container img {
+      filter: hue-rotate(90deg);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
+    #forgotPasswordLink {
+      display: block;
+      color: initial; 
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body onload="document.form1.name.focus()">
 <table width="100%" height="100%" border="0">
-  <tr align="center" valign="middle"> 
+  <tr align="center" valign="bottom">
+    <td>
+      <div align="center">
+        <div class="balloon-container">
+          <img src="images/balloon.svg" alt="Balão" id="balloon">
+        </div>
+        <h1 style="margin-bottom: 0">
+          BOCA
+        </h1>
+        <h4 style="margin: 0">
+          DI/Ufes
+        </h4>
+      </div>
+    </td>
+  </tr>
+  <tr align="center" valign="top" height="50%">
     <td> 
       <form name="form1" action="javascript:submitForm()">
         <div align="center"> 
           <table border="0" align="center">
-            <tr> 
-              <td nowrap>
-                <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="+1">
-				BOCA Login</font></div>
-              </td>
-            </tr>
             <tr>
               <td valign="top" id="localLogin" <?php if ($authMode == 'google') { ?> style="display: none;" <?php } ?>> 
                 <table border="0" align="left">
                   <tr> 
-                    <td><font face="Verdana, Arial, Helvetica, sans-serif" > 
-                      Name
-                      </font></td>
+                    <!-- <td><font face="Verdana, Arial, Helvetica, sans-serif" > 
+                      Username
+                      </font> -->
                     <td> 
-                      <input type="text" name="name" required />
+                      <input type="text" name="name" placeholder="Username" style="width: 200px; margin-top: 10px" required />
                     </td>
                   </tr>
                   <tr> 
-                    <td><font face="Verdana, Arial, Helvetica, sans-serif" >Password</font></td>
+                    <!-- <td><font face="Verdana, Arial, Helvetica, sans-serif" >Password</font></td> -->
                     <td> 
-                      <input type="password" name="password" required />
+                      <input type="password" name="password" placeholder="Password" style="width: 200px;" required />
                       <i class="bi bi-eye-slash" id="togglePassword" style="display: none;"></i>
                       <script>
                         const togglePassword = document.querySelector("#togglePassword");
@@ -228,28 +269,12 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
                       </script>
                     </td>
                   </tr>
+                  <tr> 
+                    <td align="center"> 
+                      <input type="submit" value="Login" style="width: 100%" />
+                    </td>
+                  </tr>
                 </table>
-                <input type="submit" name="Submit" value="Login">
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" align="center">
-                <?php
-                  $forgotLink = getenv('BOCA_FORGOT_PASSWORD_LINK');
-                  if ($forgotLink) {
-                ?>
-                <a href="<?php echo $forgotLink; ?>">
-                <?php 
-                  } else {
-                ?>
-                <a href="" onclick="javascript: alert('Contact system administrator.');">
-                <?php
-                  }
-                ?>
-                  <font face="Verdana, Arial, Helvetica, sans-serif" size="-2">
-                    Forgot password?
-                  </font>
-                </a>
               </td>
             </tr>
           </table>
@@ -281,27 +306,44 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         </font>
       </a>
       <script>
-      function toggleLoginMethod() {
-        const localLogin = document.getElementById("localLogin");
-        const usernameField = document.getElementsByTagName("input")[0];
-        const googleLoginLink = document.getElementById("googleLoginLink");
-        const googleLogin = document.getElementById("googleLogin");
-        const localLoginLink = document.getElementById("localLoginLink");
+        function toggleLoginMethod() {
+          const localLogin = document.getElementById("localLogin");
+          const usernameField = document.getElementsByTagName("input")[0];
+          const googleLoginLink = document.getElementById("googleLoginLink");
+          const googleLogin = document.getElementById("googleLogin");
+          const localLoginLink = document.getElementById("localLoginLink");
 
-        localLogin.style.display = localLogin.style.display === "none" ? "block" : "none";
-        googleLoginLink.style.display = googleLoginLink.style.display === "none" ? "block" : "none";
-        googleLogin.style.display = googleLogin.style.display === "none" ? "block" : "none";
-        localLoginLink.style.display = localLoginLink.style.display === "none" ? "block" : "none";
-        // Set focus
-        if (localLogin.style.display === "block")
-          usernameField.focus();
-        else googleLogin.focus();
-      }
+          localLogin.style.display = localLogin.style.display === "none" ? "block" : "none";
+          googleLoginLink.style.display = googleLoginLink.style.display === "none" ? "block" : "none";
+          googleLogin.style.display = googleLogin.style.display === "none" ? "block" : "none";
+          localLoginLink.style.display = localLoginLink.style.display === "none" ? "block" : "none";
+          // Set focus
+          if (localLogin.style.display === "block")
+            usernameField.focus();
+          else googleLogin.focus();
+        }
 
-      document.getElementById("googleLogin").focus();
+        document.getElementById("googleLogin").focus();
       </script>
 
       <?php } ?>
+
+      <?php
+        $forgotLink = getenv('BOCA_FORGOT_PASSWORD_LINK');
+        if ($forgotLink) {
+      ?>
+      <a href="<?php echo $forgotLink; ?>" id="forgotPasswordLink">
+      <?php 
+        } else {
+      ?>
+      <a href="" id="forgotPasswordLink" onclick="javascript: alert('Contact system administrator.');">
+      <?php
+        }
+      ?>
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="-1">
+          Forgot password?
+        </font>
+      </a>
     </td>
   </tr>
 </table>
