@@ -19,8 +19,10 @@
 
 require 'versionnum.php';
 
-echo "<br /><hr />\n";
-echo "<font size=\"-5\">Powered by BOCA $BOCAVERSION. Copyright (c) 2003-$YEAR BOCA System (bocasystem@gmail.com). All rights reserved.</font>\n";
+echo "  <div style=\"position: absolute; width: 100%; bottom: 0px; margin-bottom: 15px; text-align: center;\">\n";
+echo "    <hr />\n";
+echo "    <font size=\"-5\">Powered by BOCA $BOCAVERSION. Copyright (c) 2003-$YEAR BOCA System (bocasystem@gmail.com). All rights reserved.</font>\n";
+echo "  </div>\n";
 echo "</body></html>";
 exit;
 ?>
