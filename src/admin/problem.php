@@ -502,7 +502,7 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
   div.grd_headTblCont table thead tr td:nth-child(2),
   table.bocaTable > tbody > tr > td:nth-child(3),
   table.bocaTable > tbody > tr:nth-child(1) > td:nth-child(2) {
-    left: 112px;
+    left: 152px;
   }
 </style>
 <script language="JavaScript">
@@ -527,7 +527,7 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
     col_widths: [
       '150px', '215px', '215px',
       '215px', '215px', '225px',
-      '275px', '300px'
+      '275px', '1024px'
     ],
     col_types: [
       'number', 'customstring', 'customstring',
