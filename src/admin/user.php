@@ -533,11 +533,9 @@ Note that any changes will overwrite the already defined data.<br>
   <script language="javascript">
     function conf3() {
       <?php if ($authMethod === "password") { ?>
-      if (document.form3.passwordn1.value === "" ||
-          document.form3.passwordn2.value === "" ||
-          document.form3.passwordo.value === ""
-      ) {
-        return;
+      if (document.form3.passwordo.value === "") {
+        alert("Admin password is required.");
+        return false;
       }
       <?php } ?>
 
@@ -655,7 +653,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Password:</td>
         <td width="65%">
-          <input type="password" name="passwordn1" value="" size="20" maxlength="200" <?php if ($authMethod == "password") echo "required"?> />
+          <input type="password" name="passwordn1" value="" size="20" maxlength="200" />
           <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
           <script>
             const toggleNewPassword = document.querySelector("#toggleNewPassword");
@@ -683,7 +681,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Retype Password:</td>
         <td width="65%">
-          <input type="password" name="passwordn2" value="" size="20" maxlength="200" <?php if ($authMethod == "password") echo "required"?> />
+          <input type="password" name="passwordn2" value="" size="20" maxlength="200" />
           <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
           <script>
             const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
@@ -720,7 +718,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
       <tr <?php if ($authMethod != "password") echo "style='display: none;'"?>> 
         <td width="35%" align=right>Admin (this user) Password:</td>
         <td width="65%">
-          <input type="password" name="passwordo" value="" size="20" maxlength="200" <?php if ($authMethod == "password") echo "required"?> />
+          <input type="password" name="passwordo" value="" size="20" maxlength="200" />
           <i class="bi bi-eye-slash" id="toggleAdminPassword" style="display: none;"></i>
           <script>
             const toggleAdminPassword = document.querySelector("#toggleAdminPassword");

@@ -261,7 +261,7 @@ function getIP() {
       $proxies = explode(",", getenv("BOCA_TRUSTED_PROXIES"));
 
     // Check whether REMOTE_ADDR is actually the IP of a trusted proxy
-    if ($proxies && 
+    if (isset($proxies) && 
         in_array(getenv("REMOTE_ADDR"), $proxies) &&
         getenv("HTTP_X_FORWARDED_FOR"))
       // If so, BOCA might be behind a proxy server (e.g., Traefik) in which

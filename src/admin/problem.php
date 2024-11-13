@@ -309,11 +309,11 @@ for ($i=0; $i<count($prob); $i++) {
   echo " <tr>\n";
   if($prob[$i]["fake"]!='t') {
 	  if(strpos($prob[$i]["fullname"],"(DEL)") !== false) {
-		  echo "  <td nowrap><a href=\"javascript: conf3('problem.php?delete=" . $prob[$i]["number"] . "&input=" . myrawurlencode($prob[$i]["inputfilename"]) . 
+		  echo "  <td><a href=\"javascript: conf3('problem.php?delete=" . $prob[$i]["number"] . "&input=" . myrawurlencode($prob[$i]["inputfilename"]) . 
 			  "')\">" . $prob[$i]["number"];
 		  echo "(deleted)";
 	  } else {
-		  echo "  <td nowrap><a href=\"javascript: conf2('problem.php?delete=" . $prob[$i]["number"] . "&input=" . myrawurlencode($prob[$i]["inputfilename"]) . 
+		  echo "  <td><a href=\"javascript: conf2('problem.php?delete=" . $prob[$i]["number"] . "&input=" . myrawurlencode($prob[$i]["inputfilename"]) . 
 			  "')\">" . $prob[$i]["number"];
 	  }
 	  echo "</a></td>\n";
@@ -476,6 +476,10 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
 ?>
 <div id="externalToolbar" <?php if (count($prob) == 0) echo "style=\"display: none\""; ?>></div>
 <style>
+  td {
+    word-wrap: break-word;
+  }
+
   div.grd_headTblCont table thead tr td,
   table.bocaTable > tbody > tr > td {
     position: sticky;
@@ -521,8 +525,8 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-      '110px', '225px', '225px',
-      '225px', '225px', '225px',
+      '150px', '215px', '215px',
+      '215px', '215px', '225px',
       '275px', '300px'
     ],
     col_types: [
