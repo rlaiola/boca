@@ -89,6 +89,16 @@ function computeHASH()
 	document.location='option.php?username='+username+'&userdesc='+userdesc+'&userfullname='+userfull+'&passwordo='+passHASHo+'&passwordn='+passHASHn;
 }
 
+function resetPasswordValidation() {
+  document.form1.passwordn1.classList.remove("error");
+  document.form1.passwordn2.classList.remove("error");
+  document.querySelector("#toggleOldPassword").style.display = "none";
+  document.querySelector("#toggleNewPassword").style.display = "none";
+  document.querySelector("#toggleNewPassword2").style.display = "none";
+  const errorMessage = document.getElementById("error-message");
+	errorMessage.innerText = "";
+}
+
 function validatePasswords() {
 	const errorMessage = document.getElementById("error-message");
 	errorMessage.innerText = "";
@@ -121,26 +131,26 @@ function validatePasswords() {
       <tr> 
         <td width="35%" align=right>Username:</td>
         <td width="65%">
-	  <input type="text" readonly name="username" value="<?php echo $a["username"]; ?>" size="20" maxlength="20" />
+          <span style="width: 300px" id="username"><?php echo $a["username"]; ?></span>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>User Full Name:</td>
         <td width="65%">
-	  <input type="text" readonly name="userfull" value="<?php echo $a["userfullname"]; ?>" size="50" maxlength="50" />
+	        <span id="userfull"><?php echo $a["userfullname"]; ?></span>
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>User Description:</td>
         <td width="65%">
-	  <input type="text" name="userdesc" value="<?php echo $a["userdesc"]; ?>" size="50" maxlength="250" />
+	  <input type="text" name="userdesc" value="<?php echo $a["userdesc"]; ?>" size="30" maxlength="250" />
         </td>
       </tr>
       <tr> 
         <td width="35%" align=right>Old Password:</td>
         <td width="65%">
-        <input type="password" id="passwordo" name="passwordo" size="20" maxlength="200" required />
-        <i class="bi bi-eye-slash" id="toggleOldPassword" style="display: none;"></i>
+        <input type="password" id="passwordo" name="passwordo" size="30" maxlength="200" required />
+        <i class="bi bi-eye-slash" id="toggleOldPassword" title="Show/hide password" style="display: none;"></i>
         <script>
           const toggleOldPassword = document.querySelector("#toggleOldPassword");
           const passwordo = document.form1.passwordo;
@@ -167,7 +177,7 @@ function validatePasswords() {
       <tr> 
         <td width="35%" align=right>New Password:</td>
         <td width="65%">
-        <input type="password" id="passwordn1" name="passwordn1" size="20" maxlength="200" required />
+        <input type="password" id="passwordn1" name="passwordn1" size="30" maxlength="200" required />
         <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
         <script>
           const toggleNewPassword = document.querySelector("#toggleNewPassword");
@@ -195,7 +205,7 @@ function validatePasswords() {
       <tr> 
         <td width="35%" align=right>Retype New Password:</td>
         <td width="65%">
-        <input type="password" id="passwordn2" name="passwordn2" size="20" maxlength="200" required />
+        <input type="password" id="passwordn2" name="passwordn2" size="30" maxlength="200" required />
         <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
         <script>
           const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
@@ -229,7 +239,7 @@ function validatePasswords() {
   </center>
   <center>
       <input type="submit" name="Submit" value="Send">
-      <input type="reset" name="Clear" value="Clear">
+      <input type="reset" name="Clear" value="Clear" onclick="javascript:resetPasswordValidation();">
   </center>
 </form>
 <div id="error-message"></div>
