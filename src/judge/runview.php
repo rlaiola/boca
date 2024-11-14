@@ -195,9 +195,9 @@ else if($a["autoend"]!="") {
   <tr>
         <td width="27%" align=right><b>Autojudged by:</b></td>
 <?php if($a["autobegin"]!="" && $a["autoend"]=="")
-      echo "<td width=\"83%\">". $a["autoip"] ." since ". dateconvsimple($a["autobegin"]) ."</td>";
+      echo "<td width=\"83%\">". $a["autoip"] ." since ". dateconv($a["autobegin"]) ."</td>";
 else if($a["autoend"]!="")
-      echo "<td width=\"83%\">". $a["autoip"] ." from ". dateconvsimple($a["autobegin"]) ." to ". dateconvsimple($a["autoend"]) ."</td>";
+      echo "<td width=\"83%\">". $a["autoip"] ." from ". dateconv($a["autobegin"]) ." to ". dateconv($a["autoend"]) ."</td>";
 else
       echo "<td width=\"83%\">unavailable</td>";
 ?>

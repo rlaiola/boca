@@ -72,7 +72,7 @@ for ($i=0; $i<count($run); $i++) {
   echo "  <td nowrap><a href=\"javascript:conf2('files.php?delete=" . $run[$i]["number"] .
            "')\">" . $run[$i]["number"] . "</a></td>\n";
 
-  echo "  <td nowrap>" . dateconvsimple($run[$i]["timestamp"]) . "</td>\n";
+  echo "  <td nowrap>" . dateconv($run[$i]["timestamp"]) . "</td>\n";
   echo "<td nowrap><a href=\"../filedownload.php?". filedownload($run[$i]["oid"],$run[$i]["filename"]) . "\">";
   echo $run[$i]["filename"] . "</a>";
 

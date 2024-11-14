@@ -57,7 +57,7 @@ for ($i=0; $i<count($run); $i++) {
 	  echo "  <td nowrap><a href=\"javascript:conf2('files.php?delete=" . $run[$i]["number"] .
 		  "&usernumber=" .$run[$i]["usernumber"]. "&usersitenumber=" .$run[$i]["usersitenumber"]. "')\">" . $run[$i]["number"] . "</a></td>\n";
 
-  echo "  <td nowrap>" . dateconvsimple($run[$i]["timestamp"]) . "</td>\n";
+  echo "  <td nowrap>" . dateconv($run[$i]["timestamp"]) . "</td>\n";
   echo "  <td nowrap>" . $run[$i]["usernumber"] . " (" . $run[$i]["usersitenumber"] . ")</td>\n";
   if($run[$i]["status"]=="active") {
     echo "<td nowrap><a href=\"../filedownload.php?". filedownload($run[$i]["oid"],$run[$i]["filename"]) . "\">";
