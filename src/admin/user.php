@@ -384,7 +384,7 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
       '200px', '90px', '150px',
       '150px', '90px', '175px',
       '275px', '275px', '90px',
-      '90px', '275px', '750px'
+      '90px', '275px', '350px'
     ],
     col_types: [
       'number', 'number', 'customstring',
