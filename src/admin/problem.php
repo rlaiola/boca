@@ -527,7 +527,7 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
     col_widths: [
       '150px', '215px', '215px',
       '215px', '215px', '225px',
-      '275px', '1024px'
+      '275px', '300px'
     ],
     col_types: [
       'number', 'customstring', 'customstring',

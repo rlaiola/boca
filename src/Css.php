@@ -128,6 +128,7 @@ div.grd_tblCont table td {
   text-wrap: wrap;
   padding: 0;
   word-wrap: break-word;
+  overflow: auto;
 }
 
 div.grd_tblCont {
