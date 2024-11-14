@@ -1,1 +1,30 @@
 Please find the documentation in the doc/ folder.
+
+## Quick Start
+
+- Open a Terminal window and make sure Docker engine is up and running:
+
+```sh
+# List docker images
+docker image ls
+# List containers
+docker container ls -a
+```
+
+- Launch BOCA:
+
+```sh
+docker compose up -d
+```
+
+- To restore a database dump in `backups/boca-db.dump`:
+
+```sh
+docker compose --profile restore up -d
+```
+
+* To stop the application:
+
+```sh
+docker compose down
+```
