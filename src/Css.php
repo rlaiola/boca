@@ -127,6 +127,7 @@ div.grd_tblCont table td {
   border-bottom: 1px solid !important;
   text-wrap: wrap;
   padding: 0;
+  word-wrap: break-word;
 }
 
 div.grd_tblCont {
