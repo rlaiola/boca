@@ -73,7 +73,7 @@ $authMode = getenv("BOCA_AUTH_METHOD") ? getenv("BOCA_AUTH_METHOD") : "password"
 ?>
 <title>BOCA Online Contest Administrator <?php echo $BOCAVERSION; ?> - Login</title>
 <head>
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/x-icon" href="images/balloon.svg">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet href="Css.php" type="text/css">
 <script language="JavaScript" src="sha256.js"></script>
