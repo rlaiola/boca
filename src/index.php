@@ -219,9 +219,6 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
         <h1 style="margin-bottom: 0">
           BOCA
         </h1>
-        <h4 style="margin: 0">
-          DI/Ufes
-        </h4>
       </div>
     </td>
   </tr>
@@ -245,7 +242,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
                     <!-- <td><font face="Verdana, Arial, Helvetica, sans-serif" >Password</font></td> -->
                     <td> 
                       <input type="password" name="password" placeholder="Password" style="width: 200px;" required />
-                      <i class="bi bi-eye-slash" id="togglePassword" style="display: none;"></i>
+                      <i class="bi bi-eye-slash" id="togglePassword" title="Show/hide password" style="display: none;"></i>
                       <script>
                         const togglePassword = document.querySelector("#togglePassword");
                         const password = document.form1.password;

@@ -654,7 +654,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
         <td width="35%" align=right>Password:</td>
         <td width="65%">
           <input type="password" name="passwordn1" value="" size="20" maxlength="200" />
-          <i class="bi bi-eye-slash" id="toggleNewPassword" style="display: none;"></i>
+          <i class="bi bi-eye-slash" id="toggleNewPassword" title="Show/hide password" style="display: none;"></i>
           <script>
             const toggleNewPassword = document.querySelector("#toggleNewPassword");
             const passwordn1 = document.form3.passwordn1;
@@ -682,7 +682,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
         <td width="35%" align=right>Retype Password:</td>
         <td width="65%">
           <input type="password" name="passwordn2" value="" size="20" maxlength="200" />
-          <i class="bi bi-eye-slash" id="toggleNewPassword2" style="display: none;"></i>
+          <i class="bi bi-eye-slash" id="toggleNewPassword2" title="Show/hide password" style="display: none;"></i>
           <script>
             const toggleNewPassword2 = document.querySelector("#toggleNewPassword2");
             const passwordn2 = document.form3.passwordn2;
@@ -719,7 +719,7 @@ echo $u["userdesc"]; } ?>" size="50" maxlength="300" />
         <td width="35%" align=right>Admin (this user) Password:</td>
         <td width="65%">
           <input type="password" name="passwordo" value="" size="20" maxlength="200" />
-          <i class="bi bi-eye-slash" id="toggleAdminPassword" style="display: none;"></i>
+          <i class="bi bi-eye-slash" id="toggleAdminPassword" title="Show/hide password" style="display: none;"></i>
           <script>
             const toggleAdminPassword = document.querySelector("#toggleAdminPassword");
             const passwordo = document.form3.passwordo;
