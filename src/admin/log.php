@@ -106,8 +106,8 @@ if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAIL
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-      '7%', '10%', '10%',
-      '7%', '20%', '39%',
+      '7%', '10%', '12%',
+      '7%', '20%', '37%',
       '7%'
     ],
     col_types: [
