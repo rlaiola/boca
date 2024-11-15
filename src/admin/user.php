@@ -381,8 +381,8 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-      '200px', '90px', '150px',
-      '150px', '90px', '175px',
+      '200px', '90px', '200px',
+      '200px', '90px', '175px',
       '275px', '275px', '90px',
       '90px', '275px', '350px'
     ],
