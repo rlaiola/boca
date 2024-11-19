@@ -18,6 +18,12 @@
 // Last modified 05/aug/2012 by cassio@ime.usp.br
 require('header.php');
 
+// This page cannot be accessed if the environment variable BOCA_DISABLE_CLARIFICATIONS is not set to true
+if (getenv("BOCA_DISABLE_CLARIFICATIONS") == "true") {
+  MSGError("This feature is disabled.");
+  ForceLoad("../index.php");
+}
+
 if (isset($_POST["message"]) && isset($_POST["problem"]) && isset($_POST["Submit"])) {
 	if ($_POST["confirmation"] == "confirm") {
 		$param['contest']=$_SESSION["usertable"]["contestnumber"];

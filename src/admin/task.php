@@ -17,6 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Last modified 05/aug/2012 by cassio@ime.usp.br
 require_once('header.php');
+
+// This page cannot be accessed if the environment variable BOCA_DISABLE_TASKS is not set to true
+if (getenv("BOCA_DISABLE_TASKS") == "true") {
+  MSGError("This feature is disabled.");
+  ForceLoad("../index.php");
+}
+
 if(isset($_GET["order"]) && $_GET["order"] != "") {
 $order = myhtmlspecialchars($_GET["order"]);
 	$_SESSION["taskline"] = $order;

@@ -18,6 +18,12 @@
 // Last modified 07/sep/2015 by cassio@ime.usp.br
 require('header.php');
 
+// This page cannot be accessed if the environment variable BOCA_DISABLE_TASKS is not set to true
+if (getenv("BOCA_DISABLE_TASKS") == "true") {
+  MSGError("This feature is disabled.");
+  ForceLoad("../index.php");
+}
+
 if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
 	ForceLoad("../index.php");
 

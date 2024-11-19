@@ -17,6 +17,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 //Last updated 24/oct/2017 by cassio@ime.usp.br
 require 'header.php';
+
+// This page cannot be accessed if the environment variable BOCA_DISABLE_MISC is not set to true
+if (getenv("BOCA_DISABLE_MISC") == "true") {
+  MSGError("This feature is disabled.");
+  ForceLoad("../index.php");
+}
+
 ?>
 <br>
 <form name="form1" enctype="multipart/form-data" method="get" action="misc.php">

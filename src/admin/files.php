@@ -18,6 +18,12 @@
 // Last modified 05/aug/2012 by cassio@ime.usp.br
 require('header.php');
 
+// This page cannot be accessed if the environment variable BOCA_DISABLE_BACKUP is not set to true
+if (getenv("BOCA_DISABLE_BACKUP") == "true") {
+  MSGError("This feature is disabled.");
+  ForceLoad("../index.php");
+}
+
 if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
 	ForceLoad("$loc/index.php");
 if(($st = DBSiteInfo($_SESSION["usertable"]["contestnumber"],$_SESSION["usertable"]["usersitenumber"])) == null)
