@@ -228,10 +228,10 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
     var tfConfig = {
       base_path: '../vendor/tablefilter/0.7.3/',
       col_widths: [
-        '9%', '6%', '10%',
+        '9%', '5%', '12%',
         '5%', '15%', '14%',
-        '6%', '13%', '2%',
-        '20%'
+        '6%', '14%', '2%',
+        '18%'
       ],
       col_types: [
         'number', 'number', 'customstring',

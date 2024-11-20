@@ -537,7 +537,7 @@ echo $strtmp;
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-        '50px', '200px', '150px',
+        '50px', '200px', '350px',
     ],
     col_types: [
       'number', 'customstring', 'customstring'
