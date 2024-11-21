@@ -203,6 +203,7 @@ if(function_exists("globalconf") && function_exists("sanitizeVariables")) {
 
     #forgotPasswordLink {
       display: block;
+      width: fit-content;
       color: initial; 
       margin-top: 10px;
     }
