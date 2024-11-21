@@ -112,6 +112,9 @@ services:
             # specifies whether team users can visualize the output of their runs.
             # default: false
             # - BOCA_ENABLE_VIEW_RUNS=true
+            # indicate whether to enable/disabled the table filter library
+            # default: false
+            # - BOCA_ENABLE_TABLE_FILTER=true
         # example 2: passing LDAP env vars from file.
         # env_file:
         #     - .env.ldap

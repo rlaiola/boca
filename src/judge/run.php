@@ -80,8 +80,11 @@ echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
 
 ?>
-<div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
-  <br>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
+  <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
   <script language="JavaScript">
     // Custom string caster
     function customStringCaster(val) {
@@ -191,5 +194,9 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
     );
     tf.init();
   </script>
+<?php
+}
+?>
+  <br>
 </body>
 </html>

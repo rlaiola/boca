@@ -79,6 +79,10 @@ echo "</table>";
 if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES DEFINED</font></b></center>";
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar"  <?php if (count($lang) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -171,6 +175,9 @@ if (count($lang) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LANGUAGES
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br><br><center><b>Clicking on a language number will DELETE it.<br>
 WARNING: deleting a language will remove EVERYTHING related to it.<br>

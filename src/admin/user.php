@@ -313,6 +313,10 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
   $u = DBUserInfo($_SESSION["usertable"]["contestnumber"], $_GET["site"], $_GET["user"]);
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($usr) == 0) echo "style=\"display: none\""; ?>></div>
 <?php if (count($usr) != 0) { ?>
 <style>
@@ -463,6 +467,9 @@ if (isset($_GET["site"]) && isset($_GET["user"]) && is_numeric($_GET["site"]) &&
   );
   tf.init();
 </script>
+<?php
+}
+?>
 <script language="JavaScript" src="../sha256.js"></script>
 <script language="JavaScript" src="../hex.js"></script>
 <script language="JavaScript">

@@ -171,6 +171,10 @@ echo "</table>";
 if (!$anyprinted) echo "<br><center><b><font color=\"#ff0000\">NO TASKS AVAILABLE</font></b></center>";
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($task) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -270,5 +274,8 @@ if (!$anyprinted) echo "<br><center><b><font color=\"#ff0000\">NO TASKS AVAILABL
   );
   tf.init();
 </script>
+<?php
+}
+?>
 </body>
 </html>

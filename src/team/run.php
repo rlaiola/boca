@@ -467,6 +467,10 @@ if($redo) {
 echo $strtmp;
 ?>
 
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <script language="JavaScript">
   // Custom string caster
   function customStringCaster(val) {
@@ -563,5 +567,8 @@ echo $strtmp;
   );
   tf.init();
 </script>
+<?php
+}
+?>
 </body>
 </html>

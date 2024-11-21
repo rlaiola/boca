@@ -95,6 +95,10 @@ echo "</table>";
 if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS AVAILABLE YET</font></b></center>";
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($prob) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -189,6 +193,9 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
   );
   tf.init();
 </script>
+<?php
+}
+?>
 <br><center><b><font>Problems with a shadow overlay indicate they have already been solved.</font></b></center>
 </body>
 </html>

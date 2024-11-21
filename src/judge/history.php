@@ -68,6 +68,10 @@ for ($i=0; $i<count($clar); $i++) {
 echo "</table>";
 if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICATIONS AVAILABLE</font></b></center>";
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar1" <?php if (count($clar) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -200,6 +204,9 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
   );
   tf.init();
 </script>
+<?php
+}
+?>
 <br><br>
 <table class="bocaTable2" width="100%" border=1 style="width: 100%">
  <tr>
@@ -244,8 +251,11 @@ for ($i=0; $i<count($run); $i++) {
 echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar2" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
-<br>
 <script language="JavaScript">
   var tfConfig2 = {
     base_path: '../vendor/tablefilter/0.7.3/',
@@ -335,6 +345,9 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
   );
   tf2.init();
 </script>
+<?php
+}
+?>
 
 <?php
 echo "<br><br>\n";

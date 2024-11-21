@@ -77,6 +77,10 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
 
 ?>
 
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($clar) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -208,6 +212,9 @@ if (count($clar) == 0) echo "<br><center><b><font color=\"#ff0000\">NO CLARIFICA
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br><br><center><b>To submit a clarification, just fill in the following fields</b></center>
 <form name="form1" method="post" action="clar.php">

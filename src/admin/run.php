@@ -171,15 +171,11 @@ for ($i=0; $i<count($run); $i++) {
 echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAILABLE</font></b></center>";
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
   <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
-  <br>
-  <script language="javascript">
-    function conf() {
-      if (confirm("Confirm?")) {
-        document.form1.confirmation.value='confirm';
-      }
-    }
-  </script>
   <script language="JavaScript">
     // Custom string caster
     function customStringCaster(val) {
@@ -332,6 +328,17 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO RUNS AVAIL
       tfConfig
     );
     tf.init();
+  </script>
+<?php
+}
+?>
+  <br>
+  <script language="javascript">
+    function conf() {
+      if (confirm("Confirm?")) {
+        document.form1.confirmation.value='confirm';
+      }
+    }
   </script>
   <center>
 <b>Click on the number of a run to edit it or select them with<br />the checkboxes and use the buttons to work on multiple runs:</b><br /><br />

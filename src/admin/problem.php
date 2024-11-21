@@ -474,6 +474,10 @@ echo "</table></form>";
 if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS DEFINED</font></b></center>";
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($prob) == 0) echo "style=\"display: none\""; ?>></div>
 <style>
   td {
@@ -526,7 +530,7 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
       '150px', '215px', '215px',
-      '215px', '215px', '225px',
+      '215px', '250px', '250px',
       '275px', '300px'
     ],
     col_types: [
@@ -602,6 +606,9 @@ if (count($prob) == 0) echo "<br><center><b><font color=\"#ff0000\">NO PROBLEMS 
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br><br><center><b>Clicking on a problem number will delete it.<br>
 WARNING: deleting a problem will remove EVERYTHING related to it.<br>

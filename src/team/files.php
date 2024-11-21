@@ -90,6 +90,10 @@ echo "</table>";
 if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AVAILABLE</font></b></center>";
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($run) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -179,6 +183,9 @@ if (count($run) == 0) echo "<br><center><b><font color=\"#ff0000\">NO BACKUPS AV
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br><br><center><b>To erase a file, click on its number. To download a file, click on its name.
 To submit a new backup file, just fill in the following fields:</b></center>

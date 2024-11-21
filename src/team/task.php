@@ -92,6 +92,10 @@ echo "</table>";
 if (count($task) == 0) echo "<br><center><b><font color=\"#ff0000\">NO TASKS FOUND</font></b></center>";
 ?>
 
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($task) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -184,6 +188,9 @@ if (count($task) == 0) echo "<br><center><b><font color=\"#ff0000\">NO TASKS FOU
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br><br><center><b>To submit a file for printing, just fill in the following field:</b></center>
 <form name="form1" enctype="multipart/form-data" method="post" action="task.php">

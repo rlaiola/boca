@@ -68,6 +68,10 @@ echo "</table>\n";
 if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAILABLE</font></b></center>";
 
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if (count($log) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -185,6 +189,9 @@ if (count($log) == 0) echo "<br><center><b><font color=\"#ff0000\">NO LOGS AVAIL
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br>
 <center>

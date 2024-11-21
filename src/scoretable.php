@@ -471,6 +471,10 @@ if($redo) {
 echo $strtmp;
 ?>
 
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar" <?php if ($n === 0) echo "style=\"display: none\""; ?>></div>
 <style>
   td {
@@ -603,3 +607,6 @@ echo $strtmp;
   );
   tf.init();
 </script>
+<?php
+}
+?>

@@ -97,6 +97,10 @@ for ($i=0; $i<count($ans); $i++) {
 echo "</table>";
 if ($n == 0) echo "<br><center><b><font color=\"#ff0000\">NO ANSWERS DEFINED</font></b></center>";
 ?>
+<?php
+// Check if the table filter should be enabled
+if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
+?>
 <div id="externalToolbar"  <?php if (count($ans) == 0) echo "style=\"display: none\""; ?>></div>
 <script language="JavaScript">
   // Custom string caster
@@ -191,6 +195,9 @@ if ($n == 0) echo "<br><center><b><font color=\"#ff0000\">NO ANSWERS DEFINED</fo
   );
   tf.init();
 </script>
+<?php
+}
+?>
 
 <br><br><center><b>When allowed, clicking on the answer number will delete it.<br>
 	Inputting with the same number of an existing one will update its description.<br>
