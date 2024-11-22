@@ -22,39 +22,39 @@
 services:
 
     # ldap server
-    ldap:
-        image: osixia/openldap:1.3.0
-        container_name: ldap
-        volumes:
-            - ./data.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/data.ldif
-        # command: --copy-service -l debug
-        command: --copy-service
-        environment: 
-            LDAP_ORGANISATION: 'DI'
-            LDAP_DOMAIN: 'inf.ufes.br'
-            LDAP_BASE_DN: 'dc=inf,dc=ufes,dc=br'
-            LDAP_ADMIN_PASSWORD: 'ldappw'
-            TZ: America/Sao_Paulo
-        ports:
-            - 389:389
+    # ldap:
+    #     image: osixia/openldap:1.3.0
+    #     container_name: ldap
+    #     volumes:
+    #         - ./data.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/data.ldif
+    #     # command: --copy-service -l debug
+    #     command: --copy-service
+    #     environment: 
+    #         LDAP_ORGANISATION: 'DI'
+    #         LDAP_DOMAIN: 'inf.ufes.br'
+    #         LDAP_BASE_DN: 'dc=inf,dc=ufes,dc=br'
+    #         LDAP_ADMIN_PASSWORD: 'ldappw'
+    #         TZ: America/Sao_Paulo
+    #     ports:
+    #         - 389:389
 
     # ldap account manager
-    lam:
-        image: ldapaccountmanager/lam:stable
-        container_name: lam
-        ports:
-            - 8081:80
-        environment: 
-            LDAP_DOMAIN: 'inf.ufes.br'
-            LDAP_BASE_DN: 'dc=inf,dc=ufes,dc=br'
-            LDAP_SERVER: 'ldap://ldap:389'
-            LDAP_USER: 'cn=admin,dc=inf,dc=ufes,dc=br'
-            LAM_PASSWORD: 'ldappw'
-            LDAP_ADMIN_PASSWORD: 'ldappw'
-            LDAP_ORGANISATION: 'DI'
-            TZ: America/Sao_Paulo
-        depends_on:
-            - ldap
+    # lam:
+    #     image: ldapaccountmanager/lam:stable
+    #     container_name: lam
+    #     ports:
+    #         - 8081:80
+    #     environment: 
+    #         LDAP_DOMAIN: 'inf.ufes.br'
+    #         LDAP_BASE_DN: 'dc=inf,dc=ufes,dc=br'
+    #         LDAP_SERVER: 'ldap://ldap:389'
+    #         LDAP_USER: 'cn=admin,dc=inf,dc=ufes,dc=br'
+    #         LAM_PASSWORD: 'ldappw'
+    #         LDAP_ADMIN_PASSWORD: 'ldappw'
+    #         LDAP_ORGANISATION: 'DI'
+    #         TZ: America/Sao_Paulo
+    #     depends_on:
+    #         - ldap
 
     # web app
     boca-web:
@@ -124,11 +124,11 @@ services:
             - 8000:80
 
     # online judge
-    boca-jail:
-        image: ghcr.io/joaofazolo/boca-docker/boca-jail:latest
-        privileged: true
-        depends_on:
-            - boca-db
+    # boca-jail:
+    #     image: ghcr.io/joaofazolo/boca-docker/boca-jail:latest
+    #     privileged: true
+    #     depends_on:
+    #         - boca-db
 
     # database
     boca-db:
