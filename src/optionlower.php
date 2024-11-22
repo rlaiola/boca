@@ -77,9 +77,9 @@ function computeHASH()
 		return;
 	}
 
-	username = document.form1.username.value;
+	username = document.querySelector("#username").innerText;
 	userdesc = document.form1.userdesc.value;
-	userfull = document.form1.userfull.value;
+	userfull = document.querySelector("#userfull").innerText;
 
 	passHASHo = js_myhash(js_myhash(document.form1.passwordo.value)+'<?php echo session_id(); ?>');
 	passHASHn = bighexsoma(js_myhash(document.form1.passwordn2.value),js_myhash(document.form1.passwordo.value));
