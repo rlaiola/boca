@@ -96,25 +96,25 @@ services:
             #######################
             # link for password recovery
             # default: alert message to contact the administrator
-            # - BOCA_FORGOT_PASSWORD_LINK=https://example.com/forgot-password
+            - BOCA_FORGOT_PASSWORD_LINK=https://example.com/forgot-password
             # disable menus
             # default: false
-            # - BOCA_DISABLE_CLARIFICATIONS=true
-            # - BOCA_DISABLE_MISC=true
-            # - BOCA_DISABLE_TASKS=true
-            # - BOCA_DISABLE_BACKUP=true
+            - BOCA_DISABLE_CLARIFICATIONS=true
+            - BOCA_DISABLE_MISC=true
+            - BOCA_DISABLE_TASKS=true
+            - BOCA_DISABLE_BACKUP=true
             # indicate whether scoreboard should be anonymized or not (team users)
             # default: false
-            # - BOCA_ANONYMIZED_SCORE=true
+            - BOCA_ANONYMIZED_SCORE=true
             # skip same file check for submissions to a given problem/language
             # default: false
-            # - BOCA_IGNORE_SAME_FILE_CHECK=true
+            - BOCA_IGNORE_SAME_FILE_CHECK=true
             # specifies whether team users can visualize the output of their runs.
             # default: false
-            # - BOCA_ENABLE_VIEW_RUNS=true
+            - BOCA_ENABLE_VIEW_RUNS=true
             # indicate whether to enable/disabled the table filter library
             # default: false
-            # - BOCA_ENABLE_TABLE_FILTER=true
+            - BOCA_ENABLE_TABLE_FILTER=true
         # example 2: passing LDAP env vars from file.
         # env_file:
         #     - .env.ldap
