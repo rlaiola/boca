@@ -615,6 +615,8 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
       },
       {
         name: 'colsVisibility',
+        // hide column Basename
+        at_start: [3],
         enable_tick_all: true
       },
       {
