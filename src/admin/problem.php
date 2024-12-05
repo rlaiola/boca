@@ -294,7 +294,7 @@ for ($i=0; $i<count($prob); $i++) {
  <tr>
   <td><b>Problem #</b></td>
   <td><b>Short Name</b></td>
-  <td><b>Fullname</b></td>
+  <td><b><?php if (getenv("BOCA_ENABLE_PROBLEM_TAGS") == "true") echo "Tags"; else echo "Fullname"; ?></b></td>
   <td><b>Basename</b></td>
   <td><b>Descfile</b></td>
   <td><b>Package file</b></td>
