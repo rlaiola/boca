@@ -82,7 +82,39 @@ for ($i=0; $i<count($prob); $i++) {
 			  "src=\"" . balloonurl($prob[$i]["color"]) ."\" />\n";
   echo "</td>\n";
   echo "  <td nowrap>" . $prob[$i]["basefilename"] . "&nbsp;</td>\n";
-  echo "  <td nowrap>" . $prob[$i]["fullname"] . "&nbsp;</td>\n";
+
+  // Check whether fullname should be formatted as tags
+  if (getenv("BOCA_ENABLE_PROBLEM_TAGS") == "true") {
+    // Input string
+    $input = $prob[$i]["fullname"];
+    // Remove brackets from the input string
+    $trimmed = trim($input, "[]");
+    // Split the string into individual components
+    $tags = explode(",", $trimmed);
+    // Initialize an array to group tags by key
+    $groupedTags = [];
+
+    // Group tags by their key
+    foreach ($tags as $tag) {
+      if (strpos($tag, "?") !== false) {
+        list($key, $value) = explode("?", ltrim($tag, "#"), 2);
+        $groupedTags[$key][] = "<span class='tag' data-key='$key'>$value</span>";
+      }
+    }
+
+    echo "  <td nowrap>";
+    // Output grouped tags
+    foreach ($groupedTags as $key => $htmlTags) {
+      echo "<div class='tag-group' data-group='$key'>";
+      // echo "<h4>" . ucfirst($key) . "</h4>"; // Optional header for each group
+      echo implode("\n", $htmlTags);
+      echo "</div>\n";
+    }
+    echo "&nbsp;</td>\n";
+  } else {
+    echo "  <td nowrap>" . $prob[$i]["fullname"] . "&nbsp;</td>\n";
+  }
+
   if (isset($prob[$i]["descoid"]) && $prob[$i]["descoid"] != null && isset($prob[$i]["descfilename"])) {
     echo "  <td nowrap><a href=\"../filedownload.php?" . filedownload($prob[$i]["descoid"], $prob[$i]["descfilename"]) .
 		"\">" . basename($prob[$i]["descfilename"]) . "</a></td>\n";
@@ -120,8 +152,8 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-      '20%', '20%',
-      '40%', '20%'
+      '25%', '25%',
+      '25%', '25%'
     ],
     col_types: [
       'customstring', 'customstring',

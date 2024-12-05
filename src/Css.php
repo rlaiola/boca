@@ -209,3 +209,43 @@ i.bi-eye-slash {
   margin-left: -30px;
   cursor: pointer;
 }
+
+/* Base styles for all tags */
+.tag {
+  display: table-cell;
+  margin: 2px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Group container styles */
+.tag-group {
+}
+
+/* Group heading styles */
+.tag-group h4 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #333;
+  text-transform: capitalize;
+}
+
+/* Tag styles based on the data-key attribute */
+.tag[data-key='group'] {
+  background-color: #4CAF50; /* Green */
+}
+
+.tag[data-key='level'] {
+  background-color: #2196F3; /* Blue */
+}
+
+.tag[data-key='domain'] {
+  background-color: #FF9800; /* Orange */
+}
+
+.tag[data-key='lang'] {
+  background-color: #9C27B0; /* Purple */
+}
