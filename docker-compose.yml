@@ -115,6 +115,9 @@ services:
             # indicate whether to enable/disabled the table filter library
             # default: false
             - BOCA_ENABLE_TABLE_FILTER=true
+            # indicate whether to enable/disabled fullname formatted as problem tags.
+            # default: false
+            - BOCA_ENABLE_PROBLEM_TAGS=true
         # example 2: passing LDAP env vars from file.
         # env_file:
         #     - .env.ldap
