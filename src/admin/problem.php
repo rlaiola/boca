@@ -354,7 +354,7 @@ for ($i=0; $i<count($prob); $i++) {
       echo implode("\n", $htmlTags);
       echo "</div>\n";
     }
-    echo "&nbsp;</td>\n";
+    echo "</td>\n";
   } else {
     echo "  <td nowrap>" . $prob[$i]["fullname"] . "&nbsp;</td>\n";
   }
