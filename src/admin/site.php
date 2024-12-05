@@ -526,11 +526,11 @@ echo "):</td>";
       <input type="submit" name="Submit2" value="Start Now" onClick="conf()">
       <input type="submit" name="Submit3" value="Stop Now" onClick="conf()">
       <input type="reset" name="Submit4" value="Clear">
-<br>
+<br><br>
       <input type="submit" name="Logoff" value="Logoff all users" onClick="conf()">
       <input type="submit" name="Logins" value="Disable logins" onClick="conf()">
       <input type="submit" name="Logins" value="Enable logins" onClick="conf()">
-<br><br><br>
+<br><br>
 
       <input type="submit" name="SubmitDC" value="Delete ALL clars" onClick="conf2()">
       <input type="submit" name="SubmitDR" value="Delete ALL runs" onClick="conf2()">
