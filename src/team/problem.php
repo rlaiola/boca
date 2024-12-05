@@ -54,7 +54,7 @@ if(is_readable('/var/www/boca/src/sample/secretcontest/maratona.pdf')) {
  <tr>
   <td><b>Name</b></td>
   <td><b>Basename</b></td>
-  <td><b>Fullname</b></td>
+  <td><b><?php if (getenv("BOCA_ENABLE_PROBLEM_TAGS") == "true") echo "Tags"; else echo "Fullname"; ?></b></td>
   <td><b>Descfile</b></td>
  </tr>
 <?php
