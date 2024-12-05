@@ -489,22 +489,22 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
     padding: 0;
   }
 
-  div.grd_headTblCont table thead tr td:nth-child(-n + 2),
-  table.bocaTable tbody tr td:nth-child(-n + 2) {
+  div.grd_headTblCont table thead tr td:nth-child(-n + 3),
+  table.bocaTable tbody tr td:nth-child(-n + 3) {
     position: sticky;
     left: 0;
     z-index: 2;
     background-color: #e0e0d0;
   }
 
-  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 2) {
+  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 3) {
     position: sticky;
     left: 0;
     z-index: 2;
     background-color: #e0e0d0;
   }
 
-  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 2) {
+  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 3) {
     position: sticky;
     left: 0;
     z-index: 2;
@@ -519,6 +519,12 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
 
   div.grd_headTblCont table thead tr:nth-child(2) {
 	display: none;
+  }
+
+  div.grd_headTblCont table thead tr td:nth-child(3),
+  table.bocaTable tbody tr td:nth-child(3),
+  table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(3) {
+    left: 254px;
   }
 </style>
 <script language="JavaScript">
