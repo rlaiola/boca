@@ -50,6 +50,42 @@ if($p != $_GET["check"]) {
 
 require_once("db.php");
 
+function getMimeType($filename) {
+    $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    $mime_types = [
+        'pdf'  => 'application/pdf',
+        'zip'  => 'application/zip',
+        'txt'  => 'text/plain',
+        'jpg'  => 'image/jpeg',
+        'png'  => 'image/png',
+        'gif'  => 'image/gif',
+        'doc'  => 'application/msword',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'xls'  => 'application/vnd.ms-excel',
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    ];
+
+    return $mime_types[$extension] ?? 'application/octet-stream'; // Default to binary
+}
+
+// Use finfo_file for detection
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mime_type = finfo_file($finfo, $fname);
+finfo_close($finfo);
+
+
+
+// If MIME type detection fails, fall back to a default
+if (!$mime_type) {
+    $mime_type = "application/octet-stream"; // Generic binary type
+}
+// Fall back to manual mapping if the detected MIME type is incorrect
+else if ($mime_type === 'text/plain') {
+    $mime_type = getMimeType($fname); // Use manual mapping function
+}
+
+header("Content-Type: $mime_type");
+
 if ($_GET["oid"]>=0) {
 	$c = DBConnect();
 	DBExec($c, "begin work");
@@ -67,12 +103,12 @@ if ($_GET["oid"]>=0) {
 	header ("Cache-Control: no-cache, must-revalidate");
 	header ("Pragma: no-cache");
 	header ("Content-transfer-encoding: binary\n");
-	header ("Content-type: application/force-download");
+	// header ("Content-type: application/force-download");
 //header ("Content-type: application/octet-stream");
 //if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE"))
 //	header("Content-Disposition: filename=" .$_GET["filename"]); // For IE
 //else
-	header ("Content-Disposition: attachment; filename=" . basename($fname));
+	header ("Content-Disposition: inline; filename=" . basename($fname));
 	ob_end_flush();
 
 	if (DB_lo_read_tobrowser ($_SESSION["usertable"]["contestnumber"],$lo,$c) === false) {
@@ -95,10 +131,10 @@ if ($_GET["oid"]>=0) {
 //if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE"))
 //	header("Content-Disposition: filename=" .$_GET["filename"]); // For IE
 //else
-	header ("Content-Disposition: attachment; filename=" . basename($fname));
+	header ("Content-Disposition: inline; filename=" . basename($fname));
 
 	if (($str=file_get_contents($fname))===false) {
-		header ("Content-type: text/html");
+		// header ("Content-type: text/html");
 		echo "<html><head><title>Download Page</title>";
 		MSGError ("Unable to open file (" . basename($fname) . ")");
 		LOGError ("Unable to open file (" . basename($fname) . ")");
@@ -106,7 +142,7 @@ if ($_GET["oid"]>=0) {
 		exit;
 	} else {
 		header ("Content-transfer-encoding: binary\n");
-		header ("Content-type: application/force-download");
+		// header ("Content-type: application/force-download");
 		echo decryptData($str, $cf["key"]);
 	}
 	ob_end_flush();

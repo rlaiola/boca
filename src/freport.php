@@ -75,7 +75,7 @@ function DBRunReport($contest,$site) {
 	for ($i=0;$i<$n;$i++) {
 		$a = DBRow($r,$i);
 		//cassiopc: staff users should see only same site, so checking of teamYYYY and staffXXXX have YYYY=XXXX
-		if($_SESSION["usertable"]["usertype"] != "admin" && substr($a['user'],4,4) != substr($_SESSION["usertable"]["username"],5,4)) continue;
+		// if($_SESSION["usertable"]["usertype"] != "admin" && substr($a['user'],4,4) != substr($_SESSION["usertable"]["username"],5,4)) continue;
 		$xdados[$i] = $a;
 		// # of runs by team
 		if(isset($xuser[$a['user']]))

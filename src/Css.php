@@ -210,42 +210,75 @@ i.bi-eye-slash {
   cursor: pointer;
 }
 
+.solved {
+  background: #b0b0a0;
+  opacity: 0.5;
+}
+
+.tags {
+  padding: 5px 0px;
+}
+
 /* Base styles for all tags */
 .tag {
-  display: table-cell;
   margin: 2px;
-  padding: 2px 5px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
+  padding: 0px 5px;
+  font-weight: normal;
+  font-size: smaller;
+  border-radius: 8px;
 }
 
 /* Group container styles */
 .tag-group {
+  margin: 2px;
+  display: table;
+}
+
+.tag-group[data-group='stat'] {
+  margin: 0px;
+  display: block;
 }
 
 /* Group heading styles */
 .tag-group h4 {
-  margin: 0 0 10px;
-  font-size: 16px;
+  margin: 0px;
+  font-weight: normal;
   color: #333;
   text-transform: capitalize;
 }
 
 /* Tag styles based on the data-key attribute */
 .tag[data-key='group'] {
-  background-color: #4CAF50; /* Green */
+  border: 1px solid #057471; /* Green */
+  background-color: #e5efe8;
+  color: #057471;
 }
 
 .tag[data-key='level'] {
-  background-color: #2196F3; /* Blue */
+  border: 1px solid #024b84; /* Blue */
+  background-color: #dee8ef;
+  color: #024b84;
 }
 
 .tag[data-key='domain'] {
-  background-color: #FF9800; /* Orange */
+  border: 1px solid #c37400; /* Brown */
+  background-color: #ece7e1;
+  color: #875000;
 }
 
 .tag[data-key='lang'] {
-  background-color: #9C27B0; /* Purple */
+  border: 1px solid #6f0082; /* Purple */
+  background-color: #eae5eb;
+  color: #6f0082;
+}
+
+.tag[data-key='stat'] {
+  font-size: smaller;
+  color: #000000; /* Black */
+}
+
+.tooltip {
+  cursor: help;
+  color: #007BFF;
+  margin-left: -5px;
 }

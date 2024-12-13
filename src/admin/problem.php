@@ -267,6 +267,86 @@ for ($i=0; $i<count($prob); $i++) {
 		ForceLoad("problem.php");
 	}
 }
+
+require_once("../freport.php");
+$d = DBRunReport(
+  $_SESSION["usertable"]["contestnumber"],
+  $_SESSION["usertable"]["usersitenumber"]
+);
+
+
+function exponentialWeight($n, $lambda = 0.5) {
+	return exp(-$lambda * ($n - 1));
+}
+
+function sigmoidWeight($n, $c = 3) {
+	return 1 / (1 + exp($n - $c));
+}
+
+function median($values) {
+	// Sort the array in ascending order
+	sort($values);
+
+	$count = count($values);
+	$middle = floor($count / 2);
+
+	if ($count % 2) {
+		// Odd count: return the middle value
+		return $values[$middle];
+	} else {
+		// Even count: return the average of the two middle values
+		return ($values[$middle - 1] + $values[$middle]) / 2;
+	}
+}
+
+function average($values) {
+	// Check if the array is empty to avoid division by zero
+	if (empty($values)) {
+		return 0; // Return 0 or null as the average for an empty array
+	}
+
+	// Calculate the sum of the array elements
+	$sum = array_sum($values);
+
+	// Calculate the count of the array elements
+	$count = count($values);
+
+	// Return the average
+	return $sum / $count;
+}
+
+function resubmissionRate($submissions) {
+	// Check if the array is empty to avoid division by zero
+	if (empty($submissions)) {
+		return 0; // Return 0 for an empty array
+	}
+
+	// Count users with more than one submission
+	$resubmittingUsers = array_filter($submissions, function ($count) {
+		return $count > 1;
+	});
+
+	// Total number of users
+	$totalUsers = count($submissions);
+
+	// Number of users who re-submitted
+	$resubmittingCount = count($resubmittingUsers);
+
+	// Calculate the re-submission rate
+	return ($resubmittingCount / $totalUsers) * 100;
+}
+
+$usr = DBAllUserInfo($_SESSION["usertable"]["contestnumber"], $_SESSION["usertable"]["usersitenumber"]);
+// print_r($usr);
+$total_users = count($usr); // Total number of users in the site
+
+list($score,$data0) = DBScoreSite($_SESSION["usertable"]["contestnumber"], 
+                        $_SESSION["usertable"]["usersitenumber"], 1, -1);
+// print_r(array_keys($score));
+$userkey=$_SESSION["usertable"]["usernumber"] . "-" . $_SESSION["usertable"]["usersitenumber"];
+// echo $userkey;
+$solvedproblems = $score[$userkey]["problem"];
+// echo print_r($score);
 ?>
 <br>
   <script language="javascript">
@@ -295,7 +375,7 @@ for ($i=0; $i<count($prob); $i++) {
   <td><b>Problem #</b></td>
   <td><b>Short Name</b></td>
   <td><b><?php if (getenv("BOCA_ENABLE_PROBLEM_TAGS") == "true") echo "Tags"; else echo "Fullname"; ?></b></td>
-  <td><b>Basename</b></td>
+  <td><b><?php if (getenv("BOCA_ENABLE_PROBLEM_STATS") == "true") echo "Statistics"; else echo "Basename"; ?></b></td>
   <td><b>Descfile</b></td>
   <td><b>Package file</b></td>
 <!--  <td><b>Compare file</b></td>
@@ -306,6 +386,60 @@ for ($i=0; $i<count($prob); $i++) {
 <?php
 $all_answers = DBGetAnswers($_SESSION["usertable"]["contestnumber"]);
 for ($i=0; $i<count($prob); $i++) {
+  $problemnumber = $prob[$i]["number"];
+  $problemname = $prob[$i]["problem"];
+  // echo $problemnumber . " " . $problemname;
+
+  $userSubmissions = array();         // Number of submissions by users
+  $userAcceptedSubmissions = array(); // Number of submissions accepted by users
+  $N = 0;                             // Number of users who attempted the problem
+  $NAccepted = 0;                     // Number of users who solved the problem
+  // Weighted Acceptance Rate
+  // - Last Submission Logic: Only the weight of the last submission is considered for the numerator if it is successful.
+  // - All Submissions in Denominator: All submissions (accepted or not) contribute to the denominator, penalizing users with excessive attempts.
+  // - Emphasizes Early Attempts: Using sigmoid or exponential weighting ensures early submissions have higher weights.
+  $totalWeightedAccepted = 0;
+  $totalWeightedSubmissions = 0;
+  foreach($score as $usersite => $userdata) {
+    $Si = 0;  // Total number of submissions by the ith user for the problem
+
+    if ($userdata["problem"][$problemnumber]["count"] > 0) {
+      $N++;
+      $Si = $userdata["problem"][$problemnumber]["count"];
+      array_push($userSubmissions, $Si);
+
+      // Aggressively penalize excessive submissions and heavily emphasize early attempts
+      for ($j = 1; $j <= $Si; $j++) {
+        // Weight applied to the jth submission of the ith user
+        $wij = exponentialWeight($j);;
+        // $wij = sigmoidWeight($j);
+        // Add weight for all submissions to the denominator
+        $totalWeightedSubmissions += $wij;
+      }
+
+      // Check if the last submission is successful
+      if ($userdata["problem"][$problemnumber]["solved"] > 0) {
+        $NAccepted++;
+        array_push($userAcceptedSubmissions, $Si);
+
+        // Add weight for accepted run of the ith user in the jth submission
+        $totalWeightedAccepted += exponentialWeight($Si);
+        // $totalWeightedAccepted += sigmoidWeight($Si);
+      }
+    }
+  }
+
+  // Calculate solve rate
+  $successRate = $N > 0 ?
+  	($NAccepted / $N) * 100 : 0;
+  // Calculate weighted acceptance rate
+  $weightedAcceptanceRate = $totalWeightedSubmissions > 0 ?
+  	($totalWeightedAccepted / $totalWeightedSubmissions) * 100 : 0;
+  // echo "Weighted Acceptance Rate: " . number_format($weightedAcceptanceRate, 2) . "%\n";
+  // Calculate engagement rate
+  $engagementRate = $total_users > 0 ?
+  	($N / $total_users) * 100 : 0;
+
   echo " <tr>\n";
   if($prob[$i]["fake"]!='t') {
 	  if(strpos($prob[$i]["fullname"],"(DEL)") !== false) {
@@ -359,9 +493,60 @@ for ($i=0; $i<count($prob); $i++) {
     echo "  <td nowrap>" . $prob[$i]["fullname"] . "&nbsp;</td>\n";
   }
 
-  echo "  <td nowrap>" . $prob[$i]["basefilename"] . "&nbsp;</td>\n";
+  if ($prob[$i]["fake"]!='t' && getenv('BOCA_ENABLE_PROBLEM_STATS') == 'true') {
+    echo "  <td nowrap>";
+    echo "    <div class='tags'>";
+    //
+    echo "      <div class='tag-group' data-group='stat'>";
+    echo "        <span class='tag' data-key='stat'>User engagement";
+    echo "          <sup class='tooltip' title='Percentage of all platform users who attempted the problem.'>(?)</sup>";
+    echo ": " . number_format($engagementRate, 2) . "%"; ;
+         "        </span>";
+    echo "      </div>";
+    // Success Rate: Percentage of users who solved the problem
+    echo "      <div class='tag-group' data-group='stat'>";
+    echo "        <span class='tag' data-key='stat'>Success rate";
+    echo "          <sup class='tooltip' title='Percentage of users who attempted and solved the problem.'>(?)</sup>";
+    echo ": " . number_format($successRate, 2) . "%";
+         "        </span>";
+    echo "      </div>";
+    // Weighted Success Rate: Weighted percentage of successful runs
+    echo "      <div class='tag-group' data-group='stat'>";
+    echo "        <span class='tag' data-key='stat'>Weighted success rate";
+    echo "          <sup class='tooltip' title='Weighted percentage of successful runs for the problem. Emphasizes early attempts.'>(?)</sup>";
+    echo ": " . number_format($weightedAcceptanceRate, 2) . "%";
+    echo "        </span>";
+    echo "      </div>";
+    // Median Successful Runs: Median runs for users who passed
+    echo "      <div class='tag-group' data-group='stat'>";
+    echo "        <span class='tag' data-key='stat'>Median attempts-to-success";
+    echo "          <sup class='tooltip' title='Median number of submissions made by users who solved the problem.'>(?)</sup>";
+    echo ": " . median($userAcceptedSubmissions);
+    echo "        </span>";
+    echo "      </div>";
+    // Average Successful Runs: Average runs for users who passed
+    echo "      <div class='tag-group' data-group='stat'>";
+    echo "        <span class='tag' data-key='stat'>Avg. attempts-to-success";
+    echo "          <sup class='tooltip' title='Average number of submissions made by users who eventually solved the problem.'>(?)</sup>";
+    echo ": " . number_format(average($userAcceptedSubmissions), 2);
+    echo "        </span>";
+    echo "      </div>";
+    // Re-submission Rate: Percentage of users who re-submitted
+    echo "      <div class='tag-group' data-group='stat'>";
+    echo "        <span class='tag' data-key='stat'>Re-submission rate";
+    echo "          <sup class='tooltip' title='Percentage of users with multiple submissions for the problem.'>(?)</sup>";
+    echo ": " . number_format(resubmissionRate($userSubmissions), 2) . "%";
+    echo "        </span>";
+    echo "      </div>";
+    echo "    </div>";
+    echo "  </td>\n";
+  }
+  else {
+    echo "  <td nowrap>" . $prob[$i]["basefilename"] . "&nbsp;</td>\n";
+  }
+
   if (isset($prob[$i]["descoid"]) && $prob[$i]["descoid"] != null && isset($prob[$i]["descfilename"])) {
-	  echo "  <td nowrap><a href=\"../filedownload.php?" . filedownload($prob[$i]["descoid"], $prob[$i]["descfilename"]) . "\">" . 
+	  echo "  <td nowrap><a target=\"_blank\" href=\"../filedownload.php?" . filedownload($prob[$i]["descoid"], $prob[$i]["descfilename"]) . "\">" . 
 		  basename($prob[$i]["descfilename"]) . "</td>\n";
   }
   else
@@ -562,7 +747,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
       '150px', '215px', '215px',
-      '215px', '250px', '250px',
+      '300px', '250px', '250px',
       '275px', '300px'
     ],
     col_types: [
@@ -615,8 +800,10 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
       },
       {
         name: 'colsVisibility',
+		<?php if (getenv("BOCA_ENABLE_PROBLEM_STATS") != "true") { ?>
         // hide column Basename
         at_start: [3],
+		<?php } ?>
         enable_tick_all: true
       },
       {

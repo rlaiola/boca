@@ -103,21 +103,23 @@ services:
             - BOCA_DISABLE_MISC=true
             - BOCA_DISABLE_TASKS=true
             - BOCA_DISABLE_BACKUP=true
-            # indicate whether scoreboard should be anonymized or not (team users)
+            # indicate whether scoreboard should be anonymized or not (team users).
             # default: false
             - BOCA_ANONYMIZED_SCORE=true
-            # skip same file check for submissions to a given problem/language
+            # skip same file check for submissions to a given problem/language.
             # default: false
             - BOCA_IGNORE_SAME_FILE_CHECK=true
             # specifies whether team users can visualize the output of their runs.
             # default: false
             - BOCA_ENABLE_VIEW_RUNS=true
-            # indicate whether to enable/disabled the table filter library
+            # indicate whether to enable/disabled the table filter library.
             # default: false
             - BOCA_ENABLE_TABLE_FILTER=true
             # indicate whether to enable/disabled fullname formatted as problem tags.
             # default: false
             - BOCA_ENABLE_PROBLEM_TAGS=true
+            # indicate whether to enable/disabled the problem statistics feature.
+            - BOCA_ENABLE_PROBLEM_STATS=true
         # example 2: passing LDAP env vars from file.
         # env_file:
         #     - .env.ldap
