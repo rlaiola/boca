@@ -746,7 +746,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
-      '150px', '215px', '215px',
+      '150px', '215px', '275px',
       '300px', '250px', '250px',
       '275px', '300px'
     ],

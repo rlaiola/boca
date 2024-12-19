@@ -221,6 +221,7 @@ i.bi-eye-slash {
 
 /* Base styles for all tags */
 .tag {
+  display: inline-block;
   margin: 2px;
   padding: 0px 5px;
   font-weight: normal;
@@ -231,7 +232,7 @@ i.bi-eye-slash {
 /* Group container styles */
 .tag-group {
   margin: 2px;
-  display: table;
+  display: block;
 }
 
 .tag-group[data-group='stat'] {
