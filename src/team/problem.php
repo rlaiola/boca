@@ -267,6 +267,8 @@ for ($i=0; $i<count($prob); $i++) {
   if (getenv("BOCA_ENABLE_PROBLEM_TAGS") == "true") {
     // Input string
     $input = $prob[$i]["fullname"];
+    // Replace the substring if it exists
+    $input = str_replace("(DEL)", "", $input);
     // Remove brackets from the input string
     $trimmed = trim($input, "[]");
     // Split the string into individual components
