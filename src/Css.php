@@ -274,6 +274,7 @@ i.bi-eye-slash {
 }
 
 .tag[data-key='stat'] {
+  margin: 0 2px;
   font-size: smaller;
   color: #000000; /* Black */
 }
