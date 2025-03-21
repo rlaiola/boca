@@ -119,6 +119,7 @@ services:
             # default: false
             - BOCA_ENABLE_PROBLEM_TAGS=true
             # indicate whether to enable/disabled the problem statistics feature.
+            # default: false
             - BOCA_ENABLE_PROBLEM_STATS=true
         # example 2: passing LDAP env vars from file.
         # env_file:
