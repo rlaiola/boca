@@ -34,7 +34,7 @@ CREATE TABLE \"tasktable\" (
 \"taskdate\" int4 NOT NULL,		-- (dia/hora da submissao no local de origem)
 \"taskdatediff\" int4 NOT NULL,	-- (diferenca entre inicio da competicao e dia/hora da submissao em seg)
 \"taskdatediffans\" int4 NOT NULL, -- (diferenca entre inicio da competicao e dia/hora da correcao em seg)
-\"taskdesc\" varchar(250),			-- (descricao da tarefa)
+\"taskdesc\" varchar(500),			-- (descricao da tarefa)
 \"taskfilename\" varchar(100),			-- (nome do arquivo)
 \"taskdata\" oid,					-- (apontador para o arquivo)
 \"tasksystem\" bool NOT NULL,		-- (tarefa de sistema?)
