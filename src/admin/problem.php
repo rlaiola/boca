@@ -221,7 +221,7 @@ for ($i=0; $i<count($prob); $i++) {
     if (isset($_POST["SubmitProblem" . $prob[$i]['number']]) && $_POST["SubmitProblem" . $prob[$i]['number']] == 'Update' &&
 	isset($_POST["colorname" . $prob[$i]['number']]) && strlen($_POST["colorname" . $prob[$i]['number']]) <= 100 && 
 	isset($_POST["color" . $prob[$i]['number']]) && strlen($_POST["color" . $prob[$i]['number']]) <= 6 && 
-	isset($_POST["problemname" . $prob[$i]['number']]) && $_POST["problemname" . $prob[$i]['number']] != "" && strlen($_POST["problemname" . $prob[$i]['number']]) <= 20) {
+	isset($_POST["problemname" . $prob[$i]['number']]) && $_POST["problemname" . $prob[$i]['number']] != "" && strlen($_POST["problemname" . $prob[$i]['number']]) <= 50) {
       if(strpos(trim($_POST["problemname" . $prob[$i]['number']]),' ')!==false) {
 	MSGError('Problem short name cannot have spaces');
       } else {
@@ -454,7 +454,7 @@ for ($i=0; $i<count($prob); $i++) {
 	  echo "<input type=hidden name=\"problemname" . $prob[$i]['number'] . "\" value=\"" . $prob[$i]["name"] . "\" />";
 	  echo "  <td nowrap>" . $prob[$i]["name"] . "</td>\n";
 	  //echo "  <td nowrap>";
-	  //echo "<input type=\"text\" name=\"problemname" . $prob[$i]['number'] . "\" value=\"" . $prob[$i]["name"] . "\" size=\"4\" maxlength=\"20\" />";
+	  //echo "<input type=\"text\" name=\"problemname" . $prob[$i]['number'] . "\" value=\"" . $prob[$i]["name"] . "\" size=\"4\" maxlength=\"50\" />";
 	  //echo "</td>\n";
   } else {
     echo "  <td nowrap>" . $prob[$i]["number"] . " (fake)</td>\n";
@@ -886,7 +886,7 @@ To replace the data of a problem, proceed as if it did not exist (data will be r
       <tr>
 	 <td width="35%" align=right>Short Name (usually a letter, no spaces):</td>
         <td width="65%">
-          <input type="text" name="problemname" value="" size="20" maxlength="20" />
+          <input type="text" name="problemname" value="" size="20" maxlength="50" />
         </td>
       </tr>
 <!--
