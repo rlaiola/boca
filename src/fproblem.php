@@ -29,7 +29,7 @@ function DBCreateProblemTable() {
 CREATE TABLE \"problemtable\" (
 \"contestnumber\" int4 NOT NULL,                  -- (id do concurso)
 \"problemnumber\" int4 NOT NULL,                  -- (id do problema)
-\"problemname\" varchar(20) NOT NULL,             -- (nome do problema)
+\"problemname\" varchar(50) NOT NULL,             -- (nome do problema)
 \"problemfullname\" varchar(250) DEFAULT '',      -- (nome completo do problema)
 \"problembasefilename\" varchar(100),             -- (nome base dos arquivos do problema)
 \"probleminputfilename\" varchar(100) DEFAULT '',            -- (nome do arquivo de entrada)
