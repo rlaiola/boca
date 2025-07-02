@@ -142,6 +142,23 @@ $solvedproblems = $score[$userkey]["problem"];
 // echo print_r($score);
 
 $prob = DBGetProblems($_SESSION["usertable"]["contestnumber"]);
+
+if (getenv("BOCA_SHOW_UNSOLVED_FIRST") == "true") {
+  // Sort problems to show unsolved problems first
+  usort($prob, function ($p1, $p2) use ($solvedproblems) {
+    $solved1 = isset($solvedproblems[$p1["number"]]) && $solvedproblems[$p1["number"]]["solved"];
+    $solved2 = isset($solvedproblems[$p2["number"]]) && $solvedproblems[$p2["number"]]["solved"];
+
+    // First criteria: solved problems go to the end
+    if ($solved1 != $solved2) {
+        return $solved1 ? 1 : -1;
+    }
+
+    // Second criteria: sort by number
+    return $p1["number"] <=> $p2["number"];
+  });
+}
+
 for ($i=0; $i<count($prob); $i++) {
   $problemnumber = $prob[$i]["number"];
   $problemname = $prob[$i]["problem"];
