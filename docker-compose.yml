@@ -121,6 +121,9 @@ services:
             # indicate whether to enable/disabled the problem statistics feature.
             # default: false
             - BOCA_ENABLE_PROBLEM_STATS=true
+            # indicate whether to show unsolved problems first in teams' problem list.
+            # default: false
+            - BOCA_SHOW_UNSOLVED_FIRST=true
         # example 2: passing LDAP env vars from file.
         # env_file:
         #     - .env.ldap
