@@ -141,6 +141,8 @@ $userkey=$_SESSION["usertable"]["usernumber"] . "-" . $_SESSION["usertable"]["us
 $solvedproblems = $score[$userkey]["problem"];
 // echo print_r($score);
 
+// Workaround: no need for the admin to login first for teams to see problems
+$prob = DBGetFullProblemData($_SESSION["usertable"]["contestnumber"],true);
 $prob = DBGetProblems($_SESSION["usertable"]["contestnumber"]);
 
 if (getenv("BOCA_SHOW_UNSOLVED_FIRST") == "true") {
