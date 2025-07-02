@@ -144,6 +144,16 @@ services:
             # privileged user password
             - POSTGRES_PASSWORD=superpass
 
+    # database management tool
+    adminer:
+        image: adminer:5
+        ports:
+            - 8080:8080
+        environment:
+            - ADMINER_DEFAULT_SERVER=boca-db
+        depends_on:
+            - boca-db
+
     # backup service
     boca-backup:
         image: postgres:14-alpine
@@ -190,7 +200,7 @@ services:
 
     # restore service
     boca-restore:
-        image: postgres:16-alpine
+        image: postgres:17-alpine
         environment:
             - BOCA_DB_HOST=boca-db
             - BOCA_DB_PORT=5432

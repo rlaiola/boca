@@ -287,7 +287,7 @@ if($redo) {
 				$strtmp .= "<a href=\"#\" onclick=\"javascript:toggleGroup($rfi)\">" . $grname[0] . "</a> ";
 */
 		}
-		$strtmp .= "<br>\n";
+		if (isset($n) && $n !== 0) $strtmp .= "<br>\n";
 	} else {
 		reset($score);
 		$class = 1;
@@ -301,7 +301,7 @@ if($redo) {
 		}
 	}
 
-	$strtmp .= "<br>\n<table class=\"bocaTable\" id=\"myscoretable\" width=\"100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
+	$strtmp .= "<br>\n<table class=\"bocaTable\" id=\"myscoretable\" width=\"100%\" style=\"width: 100%\" border=1>\n <tr>\n  <td><b>#</b></td>\n  <td><b>User/Site</b></td>\n  <td><b>Name</b></td>\n";
 	if(!$des) {
 		if($level>0)
 			$strtmp .= "<td><b>Problems</b></td>";
@@ -443,7 +443,7 @@ if($redo) {
 		  break;
 	}
 	$strtmp .= "</table>";
-	if ($n === 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
+	if (!isset($n) || $n === 0) $strtmp .= "<br><center><b><font color=\"#ff0000\">SCOREBOARD IS EMPTY</font></b></center>";
 	else {
 		if(!$des) 
 			if($level>0) $strtmp .= "<br><font color=\"#ff0000\">P.S. Problem names are hidden.</font>";
@@ -475,7 +475,7 @@ echo $strtmp;
 // Check if the table filter should be enabled
 if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
 ?>
-<div id="externalToolbar" <?php if ($n === 0) echo "style=\"display: none\""; ?>></div>
+<div id="externalToolbar" <?php if (!isset($n) || $n === 0) echo "style=\"display: none\""; ?>></div>
 <style>
   td {
     word-wrap: break-word;
@@ -483,30 +483,40 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
 
   div.grd_headTblCont table thead tr td,
   table.bocaTable tbody tr td {
-    position: sticky;
     z-index: 1;
+    <?php if (isset($n) && $n !== 0) { ?>
+    position: sticky;
     width: 100px;
+    <?php } else { ?>
+    width: 15%;
+    <?php } ?>
     padding: 0;
   }
 
   div.grd_headTblCont table thead tr td:nth-child(-n + 3),
   table.bocaTable tbody tr td:nth-child(-n + 3) {
+    <?php if (isset($n) && $n !== 0) { ?>
     position: sticky;
+    <?php } ?>
     left: 0;
     z-index: 2;
     background-color: #e0e0d0;
   }
 
   table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 3) {
+    <?php if (isset($n) && $n !== 0) { ?>
     position: sticky;
     left: 0;
+	<?php } ?>
     z-index: 2;
     background-color: #e0e0d0;
   }
 
   table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(-n + 3) {
+    <?php if (isset($n) && $n !== 0) { ?>
     position: sticky;
     left: 0;
+	<?php } ?>
     z-index: 2;
     background-color: #ffff00;
   }
@@ -514,7 +524,11 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
   div.grd_headTblCont table thead tr td:nth-child(2),
   table.bocaTable tbody tr td:nth-child(2),
   table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(2) {
+    <?php if (isset($n) && $n !== 0) { ?>
     left: 52px;
+     <?php } else { ?>
+    width: 30%;
+    <?php } ?>
   }
 
   div.grd_headTblCont table thead tr:nth-child(2) {
@@ -524,7 +538,11 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
   div.grd_headTblCont table thead tr td:nth-child(3),
   table.bocaTable tbody tr td:nth-child(3),
   table.bocaTable tbody tr.sitegroup1.highlight td:nth-child(3) {
+    <?php if (isset($n) && $n !== 0) { ?>
     left: 254px;
+     <?php } else { ?>
+    width: 40%;
+    <?php } ?>
   }
 </style>
 <script language="JavaScript">
@@ -547,7 +565,11 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
   var tfConfig = {
     base_path: '../vendor/tablefilter/0.7.3/',
     col_widths: [
+    <?php if (isset($n) && $n !== 0) { ?>
         '50px', '200px', '350px',
+    <?php } else { ?>
+        '15%', '30%', '40%', '15%',
+    <?php } ?>
     ],
     col_types: [
       'number', 'customstring', 'customstring'
@@ -570,7 +592,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
     loader: true,
     status_bar: true,
     ignore_diacritics: true,
-    <?php if ($n !== 0) { ?>
+    <?php if (isset($n) && $n !== 0) { ?>
     no_results_message: {
       content: '<?php echo "<center><b><font color=\"#ff0000\">NO MATCHES FOUND</font></b></center>" ?>',
     },
@@ -581,7 +603,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
     // grid layout customisation
     grid_layout: {
       width: '100%',
-      <?php if ($n !== 0) { ?>
+      <?php if (isset($n) && $n !== 0) { ?>
       height: 'auto'
       <?php } else { ?>
       height: 'auto'
