@@ -723,6 +723,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
   /* Fake row */
   table.bocaTable > tbody > tr:nth-child(1) > td:nth-child(3) {
     z-index: 1;
+    position: initial;
   }
 
   div.grd_headTblCont table thead tr td:nth-child(2),
