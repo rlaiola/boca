@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Last modified 05/aug/2012 by cassio@ime.usp.br
 require('header.php');
+require_once('stat.php');
 
 if(($ct = DBContestInfo($_SESSION["usertable"]["contestnumber"])) == null)
 	ForceLoad("../index.php");
@@ -90,6 +91,7 @@ function resubmissionRate($submissions) {
   // Calculate the re-submission rate
   return ($resubmittingCount / $totalUsers) * 100;
 }
+
 ?>
 
 <?php
@@ -272,7 +274,7 @@ for ($i=0; $i<count($prob); $i++) {
     echo "      <div class='tag-group' data-group='stat'>";
     echo "        <span class='tag' data-key='stat'>Re-submission rate";
     echo "          <sup class='tooltip' title='Percentage of users with multiple submissions for the problem.'>(?)</sup>";
-    echo ": " . number_format(resubmissionRate($userSubmissions), 2) . "%";
+    echo ": " . number_format(resubmissionRate($userAcceptedSubmissions), 2) . "%";
     echo "        </span>";
     echo "      </div>";
     echo "    </div>";
