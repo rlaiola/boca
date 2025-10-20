@@ -250,27 +250,27 @@ i.bi-eye-slash {
 
 /* Tag styles based on the data-key attribute */
 .tag[data-key='group'] {
-  border: 1px solid #057471; /* Green */
-  background-color: #e5efe8;
-  color: #057471;
+  border: 1px solid #057471cc; /* Green */
+  background-color: #057471cc;
+  color: #ffffff;
 }
 
 .tag[data-key='level'] {
-  border: 1px solid #024b84; /* Blue */
-  background-color: #dee8ef;
-  color: #024b84;
+  border: 1px solid #024b84cc; /* Blue */
+  background-color: #024b84cc;
+  color: #ffffff;
 }
 
 .tag[data-key='domain'] {
-  border: 1px solid #c37400; /* Brown */
-  background-color: #ece7e1;
-  color: #875000;
+  border: 1px solid #c37400cc; /* Brown */
+  background-color: #c37400cc;
+  color: #ffffff;
 }
 
 .tag[data-key='lang'] {
-  border: 1px solid #6f0082; /* Purple */
-  background-color: #eae5eb;
-  color: #6f0082;
+  border: 1px solid #6f0082cc; /* Purple */
+  background-color: #6f0082cc;
+  color: #ffffff;
 }
 
 .tag[data-key='stat'] {
