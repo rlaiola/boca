@@ -338,24 +338,26 @@ echo "<style>
     }
     .tag-groups-stats {
         display: flex;
-        flex-wrap: initial;
-        gap: 10px;
+        flex-wrap: wrap;
+        gap: 0px;
         justify-content: center;
         margin: auto;
     }
     .tag-group-stats {
-        display: flow;
-        width: 30%;
+        display: inline-table;
+        width: 100%;
         border: 1px solid transparent;
         border-radius: 6px;
-        padding: 5px;
+        padding: 0px;
         overflow: auto;
     }
     .tag-stats {
         display: inline-grid;
+        width: 125px;
         font-family: 'Courier New', Courier, mono;
         font-size: 14px;
         font-weight: normal;
+        text-align: center;
         margin: auto 5px;
         margin-bottom: 6px;
         cursor: help;
@@ -366,7 +368,7 @@ echo "<style>
         height: 8px;
         border: 1px solid #aaa;
         border-radius: 8px;
-        margin-top: 2px;
+        margin: 2px auto;
     }
     .tick {
         position: absolute;
@@ -552,7 +554,7 @@ $groupsToShow = array_filter(array_keys($groupStats), fn($g) => $g !== 'lang');
 
 foreach ($groupsToShow as $group) {
     echo "<div class='tag-group-stats'>";
-    echo "<h4 style='margin:2px 0 6px 0;'>" . ucfirst(htmlspecialchars($group)) . "</h4>";
+    // echo "<h4 style='margin:2px 0 6px 0;'>" . ucfirst(htmlspecialchars($group)) . "</h4>";
 
     // Sort by $value if $group == 'domain'
     if ($group === 'domain') {
