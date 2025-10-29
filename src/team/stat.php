@@ -301,15 +301,6 @@ function drawPieChartJS($canvasId, $data, $colorsPerRun, $total) {
 
 // --- Styles ---
 echo "<style>
-    .flex-row {
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%;
-        text-align: center;
-        justify-content: space-evenly;
-        gap: 20px;
-        margin: auto;
-    }
     legend {
         font-family: 'Courier New', Courier, mono;
         font-size: 16px;
@@ -323,7 +314,7 @@ echo "<style>
         margin-bottom: 6px;
     }
     .progress-chart {
-        flex: 0 0 30%;
+        flex: 0 0 33.33%;
         display: grid;
         align-self: start;
         text-align: center;
@@ -340,15 +331,16 @@ echo "<style>
         display: flex;
         flex-wrap: wrap;
         gap: 0px;
-        justify-content: center;
         margin: auto;
+        max-width: 1440px;
+        text-align: center;
+        justify-content: space-evenly;
     }
     .tag-group-stats {
         display: inline-table;
-        width: 100%;
-        border: 1px solid transparent;
-        border-radius: 6px;
-        padding: 0px;
+        width: " . (123.33 - 30 * (count($groupStats) - 1)) . "%;
+        min-width: 405px;
+        padding: 10px 0;
         overflow: auto;
     }
     .tag-stats {
@@ -365,9 +357,9 @@ echo "<style>
     .progress-bar {
         position: relative;
         width: 100px;
-        height: 8px;
+        height: 10px;
         border: 1px solid #aaa;
-        border-radius: 8px;
+        border-radius: 0px;
         margin: 2px auto;
     }
     .tick {
@@ -385,10 +377,11 @@ echo "<style>
         margin-bottom: 15px;
         gap: 20px;
         justify-content: space-evenly;
+        max-width: 1440px;
     }
     .pie-chart {
         display: inline-table;
-        flex: 0 0 225px;
+        flex: 0 0 280px;
         text-align: center;
         border: 1px solid transparent;
         border-radius: 4px;
@@ -408,7 +401,7 @@ echo "<div class='pie-charts'>";
 // --- Overall progress canvas + draw script (replace previous progressChart block) ---
 echo "<div class='pie-chart'>
         <h4 style='margin-top:0;'>Overall Progress</h4>
-        <canvas id='progressChart' width='125' height='125' style='margin:auto;'></canvas>
+        <canvas id='progressChart' width='175' height='175' style='margin:auto;'></canvas>
       </div>";
 
 // echo JS after the canvas so the element exists when we draw
@@ -524,21 +517,21 @@ echo "<div class='pie-chart'>
 // Runs by answer
 echo "<div class='pie-chart'>
     <h4>All Runs by Answer</h4>
-    <canvas id='runsByAnswerChart' width='125' height='125'></canvas>
+    <canvas id='runsByAnswerChart' width='175' height='175'></canvas>
     " . drawPieChartJS('runsByAnswerChart', $answerCounts, $answerColors, $totalRuns) . "
 </div>";
 
 // Runs by language
 echo "<div class='pie-chart'>
     <h4>All Runs by Language</h4>
-    <canvas id='runsByLanguageChart' width='125' height='125'></canvas>
+    <canvas id='runsByLanguageChart' width='175' height='175'></canvas>
     " . drawPieChartJS('runsByLanguageChart', $languageCounts, $languageColors, $totalLanguageRuns) . "
 </div>";
 
 // Accepted runs by language
 echo "<div class='pie-chart'>
     <h4>Accepted Runs by Language</h4>
-    <canvas id='acceptedRunsByLanguageChart' width='125' height='125'></canvas>
+    <canvas id='acceptedRunsByLanguageChart' width='175' height='175'></canvas>
     " . drawPieChartJS('acceptedRunsByLanguageChart', $acceptedLanguageCounts, $acceptedLanguageColors, $totalAcceptedLanguageRuns) . "
 </div>";
 
@@ -549,12 +542,12 @@ if (getenv("BOCA_ENABLE_PROBLEM_TAGS") != "true") {
     return;
 }
 
-echo "<div class='flex-row'><div class='tag-groups-stats'>";
+echo "<div class='tag-groups-stats'>";
 $groupsToShow = array_filter(array_keys($groupStats), fn($g) => $g !== 'lang');
 
 foreach ($groupsToShow as $group) {
     echo "<div class='tag-group-stats'>";
-    // echo "<h4 style='margin:2px 0 6px 0;'>" . ucfirst(htmlspecialchars($group)) . "</h4>";
+    echo "<h4 style='margin:2px 0 6px 0;'>Progress by " . ucfirst(htmlspecialchars($group)) . "</h4>";
 
     // Sort by $value if $group == 'domain'
     if ($group === 'domain') {
@@ -599,7 +592,7 @@ foreach ($groupsToShow as $group) {
     echo "<br /></div>";
 }
 
-echo "</div></div>"; // End tag groups row
+echo "</div>"; // End tag groups row
 echo "</fieldset>"; // End main fieldset
 
 // require('footer.php');
