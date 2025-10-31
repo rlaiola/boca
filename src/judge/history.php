@@ -161,7 +161,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
     },
     <?php } ?>
     paging: {
-      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+      results_per_page: ['Records: ', [10, 50, 200, 1000, 1000000]],
     },
     // grid layout customisation
     grid_layout: {
@@ -303,7 +303,7 @@ if (getenv("BOCA_ENABLE_TABLE_FILTER") == "true") {
     },
     <?php } ?>
     paging: {
-      results_per_page: ['Records: ', [50, 200, 1000, 1000000]],
+      results_per_page: ['Records: ', [10, 50, 200, 1000, 1000000]],
     },
     // grid layout customisation
     grid_layout: {
