@@ -113,6 +113,8 @@ div.grd_Cont {
   box-shadow: none;
   background-color: inherit;
   border: 1px solid;
+  height: 50vh;
+  overflow: auto;
 }
 
 div.grd_Cont .flt {
