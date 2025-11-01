@@ -309,7 +309,7 @@ echo "<style>
     }
     h4, .tag-group-stats h4 {
         font-family: 'Courier New', Courier, mono;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
         margin-bottom: 6px;
     }
@@ -324,7 +324,7 @@ echo "<style>
     }
     .legend {
         font-family: 'Courier New', Courier, mono;
-        font-size: 12px;
+        font-size: 11px;
         color: #555;
     }
     .tag-groups-stats {
@@ -334,30 +334,32 @@ echo "<style>
         margin: auto;
         max-width: 1440px;
         text-align: center;
+        align-items: flex-start;
         justify-content: space-evenly;
     }
     .tag-group-stats {
         display: inline-table;
         width: " . (123.33 - 30 * (count($groupStats) - 1)) . "%;
-        min-width: 405px;
-        padding: 10px 0;
+        align-items: center;
+        min-width: 325px;
+        padding-bottom: 5px;
         overflow: auto;
     }
     .tag-stats {
         display: inline-grid;
-        width: 125px;
+        width: 95px;
         font-family: 'Courier New', Courier, mono;
-        font-size: 14px;
+        font-size: 11px;
         font-weight: normal;
         text-align: center;
-        margin: auto 5px;
-        margin-bottom: 6px;
+        margin: auto 3px;
+        margin-bottom: 0px;
         cursor: help;
     }
     .progress-bar {
         position: relative;
-        width: 100px;
-        height: 10px;
+        width: 75px;
+        height: 6px;
         border: 1px solid #aaa;
         border-radius: 0px;
         margin: 2px auto;
@@ -373,15 +375,15 @@ echo "<style>
         display: flex;
         flex-wrap: wrap;
         margin: auto;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        gap: 20px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        gap: 5px;
         justify-content: space-evenly;
         max-width: 1440px;
     }
     .pie-chart {
         display: inline-table;
-        flex: 0 0 280px;
+        flex: 0 0 200px;
         text-align: center;
         border: 1px solid transparent;
         border-radius: 4px;
@@ -392,7 +394,7 @@ echo "<style>
 </style>";
 
 // --- Display layout ---
-echo "<fieldset style='border:1px solid #ccc; border-radius:6px; margin-top:20px;'>";
+echo "<fieldset style='margin-top:20px; padding: 0'>";
 echo "<legend>Activity Summary</legend>";
 
 // --- Pie charts row ---
@@ -401,7 +403,7 @@ echo "<div class='pie-charts'>";
 // --- Overall progress canvas + draw script (replace previous progressChart block) ---
 echo "<div class='pie-chart'>
         <h4 style='margin-top:0;'>Overall Progress</h4>
-        <canvas id='progressChart' width='175' height='175' style='margin:auto;'></canvas>
+        <canvas id='progressChart' width='75' height='75' style='margin:auto;'></canvas>
       </div>";
 
 // echo JS after the canvas so the element exists when we draw
@@ -517,21 +519,21 @@ echo "<div class='pie-chart'>
 // Runs by answer
 echo "<div class='pie-chart'>
     <h4>All Runs by Answer</h4>
-    <canvas id='runsByAnswerChart' width='175' height='175'></canvas>
+    <canvas id='runsByAnswerChart' width='75' height='75'></canvas>
     " . drawPieChartJS('runsByAnswerChart', $answerCounts, $answerColors, $totalRuns) . "
 </div>";
 
 // Runs by language
 echo "<div class='pie-chart'>
     <h4>All Runs by Language</h4>
-    <canvas id='runsByLanguageChart' width='175' height='175'></canvas>
+    <canvas id='runsByLanguageChart' width='75' height='75'></canvas>
     " . drawPieChartJS('runsByLanguageChart', $languageCounts, $languageColors, $totalLanguageRuns) . "
 </div>";
 
 // Accepted runs by language
 echo "<div class='pie-chart'>
     <h4>Accepted Runs by Language</h4>
-    <canvas id='acceptedRunsByLanguageChart' width='175' height='175'></canvas>
+    <canvas id='acceptedRunsByLanguageChart' width='75' height='75'></canvas>
     " . drawPieChartJS('acceptedRunsByLanguageChart', $acceptedLanguageCounts, $acceptedLanguageColors, $totalAcceptedLanguageRuns) . "
 </div>";
 
