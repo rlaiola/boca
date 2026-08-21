@@ -16,3 +16,4 @@ debian/debhelper-build-stamp
 debian/files
 
 *.swp
+.DS_Store
