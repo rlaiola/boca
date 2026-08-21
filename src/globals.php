@@ -254,15 +254,35 @@ function getFunctionName($num=2) {
         return $ret;
 }
 
+function isTrustedProxy($remoteAddress, $proxies) {
+  foreach ($proxies as $proxy) {
+    $proxy = trim($proxy);
+
+    if ($remoteAddress === $proxy)
+      return true;
+
+    // A trailing .* represents any valid, non-zero IPv4 host octet. For
+    // example, 172.18.0.* matches 172.18.0.1 through 172.18.0.255.
+    if (substr($proxy, -2) === '.*') {
+      $network = substr($proxy, 0, -2);
+      if (preg_match('/^' . preg_quote($network, '/') . '\.(?:[1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/', $remoteAddress))
+        return true;
+    }
+  }
+
+  return false;
+}
+
 function getIP() {
   if (getenv("REMOTE_ADDR")) {
     // Create an array of trusted reverse proxies set via env variable
+    $proxies = array();
     if (getenv("BOCA_TRUSTED_PROXIES"))
       $proxies = explode(",", getenv("BOCA_TRUSTED_PROXIES"));
 
     // Check whether REMOTE_ADDR is actually the IP of a trusted proxy
-    if (isset($proxies) && 
-        in_array(getenv("REMOTE_ADDR"), $proxies) &&
+    if ($proxies && 
+        isTrustedProxy(getenv("REMOTE_ADDR"), $proxies) &&
         getenv("HTTP_X_FORWARDED_FOR"))
       // If so, BOCA might be behind a proxy server (e.g., Traefik) in which
       // case the proxy may have set the $_SERVER['HTTP_X_FORWARDED_FOR'].
