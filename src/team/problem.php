@@ -132,8 +132,10 @@ if(is_readable('/var/www/boca/src/sample/secretcontest/maratona.pdf')) {
 <?php
 
 $usr = DBAllUserInfo($_SESSION["usertable"]["contestnumber"], $_SESSION["usertable"]["usersitenumber"]);
-// print_r($usr);
-$total_users = count($usr); // Total number of users in the site
+$teamUsers = array_values(array_filter($usr, function ($user) {
+  return isset($user["usertype"]) && $user["usertype"] === "team";
+}));
+$total_users = count($teamUsers); // Total number of team users in the site
 
 list($score,$data0) = DBScoreSite($_SESSION["usertable"]["contestnumber"], 
                         $_SESSION["usertable"]["usersitenumber"], 1, -1);
